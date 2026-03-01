@@ -7,454 +7,183 @@
   <title>Mountain Race Shop™ | Motorcycle Suspension Specialist</title>
   <meta name="description" content="Mountain Race Shop™ — motorcycle suspension specialist. Data-backed setup, shim-stack design, workshop services, and rider support." />
   <meta name="robots" content="index,follow" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- Top bar -->
-  <header class="topbar">
-    <div class="container topbar__inner">
-      <a class="brand" href="#top" aria-label="Mountain Race Shop Home">
-        <span class="brand__mark" aria-hidden="true">MRS</span>
-        <span class="brand__text">
-          <span class="brand__name">Mountain Race Shop™</span>
-          <span class="brand__tag">Motorcycle Suspension Specialist</span>
-        </span>
-      </a>
 
-      <nav class="nav" aria-label="Primary">
-        <a href="#services">Services</a>
-        <a href="#products">Products</a>
-        <a href="#suppliers">Suppliers</a>
-        <a href="#lessons">Lessons</a>
-        <a href="#about">Bio</a>
-        <a href="#contact" class="btn btn--small">Contact</a>
-      </nav>
+<header class="topbar">
+  <div class="container topbar__inner">
+    <a class="brand" href="#top">
+      <span class="brand__mark">MRS</span>
+      <span class="brand__text">
+        <span class="brand__name">Mountain Race Shop™</span>
+        <span class="brand__tag">Motorcycle Suspension Specialist</span>
+      </span>
+    </a>
 
-      <button class="navToggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+    <nav class="nav">
+      <a href="#services">Services</a>
+      <a href="#products">Products</a>
+      <a href="#lessons">Lessons</a>
+      <a href="#about">Bio</a>
+      <a href="#contact" class="btn btn--small">Contact</a>
+    </nav>
+  </div>
+</header>
 
-    <div class="mobileNav" id="mobileNav" aria-hidden="true">
-      <div class="container mobileNav__inner">
-        <a href="#services" class="mobileNav__link">Services</a>
-        <a href="#products" class="mobileNav__link">Products</a>
-        <a href="#suppliers" class="mobileNav__link">Suppliers</a>
-        <a href="#lessons" class="mobileNav__link">Lessons</a>
-        <a href="#about" class="mobileNav__link">Bio</a>
-        <a href="#contact" class="mobileNav__link mobileNav__cta">Contact</a>
+<main id="top">
+
+<section class="hero">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow">Engineering-backed tuning • Proven on track • Validated by data</p>
+      <h1>Suspension that <span class="accent">works</span> — not guesswork.</h1>
+      <p class="lead">
+        Professional motorcycle suspension tuning, revalving, and data-driven setup for motocross,
+        enduro, off-road and road racing applications.
+      </p>
+
+      <div class="hero__ctaRow">
+        <a class="btn" href="#contact">Book a Consult</a>
+        <a class="btn btn--ghost" href="https://shimcalculator.com" target="_blank">Shim Calculator ↗</a>
       </div>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- Hero -->
-  <main id="top">
-    <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__copy">
-          <p class="eyebrow">Engineering-backed tuning • Proven on track • Validated by data</p>
-          <h1>Suspension that <span class="accent">works</span> — not guesswork.</h1>
-          <p class="lead">
-            Mountain Race Shop™ delivers professional motorcycle suspension tuning, shim-stack design,
-            and workshop services for motocross, enduro, off-road, supermoto, and road racing.
-          </p>
+<section class="section" id="services">
+  <div class="container">
+    <h2>Services</h2>
+    <div class="cards">
 
-          <div class="hero__ctaRow">
-            <a class="btn" href="#contact">Book a consult</a>
-            <a class="btn btn--ghost" href="#products">Browse services</a>
-          </div>
-
-          <div class="hero__quickLinks">
-            <a class="pill" href="https://shimcalculator.com" target="_blank" rel="noopener">
-              Open Shim Calculator
-              <span aria-hidden="true">↗</span>
-            </a>
-            <a class="pill" href="https://suspensionengineering.com.au" target="_blank" rel="noopener">
-              SuspensionEngineering.com.au
-              <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-
-          <div class="hero__trust">
-            <div class="trustCard">
-              <div class="trustCard__kpi">Data-Driven</div>
-              <div class="trustCard__desc">Dyno-informed, velocity-based tuning approach.</div>
-            </div>
-            <div class="trustCard">
-              <div class="trustCard__kpi">Workshop-Ready</div>
-              <div class="trustCard__desc">Built for techs, racers, and serious riders.</div>
-            </div>
-            <div class="trustCard">
-              <div class="trustCard__kpi">Real-World Focus</div>
-              <div class="trustCard__desc">Traction, control, confidence — not hype.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero__visual" aria-hidden="true">
-          <div class="glass">
-            <div class="glass__inner">
-              <div class="visualHeader">
-                <div class="dot dot--red"></div>
-                <div class="dot dot--amber"></div>
-                <div class="dot dot--green"></div>
-                <div class="visualTitle">Setup Snapshot</div>
-              </div>
-              <div class="visualGrid">
-                <div class="metric">
-                  <div class="metric__label">Target use</div>
-                  <div class="metric__value">MX / Enduro / Road</div>
-                </div>
-                <div class="metric">
-                  <div class="metric__label">Focus</div>
-                  <div class="metric__value">Control & traction</div>
-                </div>
-                <div class="metric">
-                  <div class="metric__label">Method</div>
-                  <div class="metric__value">Shim + spring + balance</div>
-                </div>
-                <div class="metric">
-                  <div class="metric__label">Output</div>
-                  <div class="metric__value">Clear recommendations</div>
-                </div>
-              </div>
-
-              <div class="sparkline">
-                <div class="sparkline__label">Force vs Velocity (example)</div>
-                <svg viewBox="0 0 600 140" class="sparkline__svg" role="img" aria-label="Example graph line">
-                  <path d="M10,120 C70,118 90,100 140,92 C200,82 220,65 270,58 C330,49 350,40 410,34 C470,27 520,20 590,16"
-                        fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                  <path d="M10,120 L590,120" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="2"/>
-                </svg>
-              </div>
-
-              <div class="glass__footer">
-                <span class="badge">Forks</span>
-                <span class="badge">Shocks</span>
-                <span class="badge">Cartridges</span>
-                <span class="badge">Revalves</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="card">
+        <h3>Suspension Tuning & Setup</h3>
+        <p>Spring rate selection, sag setup, clicker strategy and geometry refinement.</p>
       </div>
-    </section>
 
-    <!-- Services -->
-    <section class="section" id="services">
-      <div class="container">
-        <div class="section__head">
-          <h2>Services</h2>
-          <p class="muted">
-            Pick a service, book a call, or bring your suspension in. We can tune for comfort, performance,
-            or race pace — and we’ll explain the “why” behind every change.
-          </p>
-        </div>
-
-        <div class="cards">
-          <article class="card">
-            <h3>Suspension Tuning & Setup</h3>
-            <p>Baseline setup, spring selection, sag, geometry notes, clicker strategy, and track-specific adjustments.</p>
-            <ul class="ticks">
-              <li>MX / Enduro / Off-road</li>
-              <li>Road / Track / Supermoto</li>
-              <li>Rider weight & speed matched</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>Revalve & Shim-Stack Design</h3>
-            <p>Shim-stack design based on performance goals and measured behaviour. Built for repeatable outcomes.</p>
-            <ul class="ticks">
-              <li>Compression & rebound strategy</li>
-              <li>Mid-valve / base valve optimisation</li>
-              <li>Bottoming control & hold-up</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>Data & Diagnostic Services</h3>
-            <p>Force/velocity interpretation, balance pressure concepts, and guidance on what to change next.</p>
-            <ul class="ticks">
-              <li>Dyno-informed recommendations</li>
-              <li>Consistency checks</li>
-              <li>Plain-English reporting</li>
-            </ul>
-          </article>
-        </div>
-
-        <div class="callout">
-          <div class="callout__text">
-            <h3>Already using the Shim Calculator?</h3>
-            <p>
-              Use it to compare your current stack to recommended soft/hard options,
-              then book a consult if you want a professional review.
-            </p>
-          </div>
-          <div class="callout__actions">
-            <a class="btn" href="https://shimcalculator.com" target="_blank" rel="noopener">Open Shim Calculator ↗</a>
-            <a class="btn btn--ghost" href="#contact">Talk to us</a>
-          </div>
-        </div>
+      <div class="card">
+        <h3>Revalve & Shim Stack Design</h3>
+        <p>Compression & rebound strategy built from measured data and real-world testing.</p>
       </div>
-    </section>
 
-    <!-- Products / Services list -->
-    <section class="section section--alt" id="products">
-      <div class="container">
-        <div class="section__head">
-          <h2>Products & Service Menu</h2>
-          <p class="muted">
-            Simple list, easy to expand. You can add pricing later, or keep it “quote on request”.
-          </p>
-        </div>
-
-        <div class="filters" role="region" aria-label="Product filters">
-          <button class="chip is-active" data-filter="all">All</button>
-          <button class="chip" data-filter="workshop">Workshop</button>
-          <button class="chip" data-filter="tuning">Tuning</button>
-          <button class="chip" data-filter="data">Data</button>
-          <button class="chip" data-filter="digital">Digital tools</button>
-
-          <div class="search">
-            <label class="srOnly" for="searchInput">Search</label>
-            <input id="searchInput" type="search" placeholder="Search services… (e.g., revalve, forks, road race)" />
-          </div>
-        </div>
-
-        <div class="productGrid" id="productGrid" aria-live="polite"></div>
-
-        <div class="note">
-          <p class="muted">
-            Want this to become a real store later? This layout is ready to connect to Shopify, WooCommerce, Stripe Checkout,
-            or a custom FastAPI backend when you’re ready.
-          </p>
-        </div>
+      <div class="card">
+        <h3>Data & Diagnostics</h3>
+        <p>Force-velocity interpretation, pressure balance insights, and actionable tuning plans.</p>
       </div>
-    </section>
 
-    <!-- Suppliers -->
-    <section class="section" id="suppliers">
-      <div class="container">
-        <div class="section__head">
-          <h2>Suppliers & Platforms</h2>
-          <p class="muted">Drop supplier logos into <code>/assets/logos/</code>. These placeholders will auto-fill.</p>
-        </div>
+    </div>
+  </div>
+</section>
 
-        <div class="logoStrip" id="logoStrip" aria-label="Supplier logos">
-          <!-- JS will load local images if present -->
-          <div class="logoPlaceholder">KYB</div>
-          <div class="logoPlaceholder">Showa</div>
-          <div class="logoPlaceholder">WP</div>
-          <div class="logoPlaceholder">Öhlins</div>
-          <div class="logoPlaceholder">K-Tech</div>
-          <div class="logoPlaceholder">Race Tech</div>
-          <div class="logoPlaceholder">SKF</div>
-          <div class="logoPlaceholder">Motorex</div>
-        </div>
+<section class="section section--alt" id="products">
+  <div class="container">
+    <h2>Digital Tools</h2>
+    <div class="cards">
 
-        <div class="mini">
-          <p class="muted">
-            Add or remove suppliers any time — just drop PNG/SVGs into the folder and update the list in <code>script.js</code>.
-          </p>
-        </div>
+      <div class="card">
+        <h3>Shim Calculator</h3>
+        <p>Compare stacks, test soft/hard options and refine damping strategy.</p>
+        <a class="btn btn--ghost" href="https://shimcalculator.com" target="_blank">Open ↗</a>
       </div>
-    </section>
 
-    <!-- Lessons (future space) -->
-    <section class="section section--alt" id="lessons">
-      <div class="container">
-        <div class="section__head">
-          <h2>Lessons (coming soon)</h2>
-          <p class="muted">
-            This is your future training area for the Suspension Engineering Masterclass.
-            For now it’s a landing section — later it can become a locked portal with modules.
-          </p>
-        </div>
-
-        <div class="lessonGrid">
-          <article class="lessonCard">
-            <h3>Module 1 — Foundations</h3>
-            <p>How suspension works, what “good” feels like, and how to stop chasing clicks.</p>
-            <div class="lessonMeta">
-              <span class="badge">Beginner</span>
-              <span class="badge">Video + notes</span>
-            </div>
-          </article>
-
-          <article class="lessonCard">
-            <h3>Module 2 — Shim Stacks</h3>
-            <p>Face shims, taper strategy, stiffness, clamp, float, and practical tuning logic.</p>
-            <div class="lessonMeta">
-              <span class="badge">Intermediate</span>
-              <span class="badge">Examples</span>
-            </div>
-          </article>
-
-          <article class="lessonCard">
-            <h3>Module 3 — Force / Velocity</h3>
-            <p>Reading dyno curves, hysteresis, pressure balance, and action plans.</p>
-            <div class="lessonMeta">
-              <span class="badge">Advanced</span>
-              <span class="badge">Data workflows</span>
-            </div>
-          </article>
-        </div>
-
-        <div class="callout">
-          <div class="callout__text">
-            <h3>Want early access?</h3>
-            <p>We can add an email capture form here when you’re ready (Mailchimp / Brevo / ConvertKit).</p>
-          </div>
-          <div class="callout__actions">
-            <a class="btn btn--ghost" href="#contact">Register interest</a>
-          </div>
-        </div>
+      <div class="card">
+        <h3>Suspension Engineering</h3>
+        <p>Technical resources and engineering insights.</p>
+        <a class="btn btn--ghost" href="https://suspensionengineering.com.au" target="_blank">Visit ↗</a>
       </div>
-    </section>
 
-    <!-- About / Bio -->
-    <section class="section" id="about">
-      <div class="container">
-        <div class="section__head">
-          <h2>Bio</h2>
-          <p class="muted">Who you’re working with, and what Mountain Race Shop™ stands for.</p>
-        </div>
+    </div>
+  </div>
+</section>
 
-        <div class="about">
-          <div class="about__panel">
-            <h3>Mountain Race Shop™</h3>
-            <p>
-              Mountain Race Shop™ is a motorcycle suspension specialist focused on <strong>engineering-backed tuning</strong>.
-              We combine practical workshop experience with a data-driven approach to build setups that deliver
-              <strong>traction, control, and confidence</strong> across motocross, enduro, off-road, and road/track riding.
-            </p>
-            <p>
-              We don’t chase trends — we build repeatable outcomes. That means clear targets, measured changes,
-              and advice you can actually use: spring selection, shim strategy, balance concepts, and setup notes
-              that match your riding style and terrain.
-            </p>
-            <div class="about__tags">
-              <span class="badge">Workshop services</span>
-              <span class="badge">Shim-stack design</span>
-              <span class="badge">Rider-specific tuning</span>
-              <span class="badge">Tools & calculators</span>
-            </div>
-          </div>
+<section class="section" id="lessons">
+  <div class="container">
+    <h2>Lessons (Coming Soon)</h2>
+    <p class="muted">
+      The Suspension Engineering Masterclass will be hosted here — structured modules,
+      real examples, dyno interpretation and professional tuning strategy.
+    </p>
+  </div>
+</section>
 
-          <div class="about__panel about__panel--highlight">
-            <h3>Quick links</h3>
-            <p class="muted">Use the tools, then contact us for a professional review.</p>
+<section class="section section--alt" id="about">
+  <div class="container">
+    <h2>Bio</h2>
 
-            <a class="linkCard" href="https://shimcalculator.com" target="_blank" rel="noopener">
-              <div class="linkCard__title">Shim Calculator</div>
-              <div class="linkCard__desc">Compare stacks, see recommendations, tune with confidence.</div>
-              <div class="linkCard__arrow" aria-hidden="true">↗</div>
-            </a>
+    <div class="card">
+      <p>
+        Mountain Race Shop™ is a specialist motorcycle suspension workshop based in
+        <strong>Shannons Flat, NSW</strong>, delivering engineering-backed tuning solutions
+        for serious riders and racers.
+      </p>
 
-            <a class="linkCard" href="https://suspensionengineering.com.au" target="_blank" rel="noopener">
-              <div class="linkCard__title">SuspensionEngineering.com.au</div>
-              <div class="linkCard__desc">Engineering resources, concepts, and deeper technical content.</div>
-              <div class="linkCard__arrow" aria-hidden="true">↗</div>
-            </a>
+      <p>
+        We combine real-world testing with structured data analysis to create setups that
+        improve traction, stability and rider confidence. Every recommendation is based on
+        measurable performance — not guesswork.
+      </p>
 
-            <div class="divider"></div>
+      <p>
+        Whether you're riding motocross, enduro, off-road or road racing,
+        Mountain Race Shop™ focuses on repeatable, professional results.
+      </p>
+    </div>
+  </div>
+</section>
 
-            <div class="contactMini">
-              <div class="contactMini__label">Phone</div>
-              <a class="contactMini__value" href="tel:+61420947505">+61 420 947 505</a>
-              <div class="contactMini__label">Hours</div>
-              <div class="contactMini__value muted">By appointment • Workshop & track support</div>
-            </div>
-          </div>
-        </div>
+<section class="section" id="contact">
+  <div class="container">
+    <h2>Contact</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>Phone</h3>
+        <a class="btn" href="tel:+61420947505">+61 420 947 505</a>
       </div>
-    </section>
 
-    <!-- Contact -->
-    <section class="section section--alt" id="contact">
-      <div class="container">
-        <div class="section__head">
-          <h2>Contact</h2>
-          <p class="muted">Call, text, or email. If you include your bike + riding type, we can move fast.</p>
-        </div>
-
-        <div class="contactGrid">
-          <div class="card">
-            <h3>Call / Text</h3>
-            <p class="muted">Fastest way to book in.</p>
-            <a class="btn" href="tel:+61420947505">+61 420 947 505</a>
-
-            <div class="spacer"></div>
-
-            <h3>Email</h3>
-            <p class="muted">Add your email here when you’re ready.</p>
-            <a class="btn btn--ghost" href="#" onclick="return false;">hello@mountainraceshop.com.au</a>
-
-            <p class="tiny muted">
-              Tip: tell us your bike model/year, weight in gear, terrain (MX/Enduro/Road),
-              and what you want to improve (bottoming, harshness, traction, braking dive).
-            </p>
-          </div>
-
-          <div class="card card--form">
-            <h3>Quick enquiry (optional)</h3>
-            <p class="muted">
-              This form is set up as a placeholder. When you decide where you want enquiries sent
-              (email service, Formspree, backend), we’ll wire it up.
-            </p>
-
-            <form id="contactForm">
-              <div class="field">
-                <label for="name">Name</label>
-                <input id="name" name="name" autocomplete="name" placeholder="Your name" />
-              </div>
-
-              <div class="field">
-                <label for="phone">Phone</label>
-                <input id="phone" name="phone" autocomplete="tel" placeholder="+61…" />
-              </div>
-
-              <div class="field">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="Bike, riding type, and what you want to fix…"></textarea>
-              </div>
-
-              <button class="btn" type="submit">Send enquiry</button>
-              <p class="tiny muted" id="formNote">This demo form doesn’t submit yet — it just confirms your message locally.</p>
-            </form>
-          </div>
-        </div>
+      <div class="card">
+        <h3>Email</h3>
+        <a class="btn btn--ghost" href="mailto:sales@mountainraceshop.com.au">
+          sales@mountainraceshop.com.au
+        </a>
       </div>
-    </section>
 
-    <footer class="footer">
-      <div class="container footer__inner">
-        <div>
-          <div class="footer__brand">Mountain Race Shop™</div>
-          <div class="tiny muted">Motorcycle Suspension Specialist</div>
-        </div>
-
-        <div class="footer__links">
-          <a href="#services">Services</a>
-          <a href="#products">Products</a>
-          <a href="#lessons">Lessons</a>
-          <a href="#contact">Contact</a>
-        </div>
-
-        <div class="tiny muted footer__legal">
-          © <span id="year"></span> Mountain Race Shop™ • Built for speed and clarity
-        </div>
+      <div class="card">
+        <h3>Workshop Location</h3>
+        <p>
+          2572 Shannons Flat Rd<br>
+          Shannons Flat NSW 2620<br>
+          Australia
+        </p>
+        <a class="btn btn--ghost"
+           href="https://www.google.com/maps/search/?api=1&query=2572+Shannons+Flat+Rd+Shannons+Flat+NSW"
+           target="_blank">
+          View on Google Maps ↗
+        </a>
       </div>
-    </footer>
-  </main>
 
-  <script src="script.js"></script>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div>
+      <strong>Mountain Race Shop™</strong><br>
+      Motorcycle Suspension Specialist
+    </div>
+    <div>
+      © <span id="year"></span> Mountain Race Shop™
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</main>
 </body>
 </html>

@@ -657,6 +657,7 @@ p { margin: 0 0 1rem; color: var(--muted); }
 }
 @media (max-width: 900px) {
   .book-grid, .book-grid-reverse { grid-template-columns: 1fr; text-align: center; }
+  .book-grid-reverse .book-covers { order: -1; }
   .book-covers { justify-content: center; margin-bottom: 1rem; }
   .book-img { max-height: 400px; }
   .book-front { transform: none; }

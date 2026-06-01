@@ -655,6 +655,88 @@ p { margin: 0 0 1rem; color: var(--muted); }
   color: #fff;
   letter-spacing: -0.02em;
 }
+
+.purchase-section {
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(243, 179, 49, 0.28);
+}
+.purchase-section-label {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+.purchase-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.purchase-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-height: 100%;
+  padding: 1.35rem 1.4rem;
+  text-align: left;
+}
+.purchase-format-badge {
+  display: inline-block;
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #111;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+}
+.purchase-option-title {
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.35;
+  color: #fff;
+}
+.purchase-option-desc {
+  margin: 0;
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--muted);
+  font-weight: 600;
+}
+.purchase-option-price {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #fff;
+}
+.purchase-option-button {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+.purchase-section--prominent {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(243, 179, 49, 0.1), rgba(255, 92, 57, 0.06)),
+    rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(243, 179, 49, 0.35);
+  box-shadow: var(--glow);
+}
+.purchase-section--prominent .purchase-section-label {
+  font-size: 0.85rem;
+  text-align: center;
+}
+.purchase-section--prominent .purchase-options {
+  gap: 1.5rem;
+}
+
 @media (max-width: 900px) {
   .book-grid, .book-grid-reverse { grid-template-columns: 1fr; text-align: center; }
   .book-covers { justify-content: center; margin-bottom: 1rem; }
@@ -662,6 +744,9 @@ p { margin: 0 0 1rem; color: var(--muted); }
   .book-front { transform: none; }
   .book-cta { justify-content: center; }
   .book-highlights { text-align: left; }
+  .purchase-format-badge { align-self: center; }
+  .purchase-options { grid-template-columns: 1fr; }
+  .purchase-section--prominent { padding: 1.25rem; }
 }
 
 .site-footer {

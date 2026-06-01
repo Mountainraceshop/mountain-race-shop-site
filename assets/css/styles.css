@@ -736,6 +736,17 @@ p { margin: 0 0 1rem; color: var(--muted); }
 .purchase-section--prominent .purchase-options {
   gap: 1.5rem;
 }
+.book-highlights--page {
+  max-width: 640px;
+  margin-bottom: 2rem;
+}
+.book-author--spaced {
+  margin-bottom: 1.5rem;
+}
+.purchase-section--centered {
+  text-align: left;
+}
+
 
 @media (max-width: 900px) {
   .book-grid, .book-grid-reverse { grid-template-columns: 1fr; text-align: center; }

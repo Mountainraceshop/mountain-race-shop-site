@@ -10,6 +10,9 @@
   const SEND_EMAIL_ON_SUBMIT = true;
 
   const BRAKE_REPLACE_IDS = new Set(["replace_front_quote", "replace_rear_quote"]);
+  const SUSPENSION_STATUS_OFF_BIKE = "Yes, forks/shock are off the bike";
+  const SUSPENSION_STATUS_COMPLETE_BIKE =
+    "No, complete bike is being dropped off or picked up";
 
   const PICKUP_AREA_NOTES = {
     tuggeranong: "Tuggeranong: exact pickup location to be confirmed.",
@@ -140,16 +143,19 @@
   function getEffectivePickupSlots() {
     if (!wantsPickup()) return { bikes: 0, loose: 0 };
     const suspension = getSuspensionService();
-    if (suspension && (suspension.pickupBikes > 0 || suspension.pickupLoose > 0)) {
-      return {
-        bikes: suspension.pickupBikes,
-        loose: suspension.pickupLoose,
-      };
-    }
+    const suspensionSlots = suspension
+      ? {
+          bikes: suspension.pickupBikes || 0,
+          loose: suspension.pickupLoose || 0,
+        }
+      : { bikes: 0, loose: 0 };
     const pickupType = getPickupType();
     const meta = BookingStorage.PICKUP_PRICING[pickupType];
-    if (!meta) return { bikes: 0, loose: 0 };
-    return { bikes: meta.bikes, loose: meta.loose };
+    if (!meta) return suspensionSlots;
+    return {
+      bikes: Math.max(suspensionSlots.bikes, meta.bikes),
+      loose: Math.max(suspensionSlots.loose, meta.loose),
+    };
   }
 
   function getSuspensionPrice() {
@@ -178,6 +184,11 @@
 
   function getPickupType() {
     const el = form.querySelector('input[name="pickup_type"]:checked');
+    return el ? el.value : "";
+  }
+
+  function getSuspensionRemovedStatus() {
+    const el = form.querySelector('input[name="suspension_removed_status"]:checked');
     return el ? el.value : "";
   }
 
@@ -211,6 +222,7 @@
   function validate() {
     clearFieldErrors();
     let valid = true;
+    const suspension = getSuspensionService();
 
     const requiredText = [
       ["customer_name", "Full name is required"],
@@ -246,8 +258,27 @@
       valid = false;
     }
 
-    if (!form.querySelector('input[name="suspension_removed_status"]:checked')) {
+    const suspensionRemovedStatus = getSuspensionRemovedStatus();
+    if (!suspensionRemovedStatus) {
       setFieldError("suspension_removed_status", "Select suspension status");
+      valid = false;
+    } else if (
+      suspension?.location === "on_bike" &&
+      suspensionRemovedStatus !== SUSPENSION_STATUS_COMPLETE_BIKE
+    ) {
+      setFieldError(
+        "suspension_removed_status",
+        "On-the-bike suspension service requires a complete bike"
+      );
+      valid = false;
+    } else if (
+      suspension?.location === "off_bike" &&
+      suspensionRemovedStatus !== SUSPENSION_STATUS_OFF_BIKE
+    ) {
+      setFieldError(
+        "suspension_removed_status",
+        "Off-the-bike suspension service requires forks/shock already removed"
+      );
       valid = false;
     }
 
@@ -327,7 +358,6 @@
       }
     }
 
-    const suspension = getSuspensionService();
     if (suspension?.price != null && !$("extra_parts_note_acknowledged")?.checked) {
       setFieldError(
         "extra_parts_note_acknowledged",

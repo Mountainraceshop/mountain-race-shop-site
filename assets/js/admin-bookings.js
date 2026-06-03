@@ -70,7 +70,8 @@
     const monday = b.preferred_monday_date || "—";
     const area = b.pickup_area || "—";
     const wear =
-      b.wear_parts_extra_note || b.extra_parts_note_acknowledged
+      b.suspension_service_price != null &&
+      (b.wear_parts_extra_note || b.extra_parts_note_acknowledged)
         ? "<br/><small>Wear parts extra if needed</small>"
         : "";
     return `Yes — ${typeLabel}${price}<br/><small>${monday} · ${area}</small>${wear}`;

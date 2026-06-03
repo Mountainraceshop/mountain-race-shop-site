@@ -428,6 +428,8 @@
     const suspension = getSuspensionService();
     const suspensionId = getSelectedSuspensionServiceId();
     const pickupSlots = wantsPickup() ? getEffectivePickupSlots() : { bikes: 0, loose: 0 };
+    const extraPartsNoteAcknowledged =
+      $("extra_parts_note_acknowledged")?.checked === true;
 
     return {
       customer_name: $("customer_name").value.trim(),
@@ -454,12 +456,13 @@
       includes_fork_springs: suspension?.includesForkSprings === true,
       includes_shock_spring: suspension?.includesShockSpring === true,
       estimated_fixed_total: computeEstimatedFixedTotal(),
-      extra_parts_note_acknowledged:
-        $("extra_parts_note_acknowledged")?.checked === true,
+      extra_parts_note_acknowledged: extraPartsNoteAcknowledged,
       pickup_capacity_bikes: pickupSlots.bikes,
       pickup_capacity_loose: pickupSlots.loose,
       wear_parts_extra_note:
-        "Wear parts extra if needed. We will contact you before fitting extra parts.",
+        suspension?.price != null && extraPartsNoteAcknowledged
+          ? "Wear parts extra if needed. We will contact you before fitting extra parts."
+          : null,
       selected_engine_services: getSelectedEngineServices(),
       engine_hours: includeEngineDetails
         ? $("engine_hours")?.value.trim() || null

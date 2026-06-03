@@ -361,7 +361,9 @@
     const pricing = pickupType ? BookingStorage.PICKUP_PRICING[pickupType] : null;
     const pickupAreaEl = form.querySelector('input[name="pickup_area"]:checked');
     const brakeSel = getBrakePadSelections();
-    const fittingQty = $("tyreFittingRequired")?.checked
+    const includeEngineDetails = needsEngineDetails();
+    const includeTyreOrder = hasTyreOrder();
+    const fittingQty = includeTyreOrder && $("tyreFittingRequired")?.checked
       ? Number($("tyre_fitting_quantity")?.value) || 0
       : 0;
 
@@ -383,34 +385,54 @@
       )?.value,
       selected_services: getSelectedServices(),
       selected_engine_services: getSelectedEngineServices(),
-      engine_hours: $("engine_hours")?.value.trim() || null,
+      engine_hours: includeEngineDetails
+        ? $("engine_hours")?.value.trim() || null
+        : null,
       last_engine_rebuild_date:
-        $("last_engine_rebuild_date")?.value.trim() || null,
-      engine_symptoms: $("engine_symptoms")?.value.trim() || null,
-      engine_running_status:
-        form.querySelector('input[name="engine_running_status"]:checked')
-          ?.value || null,
-      engine_in_bike:
-        form.querySelector('input[name="engine_in_bike"]:checked')?.value ||
-        null,
+        includeEngineDetails
+          ? $("last_engine_rebuild_date")?.value.trim() || null
+          : null,
+      engine_symptoms: includeEngineDetails
+        ? $("engine_symptoms")?.value.trim() || null
+        : null,
+      engine_running_status: includeEngineDetails
+        ? form.querySelector('input[name="engine_running_status"]:checked')
+            ?.value || null
+        : null,
+      engine_in_bike: includeEngineDetails
+        ? form.querySelector('input[name="engine_in_bike"]:checked')?.value ||
+          null
+        : null,
       customer_supplied_engine_parts:
-        form.querySelector('input[name="customer_supplied_engine_parts"]:checked')
-          ?.value || null,
-      supplied_parts_notes: $("supplied_parts_notes")?.value.trim() || null,
-      selected_tyres: buildTyreSelectionDetails(),
-      front_tyre_size: $("front_tyre_size")?.value.trim() || null,
-      rear_tyre_size: $("rear_tyre_size")?.value.trim() || null,
-      current_tyre_brand: $("current_tyre_brand")?.value.trim() || null,
+        includeEngineDetails
+          ? form.querySelector(
+              'input[name="customer_supplied_engine_parts"]:checked'
+            )?.value || null
+          : null,
+      supplied_parts_notes: includeEngineDetails
+        ? $("supplied_parts_notes")?.value.trim() || null
+        : null,
+      selected_tyres: includeTyreOrder ? buildTyreSelectionDetails() : [],
+      front_tyre_size: includeTyreOrder
+        ? $("front_tyre_size")?.value.trim() || null
+        : null,
+      rear_tyre_size: includeTyreOrder
+        ? $("rear_tyre_size")?.value.trim() || null
+        : null,
+      current_tyre_brand: includeTyreOrder
+        ? $("current_tyre_brand")?.value.trim() || null
+        : null,
       tyre_recommendation_required:
-        getSelectedTyreCategories().includes("tyre_recommend") ||
-        tyreRecommendationRequired(),
-      tyre_fitting_required: $("tyreFittingRequired")?.checked === true,
+        includeTyreOrder && tyreRecommendationRequired(),
+      tyre_fitting_required:
+        includeTyreOrder && $("tyreFittingRequired")?.checked === true,
       tyre_fitting_quantity: fittingQty || null,
-      tyre_fitting_cost: getTyreFittingCost() || null,
-      tube_required: $("tubeRequired")?.checked === true,
-      tyre_terrain_type:
-        form.querySelector('input[name="tyre_terrain_type"]:checked')?.value ||
-        null,
+      tyre_fitting_cost: includeTyreOrder ? getTyreFittingCost() || null : null,
+      tube_required: includeTyreOrder && $("tubeRequired")?.checked === true,
+      tyre_terrain_type: includeTyreOrder
+        ? form.querySelector('input[name="tyre_terrain_type"]:checked')?.value ||
+          null
+        : null,
       brake_pad_check_options: brakeSel.filter((id) => id !== "brake_no_thanks"),
       brake_pad_oil_contamination_check: brakeSel.includes(
         "check_oil_contamination"

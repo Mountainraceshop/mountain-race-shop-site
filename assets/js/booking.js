@@ -1,9 +1,5 @@
 /**
  * Mountain Race Shop™ — booking form logic
- *
- * EMAIL INTEGRATION: set BOOKING_EMAIL_ENDPOINT below.
- * Default uses FormSubmit.co (static-site friendly). Replace with your own
- * API route, Supabase edge function, or Google Apps Script URL when ready.
  */
 
 (function () {
@@ -11,8 +7,6 @@
 
   const BOOKING_EMAIL_ENDPOINT =
     "https://formsubmit.co/ajax/fenianparktrading@gmail.com";
-
-  /** Set to false once FormSubmit is activated (check inbox for activation link). */
   const SEND_EMAIL_ON_SUBMIT = true;
 
   const SERVICES = [
@@ -34,25 +28,41 @@
     "shock_revalve",
   ]);
 
+  const BRAKE_REPLACE_IDS = new Set(["replace_front_quote", "replace_rear_quote"]);
+
   const PICKUP_AREA_NOTES = {
     tuggeranong: "Tuggeranong: exact pickup location to be confirmed.",
-    watson: "Watson / North Canberra: near Watson / Dickson / nearby McDonald's or agreed meeting point.",
-    fyshwick: "Fyshwick: exact pickup point to be confirmed. Driver must be out of Fyshwick by 12:00 noon each Monday.",
+    watson:
+      "Watson / North Canberra: near Watson / Dickson / nearby McDonald's or agreed meeting point.",
+    fyshwick:
+      "Fyshwick: exact pickup point to be confirmed. Driver must be out of Fyshwick by 12:00 noon each Monday.",
     other: "Other Canberra location — describe in notes below.",
   };
 
   const form = document.getElementById("bookingForm");
   const confirmation = document.getElementById("bookingConfirmation");
   const riderPanel = document.getElementById("riderPanel");
+  const enginePanel = document.getElementById("enginePanel");
+  const tyrePanel = document.getElementById("tyrePanel");
   const pickupPanel = document.getElementById("pickupPanel");
   const cashNote = document.getElementById("cashNote");
   const mondayOptionsEl = document.getElementById("mondayOptions");
   const pickupAreaNotes = document.getElementById("pickupAreaNotes");
   const submitBtn = document.getElementById("submitBooking");
+  const suppliedPartsWrap = document.getElementById("suppliedPartsWrap");
+  const tyreFittingQtyWrap = document.getElementById("tyreFittingQtyWrap");
+  const tyreFittingCostDisplay = document.getElementById("tyreFittingCostDisplay");
 
-  if (!form || !window.BookingStorage) return;
+  if (!form || !window.BookingStorage || !window.BookingCatalog) return;
 
   const { BookingStorage } = window;
+  const {
+    ENGINE_SERVICES,
+    TYRE_CATEGORIES,
+    TYRE_CATALOG,
+    BRAKE_PAD_OPTIONS,
+    TYRE_FITTING_RATE,
+  } = window.BookingCatalog;
 
   function $(id) {
     return document.getElementById(id);
@@ -64,9 +74,68 @@
     ).map((el) => el.value);
   }
 
+  function getSelectedEngineServices() {
+    return Array.from(
+      form.querySelectorAll('input[name="engine_services"]:checked')
+    ).map((el) => el.value);
+  }
+
+  function getSelectedTyreCategories() {
+    return Array.from(
+      form.querySelectorAll('input[name="tyre_categories"]:checked')
+    ).map((el) => el.value);
+  }
+
+  function getSelectedCatalogueTyres() {
+    return Array.from(
+      form.querySelectorAll('input[name="catalogue_tyres"]:checked')
+    ).map((el) => el.value);
+  }
+
+  function getSelectedTyres() {
+    const cats = getSelectedTyreCategories();
+    const catalogue = getSelectedCatalogueTyres();
+    return [...cats, ...catalogue];
+  }
+
+  function hasTyreOrder() {
+    return (
+      getSelectedTyreCategories().length > 0 ||
+      getSelectedCatalogueTyres().length > 0 ||
+      $("tyreFittingRequired")?.checked === true
+    );
+  }
+
+  function tyreRecommendationRequired() {
+    return getSelectedTyreCategories().includes("tyre_recommend");
+  }
+
+  function getBrakePadSelections() {
+    return Array.from(
+      form.querySelectorAll('input[name="brake_pad_options"]:checked')
+    ).map((el) => el.value);
+  }
+
+  function hasBrakePadRequest() {
+    const sel = getBrakePadSelections();
+    return sel.length > 0 && !sel.includes("brake_no_thanks");
+  }
+
+  function hasAnyBookingSelection() {
+    return (
+      getSelectedServices().length > 0 ||
+      getSelectedEngineServices().length > 0 ||
+      hasTyreOrder() ||
+      hasBrakePadRequest()
+    );
+  }
+
   function needsRiderDetails() {
-    const selected = getSelectedServices();
-    return selected.some((id) => RIDER_WEIGHT_SERVICES.has(id));
+    return getSelectedServices().some((id) => RIDER_WEIGHT_SERVICES.has(id));
+  }
+
+  function needsEngineDetails() {
+    return getSelectedEngineServices().length > 0;
   }
 
   function wantsPickup() {
@@ -76,6 +145,12 @@
   function getPickupType() {
     const el = form.querySelector('input[name="pickup_type"]:checked');
     return el ? el.value : "";
+  }
+
+  function getTyreFittingCost() {
+    if (!$("tyreFittingRequired")?.checked) return 0;
+    const qty = Number($("tyre_fitting_quantity")?.value) || 0;
+    return qty * TYRE_FITTING_RATE;
   }
 
   function clearFieldErrors() {
@@ -142,12 +217,12 @@
       valid = false;
     }
 
-    const services = getSelectedServices();
-    if (services.length === 0) {
+    if (!hasAnyBookingSelection()) {
       const servicesErr = $("servicesError");
       if (servicesErr) {
         servicesErr.style.display = "block";
-        servicesErr.textContent = "Select at least one service";
+        servicesErr.textContent =
+          "Select at least one suspension, engine, tyre or brake pad option";
       }
       valid = false;
     }
@@ -171,13 +246,62 @@
       }
     }
 
+    if (needsEngineDetails()) {
+      if (!$("engine_symptoms")?.value.trim()) {
+        setFieldError(
+          "engine_symptoms",
+          "Describe current symptoms / reason for rebuild"
+        );
+        valid = false;
+      }
+    }
+
+    if (hasTyreOrder()) {
+      const recommend = getSelectedTyreCategories().includes("tyre_recommend");
+      const hasSize =
+        $("front_tyre_size")?.value.trim() ||
+        $("rear_tyre_size")?.value.trim();
+      const hasCatalogue = getSelectedCatalogueTyres().length > 0;
+
+      if (!recommend && !hasSize && !hasCatalogue) {
+        setFieldError(
+          "front_tyre_size",
+          "Enter a tyre size, select a catalogue tyre, or choose “please recommend”"
+        );
+        valid = false;
+      }
+
+      if ($("tyreFittingRequired")?.checked) {
+        const qty = Number($("tyre_fitting_quantity")?.value);
+        if (!qty || qty < 1) {
+          setFieldError(
+            "tyre_fitting_quantity",
+            "Enter how many tyres need fitting"
+          );
+          valid = false;
+        }
+      }
+    }
+
+    const brakeSel = getBrakePadSelections();
+    for (const id of brakeSel) {
+      if (BRAKE_REPLACE_IDS.has(id)) {
+        const opt = BRAKE_PAD_OPTIONS.find((o) => o.id === id);
+        if (opt && !opt.label.includes("quote first")) {
+          console.warn("Brake option must be quote first:", id);
+        }
+      }
+    }
+
     if (wantsPickup()) {
       const pickupType = getPickupType();
       if (!pickupType) {
         setFieldError("pickup_type", "Select pickup type");
         valid = false;
       }
-      const monday = form.querySelector('input[name="preferred_monday_date"]:checked');
+      const monday = form.querySelector(
+        'input[name="preferred_monday_date"]:checked'
+      );
       if (!monday) {
         setFieldError("preferred_monday_date", "Select a Monday date");
         valid = false;
@@ -213,11 +337,33 @@
     return valid;
   }
 
+  function buildTyreSelectionDetails() {
+    const selected = [];
+    for (const id of getSelectedTyreCategories()) {
+      const cat = TYRE_CATEGORIES.find((c) => c.id === id);
+      selected.push(cat ? cat.label : id);
+    }
+    for (const code of getSelectedCatalogueTyres()) {
+      for (const group of TYRE_CATALOG) {
+        const item = group.items.find((i) => i.id === code);
+        if (item) {
+          selected.push(
+            `${group.group} ${item.size} (${item.code}) RRP $${item.rrp.toFixed(2)} — order only`
+          );
+        }
+      }
+    }
+    return selected;
+  }
+
   function buildBookingPayload() {
     const pickupType = wantsPickup() ? getPickupType() : "";
     const pricing = pickupType ? BookingStorage.PICKUP_PRICING[pickupType] : null;
-
     const pickupAreaEl = form.querySelector('input[name="pickup_area"]:checked');
+    const brakeSel = getBrakePadSelections();
+    const fittingQty = $("tyreFittingRequired")?.checked
+      ? Number($("tyre_fitting_quantity")?.value) || 0
+      : 0;
 
     return {
       customer_name: $("customer_name").value.trim(),
@@ -236,6 +382,42 @@
         'input[name="suspension_removed_status"]:checked'
       )?.value,
       selected_services: getSelectedServices(),
+      selected_engine_services: getSelectedEngineServices(),
+      engine_hours: $("engine_hours")?.value.trim() || null,
+      last_engine_rebuild_date:
+        $("last_engine_rebuild_date")?.value.trim() || null,
+      engine_symptoms: $("engine_symptoms")?.value.trim() || null,
+      engine_running_status:
+        form.querySelector('input[name="engine_running_status"]:checked')
+          ?.value || null,
+      engine_in_bike:
+        form.querySelector('input[name="engine_in_bike"]:checked')?.value ||
+        null,
+      customer_supplied_engine_parts:
+        form.querySelector('input[name="customer_supplied_engine_parts"]:checked')
+          ?.value || null,
+      supplied_parts_notes: $("supplied_parts_notes")?.value.trim() || null,
+      selected_tyres: buildTyreSelectionDetails(),
+      front_tyre_size: $("front_tyre_size")?.value.trim() || null,
+      rear_tyre_size: $("rear_tyre_size")?.value.trim() || null,
+      current_tyre_brand: $("current_tyre_brand")?.value.trim() || null,
+      tyre_recommendation_required:
+        getSelectedTyreCategories().includes("tyre_recommend") ||
+        tyreRecommendationRequired(),
+      tyre_fitting_required: $("tyreFittingRequired")?.checked === true,
+      tyre_fitting_quantity: fittingQty || null,
+      tyre_fitting_cost: getTyreFittingCost() || null,
+      tube_required: $("tubeRequired")?.checked === true,
+      tyre_terrain_type:
+        form.querySelector('input[name="tyre_terrain_type"]:checked')?.value ||
+        null,
+      brake_pad_check_options: brakeSel.filter((id) => id !== "brake_no_thanks"),
+      brake_pad_oil_contamination_check: brakeSel.includes(
+        "check_oil_contamination"
+      ),
+      brake_pad_quote_required: brakeSel.some((id) =>
+        BRAKE_REPLACE_IDS.has(id)
+      ),
       rider_body_weight_kg: $("rider_body_weight_kg")?.value.trim() || null,
       rider_weight_with_gear_kg:
         $("rider_weight_with_gear_kg")?.value.trim() || null,
@@ -261,7 +443,7 @@
 
   function formatBookingEmailBody(booking) {
     return Object.entries(booking)
-      .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : v}`)
+      .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join("; ") : v}`)
       .join("\n");
   }
 
@@ -269,31 +451,23 @@
     if (!SEND_EMAIL_ON_SUBMIT || !BOOKING_EMAIL_ENDPOINT) return;
 
     const payload = {
-      _subject: `New suspension booking — ${booking.booking_id}`,
+      _subject: `New workshop booking — ${booking.booking_id}`,
       _template: "table",
       booking_id: booking.booking_id,
-      created_at: booking.created_at,
-      booking_status: booking.booking_status,
       customer_name: booking.customer_name,
       phone: booking.phone,
       email: booking.email,
-      suburb: booking.suburb,
-      preferred_contact_method: booking.preferred_contact_method,
       bike: `${booking.bike_brand} ${booking.bike_model} (${booking.bike_year})`,
-      motorcycle_type: booking.motorcycle_type,
-      suspension_removed_status: booking.suspension_removed_status,
-      selected_services: booking.selected_services.join(", "),
-      rider_body_weight_kg: booking.rider_body_weight_kg,
-      rider_weight_with_gear_kg: booking.rider_weight_with_gear_kg,
-      skill_level: booking.skill_level,
-      riding_type: booking.riding_type,
-      rider_complaint_or_goal: booking.rider_complaint_or_goal,
+      selected_services: (booking.selected_services || []).join(", "),
+      selected_engine_services: (booking.selected_engine_services || []).join(
+        ", "
+      ),
+      selected_tyres: (booking.selected_tyres || []).join("; "),
+      tyre_fitting_cost: booking.tyre_fitting_cost,
+      brake_pad_check_options: (booking.brake_pad_check_options || []).join(
+        ", "
+      ),
       wants_pickup_dropoff: booking.wants_pickup_dropoff ? "Yes" : "No",
-      pickup_type: booking.pickup_type,
-      pickup_price: booking.pickup_price,
-      preferred_monday_date: booking.preferred_monday_date,
-      pickup_area: booking.pickup_area,
-      pickup_notes: booking.pickup_notes,
       payment_preference: booking.payment_preference,
       message: formatBookingEmailBody(booking),
     };
@@ -340,19 +514,15 @@
       input.id = id;
       input.value = iso;
       input.required = wantsPickup();
-      if (!cap.available) {
-        input.disabled = true;
-      }
+      if (!cap.available) input.disabled = true;
 
       const text = document.createElement("div");
       text.innerHTML = `<strong>${label}</strong>`;
       const meta = document.createElement("div");
       meta.className = "monday-option-meta";
-      if (cap.available) {
-        meta.textContent = `Remaining — bikes: ${Math.max(0, cap.remaining.bikes)}, loose jobs: ${Math.max(0, cap.remaining.loose)}`;
-      } else {
-        meta.textContent = cap.message;
-      }
+      meta.textContent = cap.available
+        ? `Remaining — bikes: ${Math.max(0, cap.remaining.bikes)}, loose jobs: ${Math.max(0, cap.remaining.loose)}`
+        : cap.message;
 
       text.appendChild(meta);
       wrap.appendChild(input);
@@ -373,18 +543,44 @@
     el.innerHTML = `Selected pickup fee: <span class="pickup-price-highlight">$${p.price} AUD</span>`;
   }
 
+  function updateTyreFittingDisplay() {
+    const fitting = $("tyreFittingRequired")?.checked;
+    if (tyreFittingQtyWrap) {
+      tyreFittingQtyWrap.style.display = fitting ? "block" : "none";
+    }
+    if (tyreFittingCostDisplay) {
+      if (fitting) {
+        const cost = getTyreFittingCost();
+        const qty = Number($("tyre_fitting_quantity")?.value) || 0;
+        tyreFittingCostDisplay.style.display = "block";
+        tyreFittingCostDisplay.textContent = `Estimated fitting: $${cost} AUD (${qty} tyre${qty === 1 ? "" : "s"} × $${TYRE_FITTING_RATE}). Tube extra if required.`;
+      } else {
+        tyreFittingCostDisplay.style.display = "none";
+      }
+    }
+  }
+
   function togglePanels() {
-    if (riderPanel) {
-      riderPanel.classList.toggle("is-visible", needsRiderDetails());
+    if (riderPanel) riderPanel.classList.toggle("is-visible", needsRiderDetails());
+    if (enginePanel) enginePanel.classList.toggle("is-visible", needsEngineDetails());
+    if (tyrePanel) tyrePanel.classList.toggle("is-visible", hasTyreOrder());
+    if (pickupPanel) pickupPanel.classList.toggle("is-visible", wantsPickup());
+
+    const supplied =
+      form.querySelector('input[name="customer_supplied_engine_parts"]:checked')
+        ?.value === "Yes";
+    if (suppliedPartsWrap) {
+      suppliedPartsWrap.style.display = supplied ? "block" : "none";
     }
-    if (pickupPanel) {
-      pickupPanel.classList.toggle("is-visible", wantsPickup());
-    }
+
+    updateTyreFittingDisplay();
+
     const pay = form.querySelector('input[name="payment_preference"]:checked')?.value;
     if (cashNote) {
-      const isCash =
-        pay === "cash_pickup" || pay === "cash_workshop";
-      cashNote.classList.toggle("is-visible", isCash);
+      cashNote.classList.toggle(
+        "is-visible",
+        pay === "cash_pickup" || pay === "cash_workshop"
+      );
     }
   }
 
@@ -394,25 +590,73 @@
     pickupAreaNotes.textContent = area ? PICKUP_AREA_NOTES[area] || "" : "";
   }
 
-  function renderServiceCards() {
-    const grid = $("serviceGrid");
+  function renderCheckboxGrid(containerId, name, items, cols) {
+    const grid = $(containerId);
     if (!grid) return;
-    grid.innerHTML = SERVICES.map(
-      (s) => `
+    grid.innerHTML = items
+      .map(
+        (s) => `
       <label class="service-card">
-        <input type="checkbox" name="services" value="${s.id}" />
+        <input type="checkbox" name="${name}" value="${s.id}" />
         <span class="service-card-inner">
           <span class="service-card-check" aria-hidden="true"></span>
           <span class="service-card-title">${s.label}</span>
         </span>
       </label>`
+      )
+      .join("");
+    if (cols === 1) grid.classList.add("service-grid-single");
+  }
+
+  function renderTyreCatalog() {
+    const grid = $("tyreCatalogGrid");
+    if (!grid) return;
+    grid.innerHTML = TYRE_CATALOG.map(
+      (group) => `
+      <div class="tyre-catalog-group">
+        <h3 class="tyre-catalog-heading">${group.group}</h3>
+        <p class="section-hint">Order only — availability to be confirmed</p>
+        <div class="tyre-catalog-items">
+          ${group.items
+            .map(
+              (item) => `
+            <label class="service-card tyre-catalog-card">
+              <input type="checkbox" name="catalogue_tyres" value="${item.id}" />
+              <span class="service-card-inner">
+                <span class="service-card-check" aria-hidden="true"></span>
+                <span class="service-card-title">${item.size}</span>
+                <span class="tyre-catalog-meta">Code ${item.code} · Listed $${item.tradeExGst.toFixed(2)} ex GST · RRP $${item.rrp.toFixed(2)}</span>
+              </span>
+            </label>`
+            )
+            .join("")}
+        </div>
+      </div>`
     ).join("");
+  }
+
+  function handleBrakeExclusive(e) {
+    if (e.target.name !== "brake_pad_options") return;
+    if (e.target.value === "brake_no_thanks" && e.target.checked) {
+      form
+        .querySelectorAll('input[name="brake_pad_options"]')
+        .forEach((el) => {
+          if (el.value !== "brake_no_thanks") el.checked = false;
+        });
+    } else if (e.target.checked && e.target.value !== "brake_no_thanks") {
+      const noThanks = form.querySelector(
+        'input[name="brake_pad_options"][value="brake_no_thanks"]'
+      );
+      if (noThanks) noThanks.checked = false;
+    }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!validate()) {
-      const firstErr = form.querySelector(".form-field.has-error, #servicesError");
+      const firstErr = form.querySelector(
+        ".form-field.has-error, #servicesError"
+      );
       firstErr?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
@@ -428,7 +672,6 @@
         await sendBookingEmail(booking);
       } catch (emailErr) {
         console.warn(emailErr);
-        /* Booking still saved locally; staff can view admin page */
       }
 
       form.hidden = true;
@@ -443,19 +686,27 @@
     }
   }
 
-  renderServiceCards();
+  renderCheckboxGrid("serviceGrid", "services", SERVICES);
+  renderCheckboxGrid("engineGrid", "engine_services", ENGINE_SERVICES);
+  renderCheckboxGrid("tyreCategoryGrid", "tyre_categories", TYRE_CATEGORIES);
+  renderCheckboxGrid("brakePadGrid", "brake_pad_options", BRAKE_PAD_OPTIONS);
+  renderTyreCatalog();
   renderMondayOptions();
   togglePanels();
 
   form.addEventListener("change", (e) => {
+    handleBrakeExclusive(e);
     togglePanels();
     updatePickupAreaNotes();
     if (e.target.name === "pickup_type" || e.target.id === "wantsPickup") {
       renderMondayOptions();
       updatePickupPriceDisplay();
     }
-    if (e.target.name === "services" || e.target.name === "payment_preference") {
-      togglePanels();
+    if (
+      e.target.id === "tyreFittingRequired" ||
+      e.target.id === "tyre_fitting_quantity"
+    ) {
+      updateTyreFittingDisplay();
     }
   });
 

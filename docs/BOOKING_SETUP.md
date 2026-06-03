@@ -40,9 +40,16 @@ Limits enforced in code:
 
 `admin-bookings.html` is intentionally simple. Restrict access in production (HTTP auth, private URL, or move to a real admin app).
 
+## Booking sections
+
+- **Suspension** — quoted after inspection
+- **Engine rebuilds (MX/Enduro)** — quoted after inspection
+- **Tyres** — order only; example A1 catalogue SKUs; fitting $30/tyre
+- **Brake pad upsell** — checks and quote-first replacements only
+
 ## Pickup pricing (AUD)
 
-- Complete bike: $25
+- Complete bike: $20
 - Loose forks: $10
 - Loose shock: $10
-- Loose forks + shock: $10 total
+- Loose forks + shock: $20 total

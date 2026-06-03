@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booking admin | Mountain Race Shop™</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/booking.css" />
+  <style>
+    .admin-wrap { padding: 2rem 0 4rem; }
+    .admin-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      align-items: center;
+    }
+    .bookings-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+    }
+    .bookings-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      min-width: 1100px;
+    }
+    .bookings-table th,
+    .bookings-table td {
+      text-align: left;
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .bookings-table th {
+      color: var(--muted);
+      font-weight: 800;
+      background: rgba(0,0,0,0.25);
+    }
+    .status-select {
+      min-height: 40px;
+      font-size: 0.85rem;
+      max-width: 11rem;
+    }
+    .admin-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">Mountain Race Shop</a>
+      <nav class="nav">
+        <a href="booking.html">Book Suspension Service</a>
+        <a class="button button-ghost button-sm" href="booking.html">New booking</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <div class="container">
+      <h1>Booking requests</h1>
+      <p class="admin-note">
+        This page reads bookings saved in this browser (localStorage). For production, connect
+        <code>booking-storage.js</code> to Supabase and protect this route. Email copies are sent via FormSubmit when configured on the booking form.
+      </p>
+      <div class="admin-toolbar">
+        <button type="button" class="button button-sm" id="refreshBookings">Refresh</button>
+        <button type="button" class="button button-ghost button-sm" id="exportBookings">Export JSON</button>
+      </div>
+      <p id="bookingsEmpty" class="admin-note" hidden>No bookings yet. Submit a test booking from <a href="booking.html">booking.html</a>.</p>
+      <div class="bookings-table-wrap card" style="padding: 0;">
+        <table class="bookings-table">
+          <thead>
+            <tr>
+              <th>Booking date</th>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Bike</th>
+              <th>Services</th>
+              <th>Pickup/drop-off</th>
+              <th>Monday</th>
+              <th>Pickup area</th>
+              <th>Payment</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="copyright-line">© 2026 Mountain Race Shop™. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/booking-storage.js"></script>
+  <script src="assets/js/admin-bookings.js"></script>
+</body>
+</html>

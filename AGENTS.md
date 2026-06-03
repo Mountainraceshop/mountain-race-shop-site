@@ -18,9 +18,11 @@ Then open `http://localhost:8000/` in the browser.
 - `styles.css` — all styles
 - `script.js` — vanilla JS (product filtering, mobile nav, logo loader, demo contact form)
 - `assets/logos/` — SVG supplier logos
+- `booking.html` — online suspension booking form (`assets/js/booking.js`, `assets/css/booking.css`)
+- `admin-bookings.html` — staff booking list (see `docs/BOOKING_SETUP.md`)
 
 ### Notes
 
 - There is no linter, test runner, or build step configured.
-- The contact form is a client-side demo stub (not wired to a backend).
+- Booking form uses localStorage + FormSubmit email; see `docs/BOOKING_SETUP.md` for Supabase/production steps.
 - No `package.json`, `node_modules`, or lockfile exists; do not run `npm install`.

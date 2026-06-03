@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book Suspension Service | Mountain Race Shop™</title>
+  <meta name="description" content="Book fork, shock, revalve, spring setup or Monday Canberra pickup/drop-off with Mountain Race Shop™." />
+  <link rel="canonical" href="https://www.mountainraceshop.com.au/booking.html" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/booking.css" />
+</head>
+<body class="booking-page">
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html">Mountain Race Shop</a>
+      <nav class="nav">
+        <a href="the-suspension-engineers-handbook.html">Handbook</a>
+        <a href="suspension-tuning-made-simple.html">Tuning Guide</a>
+        <a href="index.html#services">Services</a>
+        <a class="nav-book" href="booking.html" aria-current="page">Book Suspension Service</a>
+        <a href="motorcycle-suspension-canberra.html">Canberra</a>
+        <a class="button button-ghost button-sm" href="tel:+61420947505">Call Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section small-hero booking-hero">
+      <div class="container narrow center">
+        <p class="eyebrow">Mountain Race Shop™</p>
+        <h1>Book Suspension Service</h1>
+        <p class="lead">Book your fork, shock, revalve, spring setup or Canberra pickup/drop-off service online. Please provide accurate bike and rider details so we can prepare the correct parts, springs, setup notes and workshop schedule.</p>
+        <p class="muted">Engineering-backed suspension tuning — proven on track, validated by data.</p>
+      </div>
+    </section>
+
+    <section class="section section-muted" style="padding-top: 0;">
+      <div class="container booking-form-shell">
+        <div id="bookingConfirmation" class="booking-confirmation card" role="status" aria-live="polite">
+          <h2>Booking request received</h2>
+          <p>Thanks — your booking request has been received. Mountain Race Shop™ will confirm your booking, price estimate, parts availability and pickup/drop-off details by phone or SMS.</p>
+          <p class="booking-ref">Reference: <span id="confirmationRef"></span></p>
+          <p class="booking-footer-note">Do not send payment until your booking has been confirmed.</p>
+          <a class="button" href="index.html">Back to homepage</a>
+        </div>
+
+        <form id="bookingForm" class="booking-form" novalidate>
+          <!-- Customer -->
+          <fieldset class="form-section">
+            <h2>Your details</h2>
+            <p class="section-hint">We will confirm your booking by your preferred contact method.</p>
+            <div class="form-grid two-col">
+              <div class="form-field" data-field="customer_name">
+                <label for="customer_name">Full name</label>
+                <input id="customer_name" name="customer_name" type="text" autocomplete="name" required />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-field" data-field="phone">
+                <label for="phone">Phone number</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-field" data-field="email">
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" autocomplete="email" required />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-field" data-field="suburb">
+                <label for="suburb">Suburb / pickup location area</label>
+                <input id="suburb" name="suburb" type="text" autocomplete="address-level2" required />
+                <p class="field-error" role="alert"></p>
+              </div>
+            </div>
+            <div class="form-field" data-field="preferred_contact_method" style="margin-top: 1rem;">
+              <span class="field-label">Preferred contact method</span>
+              <div class="choice-row" role="group" aria-label="Preferred contact method">
+                <label class="choice-pill"><input type="radio" name="preferred_contact_method" value="Phone call" required /><span>Phone call</span></label>
+                <label class="choice-pill"><input type="radio" name="preferred_contact_method" value="SMS" /><span>SMS</span></label>
+                <label class="choice-pill"><input type="radio" name="preferred_contact_method" value="Email" /><span>Email</span></label>
+              </div>
+              <p class="field-error" role="alert"></p>
+            </div>
+          </fieldset>
+
+          <!-- Bike -->
+          <fieldset class="form-section">
+            <h2>Motorcycle details</h2>
+            <div class="form-grid two-col">
+              <div class="form-field" data-field="bike_brand">
+                <label for="bike_brand">Bike brand</label>
+                <input id="bike_brand" name="bike_brand" type="text" required />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-field" data-field="bike_model">
+                <label for="bike_model">Bike model</label>
+                <input id="bike_model" name="bike_model" type="text" required />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-field" data-field="bike_year">
+                <label for="bike_year">Bike year</label>
+                <input id="bike_year" name="bike_year" type="number" min="1970" max="2030" step="1" required />
+                <p class="field-error" role="alert"></p>
+              </div>
+            </div>
+            <div class="form-field" data-field="motorcycle_type" style="margin-top: 1rem;">
+              <span class="field-label">Motorcycle type</span>
+              <div class="choice-row" role="group">
+                <label class="choice-pill"><input type="radio" name="motorcycle_type" value="Motocross" required /><span>Motocross</span></label>
+                <label class="choice-pill"><input type="radio" name="motorcycle_type" value="Enduro" /><span>Enduro</span></label>
+                <label class="choice-pill"><input type="radio" name="motorcycle_type" value="Adventure" /><span>Adventure</span></label>
+                <label class="choice-pill"><input type="radio" name="motorcycle_type" value="Road race" /><span>Road race</span></label>
+                <label class="choice-pill"><input type="radio" name="motorcycle_type" value="Road/track" /><span>Road/track</span></label>
+                <label class="choice-pill"><input type="radio" name="motorcycle_type" value="Trail" /><span>Trail</span></label>
+                <label class="choice-pill"><input type="radio" name="motorcycle_type" value="Other" /><span>Other</span></label>
+              </div>
+              <p class="field-error" role="alert"></p>
+            </div>
+            <div class="form-field" data-field="suspension_removed_status" style="margin-top: 1rem;">
+              <span class="field-label">Is the suspension already removed from the bike?</span>
+              <div class="choice-row" role="group">
+                <label class="choice-pill"><input type="radio" name="suspension_removed_status" value="Yes, forks/shock are off the bike" required /><span>Yes, forks/shock are off the bike</span></label>
+                <label class="choice-pill"><input type="radio" name="suspension_removed_status" value="No, complete bike is being dropped off or picked up" /><span>No, complete bike is being dropped off or picked up</span></label>
+              </div>
+              <p class="field-error" role="alert"></p>
+            </div>
+          </fieldset>
+
+          <!-- Services -->
+          <fieldset class="form-section">
+            <h2>Services required</h2>
+            <p class="section-hint">Select one or more services.</p>
+            <div id="serviceGrid" class="service-grid" role="group" aria-label="Services"></div>
+            <p id="servicesError" class="field-error" style="display:none; margin-top: 0.75rem;" role="alert"></p>
+          </fieldset>
+
+          <!-- Rider -->
+          <fieldset id="riderPanel" class="form-section rider-panel">
+            <h2>Rider setup information</h2>
+            <p class="section-hint">Required when fork/shock springs or revalving is selected.</p>
+            <div class="form-grid two-col">
+              <div class="form-field" data-field="rider_body_weight_kg">
+                <label for="rider_body_weight_kg">Rider body weight without riding gear (kg)</label>
+                <input id="rider_body_weight_kg" name="rider_body_weight_kg" type="number" min="30" max="200" step="0.5" inputmode="decimal" />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-field" data-field="rider_weight_with_gear_kg">
+                <label for="rider_weight_with_gear_kg">Estimated riding weight with gear (kg) <span class="optional">optional</span></label>
+                <input id="rider_weight_with_gear_kg" name="rider_weight_with_gear_kg" type="number" min="30" max="220" step="0.5" inputmode="decimal" />
+              </div>
+            </div>
+            <div class="form-field" data-field="skill_level" style="margin-top: 1rem;">
+              <span class="field-label">Skill level</span>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="skill_level" value="Beginner" /><span>Beginner</span></label>
+                <label class="choice-pill"><input type="radio" name="skill_level" value="Club rider" /><span>Club rider</span></label>
+                <label class="choice-pill"><input type="radio" name="skill_level" value="Intermediate" /><span>Intermediate</span></label>
+                <label class="choice-pill"><input type="radio" name="skill_level" value="Advanced" /><span>Advanced</span></label>
+                <label class="choice-pill"><input type="radio" name="skill_level" value="Expert/Pro" /><span>Expert/Pro</span></label>
+              </div>
+              <p class="field-error" role="alert"></p>
+            </div>
+            <div class="form-field" data-field="riding_type" style="margin-top: 1rem;">
+              <span class="field-label">Main riding type</span>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Motocross" /><span>Motocross</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Supercross" /><span>Supercross</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Enduro" /><span>Enduro</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Hard enduro" /><span>Hard enduro</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Trail riding" /><span>Trail riding</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Adventure" /><span>Adventure</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Road race" /><span>Road race</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Track day" /><span>Track day</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Road" /><span>Road</span></label>
+                <label class="choice-pill"><input type="radio" name="riding_type" value="Other" /><span>Other</span></label>
+              </div>
+              <p class="field-error" role="alert"></p>
+            </div>
+            <div class="form-field" style="margin-top: 1rem;">
+              <label for="rider_complaint_or_goal">Rider complaint / goal</label>
+              <textarea id="rider_complaint_or_goal" name="rider_complaint_or_goal" placeholder="e.g. harsh over chop, front diving, rear kicking, packing, bottoming, poor grip, too soft, too stiff, needs setup from scratch"></textarea>
+            </div>
+          </fieldset>
+
+          <!-- Canberra pickup -->
+          <fieldset class="form-section">
+            <h2>Canberra Monday pickup/drop-off</h2>
+            <label class="terms-row">
+              <input type="checkbox" id="wantsPickup" name="wants_pickup_dropoff" />
+              <span>I would like Monday Canberra pickup/drop-off.</span>
+            </label>
+
+            <div id="pickupPanel" class="pickup-panel">
+              <table class="pickup-pricing-table" aria-label="Pickup pricing">
+                <thead>
+                  <tr><th>Pickup type</th><th>Price (AUD)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Complete bike pickup/drop-off</td><td class="pickup-price-highlight">$25 per bike</td></tr>
+                  <tr><td>Loose forks pickup/drop-off</td><td class="pickup-price-highlight">$10 per fork set</td></tr>
+                  <tr><td>Loose shock pickup/drop-off</td><td class="pickup-price-highlight">$10</td></tr>
+                  <tr><td>Loose forks and shock pickup/drop-off</td><td class="pickup-price-highlight">$10 total</td></tr>
+                </tbody>
+              </table>
+              <p class="section-hint">Monday pickup times are grouped by area and confirmed by SMS. We aim to complete the Canberra pickup route and leave Fyshwick by 12:00 noon.</p>
+              <p class="capacity-note is-info">Capacity limits: up to 3 complete bikes and 10 loose suspension jobs per Monday (shared across all bookings).</p>
+
+              <div class="form-field" data-field="pickup_type" style="margin-top: 1rem;">
+                <span class="field-label">Pickup type</span>
+                <div class="choice-row" role="group">
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="complete_bike" /><span>Complete bike — $25</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks" /><span>Loose forks only — $10</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_shock" /><span>Loose shock only — $10</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks_and_shock" /><span>Forks and shock loose — $10 total</span></label>
+                </div>
+                <p id="pickupPriceDisplay" class="section-hint" style="margin-top: 0.5rem;"></p>
+                <p class="field-error" role="alert"></p>
+              </div>
+
+              <div class="form-field" data-field="preferred_monday_date" style="margin-top: 1rem;">
+                <span class="field-label">Preferred Monday date</span>
+                <div id="mondayOptions" class="monday-options" role="radiogroup"></div>
+                <p class="field-error" role="alert"></p>
+              </div>
+
+              <div class="form-field" data-field="pickup_area" style="margin-top: 1rem;">
+                <span class="field-label">Preferred pickup point</span>
+                <div class="choice-row">
+                  <label class="choice-pill"><input type="radio" name="pickup_area" value="tuggeranong" /><span>Tuggeranong area</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_area" value="watson" /><span>Watson / North Canberra</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_area" value="fyshwick" /><span>Fyshwick area</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_area" value="other" /><span>Other Canberra location</span></label>
+                </div>
+                <p id="pickupAreaNotes" class="section-hint" style="margin-top: 0.5rem;"></p>
+                <p class="field-error" role="alert"></p>
+              </div>
+
+              <div class="form-field" style="margin-top: 1rem;">
+                <label for="pickup_notes">Additional pickup notes <span class="optional">optional</span></label>
+                <textarea id="pickup_notes" name="pickup_notes" rows="3" placeholder="Access details, preferred time window, or other location request"></textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Payment -->
+          <fieldset class="form-section">
+            <h2>How would you like to pay?</h2>
+            <div class="form-field" data-field="payment_preference">
+              <div class="choice-row" role="group">
+                <label class="choice-pill"><input type="radio" name="payment_preference" value="paypal" required /><span>PayPal / credit card via PayPal</span></label>
+                <label class="choice-pill"><input type="radio" name="payment_preference" value="cash_pickup" /><span>Cash on pickup/drop-off</span></label>
+                <label class="choice-pill"><input type="radio" name="payment_preference" value="cash_workshop" /><span>Cash on collection from workshop</span></label>
+                <label class="choice-pill"><input type="radio" name="payment_preference" value="invoice" /><span>Invoice / bank transfer, if approved</span></label>
+              </div>
+              <p class="field-error" role="alert"></p>
+            </div>
+            <div id="cashNote" class="cash-note">
+              Cash payment may be eligible for a workshop discount. Final price will be confirmed before work begins.
+            </div>
+          </fieldset>
+
+          <!-- Terms -->
+          <fieldset class="form-section">
+            <div class="notice-box">
+              <p><strong>Important:</strong> Final pricing may depend on inspection, parts required, spring availability and the condition of your suspension.</p>
+              <p style="margin-top: 0.75rem;"><strong>Do not send payment until your booking has been confirmed.</strong></p>
+            </div>
+            <div class="form-field" data-field="accepted_terms" style="margin-top: 1rem;">
+              <label class="terms-row">
+                <input type="checkbox" id="accepted_terms" name="accepted_terms" />
+                <span>I understand that final pricing may depend on inspection, parts required, spring availability and the condition of my suspension.</span>
+              </label>
+              <p class="field-error" role="alert" style="margin-left: 2rem;"></p>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="submit" class="button" id="submitBooking">Submit booking request</button>
+            <p class="booking-footer-note center">Questions before booking? Contact Mountain Race Shop™ at <a href="mailto:fenianparktrading@gmail.com">fenianparktrading@gmail.com</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <div>
+        <strong>Mountain Race Shop™</strong>
+        <p>Engineering-backed suspension tuning — proven on track, validated by data.</p>
+        <p class="copyright-line">© 2026 Mountain Race Shop™. All rights reserved.</p>
+      </div>
+      <div>
+        <p>Questions before booking? <a href="mailto:fenianparktrading@gmail.com">fenianparktrading@gmail.com</a><br/>
+        <a href="mailto:sales@mountainraceshop.com.au">sales@mountainraceshop.com.au</a><br/>
+        <a href="tel:+61420947505">0420 947 505</a></p>
+        <p style="margin-top: 0.75rem;"><a href="admin-bookings.html">Staff: view bookings</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/booking-storage.js"></script>
+  <script src="assets/js/booking.js"></script>
+</body>
+</html>

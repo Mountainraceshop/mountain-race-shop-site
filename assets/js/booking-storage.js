@@ -38,6 +38,14 @@
     "Cancelled",
   ];
 
+  const WORKSHOP_TIME_ZONE = "Australia/Sydney";
+  const WORKSHOP_DATE_FORMAT = new Intl.DateTimeFormat("en-AU", {
+    timeZone: WORKSHOP_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
   function generateBookingId() {
     const d = new Date();
     const ymd =
@@ -247,21 +255,37 @@
    */
   function getUpcomingMondays(count = 16) {
     const mondays = [];
-    const cursor = new Date();
-    cursor.setHours(12, 0, 0, 0);
-
-    const day = cursor.getDay();
+    const today = getWorkshopDateParts();
+    const cursor = new Date(Date.UTC(today.year, today.month - 1, today.day));
+    const day = cursor.getUTCDay();
     const daysUntilMonday = day === 0 ? 1 : day === 1 ? 0 : 8 - day;
     if (day !== 1) {
-      cursor.setDate(cursor.getDate() + (day === 0 ? 1 : daysUntilMonday));
+      cursor.setUTCDate(cursor.getUTCDate() + daysUntilMonday);
     }
 
     while (mondays.length < count) {
-      const iso = cursor.toISOString().slice(0, 10);
+      const iso = formatUtcDate(cursor);
       mondays.push(iso);
-      cursor.setDate(cursor.getDate() + 7);
+      cursor.setUTCDate(cursor.getUTCDate() + 7);
     }
     return mondays;
+  }
+
+  function getWorkshopDateParts(date = new Date()) {
+    const parts = WORKSHOP_DATE_FORMAT.formatToParts(date);
+    return {
+      year: Number(parts.find((part) => part.type === "year").value),
+      month: Number(parts.find((part) => part.type === "month").value),
+      day: Number(parts.find((part) => part.type === "day").value),
+    };
+  }
+
+  function formatUtcDate(date) {
+    return [
+      date.getUTCFullYear(),
+      String(date.getUTCMonth() + 1).padStart(2, "0"),
+      String(date.getUTCDate()).padStart(2, "0"),
+    ].join("-");
   }
 
   function formatMondayLabel(isoDate) {

@@ -1,7 +1,5 @@
 /**
- * Mountain Race Shop™ — simple admin booking list
- * Reads from the same BookingStorage layer as the public form.
- * For production: protect this page (HTTP auth, Supabase RLS, or private admin app).
+ * Mountain Race Shop™ — admin booking list
  */
 
 (function () {
@@ -14,6 +12,14 @@
   if (!tableBody || !window.BookingStorage) return;
 
   const { BookingStorage } = window;
+
+  const BRAKE_LABELS = {
+    check_front: "Front check",
+    check_rear: "Rear check",
+    check_oil_contamination: "Oil contamination check",
+    replace_front_quote: "Replace front (quote first)",
+    replace_rear_quote: "Replace rear (quote first)",
+  };
 
   function formatDate(iso) {
     if (!iso) return "—";
@@ -31,7 +37,20 @@
     if (!b.wants_pickup_dropoff) return "No";
     const type = BookingStorage.PICKUP_PRICING[b.pickup_type];
     const typeLabel = type ? type.label : b.pickup_type;
-    return `Yes — ${typeLabel}`;
+    const monday = b.preferred_monday_date || "—";
+    const area = b.pickup_area || "—";
+    return `Yes — ${typeLabel}<br/><small>${monday} · ${area}</small>`;
+  }
+
+  function brakeLabel(b) {
+    const opts = b.brake_pad_check_options || [];
+    if (!opts.length) return "—";
+    return opts.map((id) => BRAKE_LABELS[id] || id).join("<br/>");
+  }
+
+  function listOrDash(arr) {
+    if (!arr || !arr.length) return "—";
+    return arr.join(", ");
   }
 
   function render() {
@@ -51,13 +70,15 @@
         <td><strong>${escapeHtml(b.customer_name)}</strong><br/><small>${escapeHtml(b.booking_id)}</small></td>
         <td><a href="tel:${escapeAttr(b.phone)}">${escapeHtml(b.phone)}</a></td>
         <td>${escapeHtml(bikeLabel(b))}</td>
-        <td>${escapeHtml((b.selected_services || []).join(", "))}</td>
-        <td>${escapeHtml(pickupLabel(b))}</td>
-        <td>${escapeHtml(b.preferred_monday_date || "—")}</td>
-        <td>${escapeHtml(b.pickup_area || "—")}</td>
+        <td>${escapeHtml(listOrDash(b.selected_services))}</td>
+        <td>${escapeHtml(listOrDash(b.selected_engine_services))}</td>
+        <td>${escapeHtml(listOrDash(b.selected_tyres))}${b.tyre_recommendation_required ? "<br/><small>Recommend tyre</small>" : ""}</td>
+        <td>${b.tyre_fitting_cost ? `$${b.tyre_fitting_cost}` : "—"}</td>
+        <td>${brakeLabel(b)}${b.brake_pad_quote_required ? "<br/><small>Quote required</small>" : ""}</td>
+        <td>${pickupLabel(b)}</td>
         <td>${escapeHtml(b.payment_preference || "—")}</td>
         <td>
-          <select data-booking-id="${escapeAttr(b.booking_id)}" class="status-select" aria-label="Booking status for ${escapeAttr(b.booking_id)}">
+          <select data-booking-id="${escapeAttr(b.booking_id)}" class="status-select" aria-label="Booking status">
             ${BookingStorage.BOOKING_STATUSES.map(
               (s) =>
                 `<option value="${escapeAttr(s)}" ${s === b.booking_status ? "selected" : ""}>${escapeHtml(s)}</option>`

@@ -30,7 +30,7 @@
       <div class="container narrow center">
         <p class="eyebrow">Mountain Race Shop™</p>
         <h1>Book Suspension Service</h1>
-        <p class="lead">Book your fork, shock, revalve, spring setup or Canberra pickup/drop-off service online. Please provide accurate bike and rider details so we can prepare the correct parts, springs, setup notes and workshop schedule.</p>
+        <p class="lead">Book suspension work, engine rebuilds, tyre orders or Canberra pickup/drop-off online. Please provide accurate bike and rider details so we can prepare the correct parts, setup notes and workshop schedule.</p>
         <p class="muted">Engineering-backed suspension tuning — proven on track, validated by data.</p>
       </div>
     </section>
@@ -39,7 +39,7 @@
       <div class="container booking-form-shell">
         <div id="bookingConfirmation" class="booking-confirmation card" role="status" aria-live="polite">
           <h2>Booking request received</h2>
-          <p>Thanks — your booking request has been received. Mountain Race Shop™ will confirm your booking, price estimate, parts availability and pickup/drop-off details by phone or SMS.</p>
+          <p>Thanks — your booking request has been received. Mountain Race Shop™ will confirm your suspension, engine, tyre or brake pad request, price estimate, parts availability and pickup/drop-off details by phone or SMS.</p>
           <p class="booking-ref">Reference: <span id="confirmationRef"></span></p>
           <p class="booking-footer-note">Do not send payment until your booking has been confirmed.</p>
           <a class="button" href="index.html">Back to homepage</a>
@@ -126,13 +126,146 @@
             </div>
           </fieldset>
 
-          <!-- Services -->
+          <div class="notice-box form-section" style="margin-bottom: 0;">
+            <ul class="booking-notes-list">
+              <li>Suspension servicing and engine rebuild work is quoted before work begins.</li>
+              <li>Tyres are order only and subject to availability.</li>
+              <li>Tyre fitting is $30 per tyre plus tube if required.</li>
+              <li>Brake pads will not be replaced without price confirmation and customer approval.</li>
+              <li><strong>Do not send payment until your booking has been confirmed.</strong></li>
+            </ul>
+          </div>
+
+          <!-- Suspension -->
           <fieldset class="form-section">
-            <h2>Services required</h2>
-            <p class="section-hint">Select one or more services.</p>
-            <div id="serviceGrid" class="service-grid" role="group" aria-label="Services"></div>
-            <p id="servicesError" class="field-error" style="display:none; margin-top: 0.75rem;" role="alert"></p>
+            <h2>Suspension servicing</h2>
+            <p class="section-hint"><span class="quote-badge">Price to be quoted after inspection.</span> Select one or more suspension services, or skip if you are only booking engine/tyre work below.</p>
+            <div id="serviceGrid" class="service-grid" role="group" aria-label="Suspension services"></div>
           </fieldset>
+
+          <!-- Engine -->
+          <fieldset class="form-section">
+            <h2>Engine Rebuilds — Motocross / Enduro</h2>
+            <p class="section-hint"><span class="quote-badge">Price to be quoted after inspection.</span> Engine rebuild pricing depends on inspection, parts availability, machining requirements and the condition of the engine.</p>
+            <div id="engineGrid" class="service-grid" role="group" aria-label="Engine services"></div>
+          </fieldset>
+
+          <fieldset id="enginePanel" class="form-section rider-panel">
+            <h2>Engine details</h2>
+            <div class="form-grid two-col">
+              <div class="form-field">
+                <label for="engine_hours">Engine hours, if known</label>
+                <input id="engine_hours" name="engine_hours" type="text" placeholder="e.g. 45" />
+              </div>
+              <div class="form-field">
+                <label for="last_engine_rebuild_date">Last rebuild date, if known</label>
+                <input id="last_engine_rebuild_date" name="last_engine_rebuild_date" type="text" placeholder="e.g. 2022" />
+              </div>
+            </div>
+            <div class="form-field" data-field="engine_symptoms" style="margin-top: 1rem;">
+              <label for="engine_symptoms">Current symptoms / reason for rebuild</label>
+              <textarea id="engine_symptoms" name="engine_symptoms" rows="3" placeholder="Describe noise, smoke, compression loss, hard starting, etc."></textarea>
+              <p class="field-error" role="alert"></p>
+            </div>
+            <div class="form-field" data-field="engine_running_status" style="margin-top: 1rem;">
+              <span class="field-label">Is the engine still running?</span>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="engine_running_status" value="Yes" /><span>Yes</span></label>
+                <label class="choice-pill"><input type="radio" name="engine_running_status" value="No" /><span>No</span></label>
+                <label class="choice-pill"><input type="radio" name="engine_running_status" value="Sometimes" /><span>Sometimes</span></label>
+              </div>
+            </div>
+            <div class="form-field" data-field="engine_in_bike" style="margin-top: 1rem;">
+              <span class="field-label">Is the engine in the bike?</span>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="engine_in_bike" value="Yes" /><span>Yes</span></label>
+                <label class="choice-pill"><input type="radio" name="engine_in_bike" value="No" /><span>No</span></label>
+              </div>
+            </div>
+            <div class="form-field" data-field="customer_supplied_engine_parts" style="margin-top: 1rem;">
+              <span class="field-label">Any parts already supplied by customer?</span>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="customer_supplied_engine_parts" value="Yes" /><span>Yes</span></label>
+                <label class="choice-pill"><input type="radio" name="customer_supplied_engine_parts" value="No" /><span>No</span></label>
+              </div>
+            </div>
+            <div class="form-field" id="suppliedPartsWrap" style="margin-top: 1rem; display: none;">
+              <label for="supplied_parts_notes">Notes about supplied parts</label>
+              <textarea id="supplied_parts_notes" name="supplied_parts_notes" rows="2"></textarea>
+            </div>
+          </fieldset>
+
+          <!-- Tyres -->
+          <fieldset class="form-section">
+            <h2>Tyres — Order Only</h2>
+            <p class="section-hint">Tyres are currently order only. Fitting is $30 per tyre plus tube if required. Final price and availability will be confirmed before ordering. <strong>No online payment for tyres.</strong></p>
+            <div id="tyreCategoryGrid" class="service-grid" role="group" aria-label="Tyre categories"></div>
+            <details class="tyre-catalog-details" style="margin-top: 1rem;">
+              <summary class="field-label">Browse example tyres (order only — availability to be confirmed)</summary>
+              <div id="tyreCatalogGrid" class="tyre-catalog"></div>
+            </details>
+          </fieldset>
+
+          <fieldset id="tyrePanel" class="form-section rider-panel">
+            <h2>Tyre order details</h2>
+            <div class="form-grid two-col">
+              <div class="form-field" data-field="front_tyre_size">
+                <label for="front_tyre_size">Front tyre size</label>
+                <input id="front_tyre_size" name="front_tyre_size" type="text" placeholder="e.g. 80/100-21" />
+                <p class="field-error" role="alert"></p>
+              </div>
+              <div class="form-field" data-field="rear_tyre_size">
+                <label for="rear_tyre_size">Rear tyre size</label>
+                <input id="rear_tyre_size" name="rear_tyre_size" type="text" placeholder="e.g. 110/90-19" />
+                <p class="field-error" role="alert"></p>
+              </div>
+            </div>
+            <div class="form-field" style="margin-top: 1rem;">
+              <label for="current_tyre_brand">Current tyre brand/model <span class="optional">optional</span></label>
+              <input id="current_tyre_brand" name="current_tyre_brand" type="text" />
+            </div>
+            <div class="form-field" data-field="tyre_terrain_type" style="margin-top: 1rem;">
+              <span class="field-label">Terrain / riding type</span>
+              <div class="choice-row">
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Sand / mud" /><span>Sand / mud</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Soft terrain" /><span>Soft terrain</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Soft-intermediate" /><span>Soft-intermediate</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Intermediate-hard" /><span>Intermediate-hard</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Hard terrain" /><span>Hard terrain</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Enduro" /><span>Enduro</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Trail" /><span>Trail</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Motocross" /><span>Motocross</span></label>
+                <label class="choice-pill"><input type="radio" name="tyre_terrain_type" value="Other" /><span>Other</span></label>
+              </div>
+              <p class="field-error" role="alert"></p>
+            </div>
+            <label class="terms-row" style="margin-top: 1rem;">
+              <input type="checkbox" id="tyreFittingRequired" name="tyre_fitting_required" />
+              <span>I need tyres fitted at the workshop ($30 per tyre)</span>
+            </label>
+            <div class="form-field" data-field="tyre_fitting_quantity" id="tyreFittingQtyWrap" style="margin-top: 0.75rem; display: none;">
+              <label for="tyre_fitting_quantity">Number of tyres to fit</label>
+              <input id="tyre_fitting_quantity" name="tyre_fitting_quantity" type="number" min="1" max="4" step="1" value="1" />
+              <p class="field-error" role="alert"></p>
+            </div>
+            <p id="tyreFittingCostDisplay" class="section-hint" style="display: none;"></p>
+            <label class="terms-row" style="margin-top: 0.75rem;">
+              <input type="checkbox" id="tubeRequired" name="tube_required" />
+              <span>Tube required (extra cost — quoted before ordering)</span>
+            </label>
+            <p class="section-hint">Tube extra if required.</p>
+          </fieldset>
+
+          <!-- Brake upsell -->
+          <fieldset class="form-section upsell-section">
+            <h2>While it’s apart… brake pad check?</h2>
+            <p class="upsell-lead">Would you like brake pads with that? While the bike or suspension is here, we can check pad wear and let you know before replacing anything.</p>
+            <p class="section-hint safety-note">Leaking fork oil or shock oil can contaminate brake pads. Once brake pads are oil-contaminated, stopping power can be reduced and the contaminated pad material can also increase brake disc wear. If we see any sign of oil contamination, we will contact you before replacing pads or recommending new parts.</p>
+            <div id="brakePadGrid" class="service-grid" role="group" aria-label="Brake pad options"></div>
+            <p class="section-hint"><strong>We will not replace brake pads without confirming price and approval first.</strong> Replacement options are quote first only — no automatic pricing.</p>
+          </fieldset>
+
+          <p id="servicesError" class="field-error capacity-note" style="display:none; margin: 0;" role="alert"></p>
 
           <!-- Rider -->
           <fieldset id="riderPanel" class="form-section rider-panel">
@@ -196,10 +329,10 @@
                   <tr><th>Pickup type</th><th>Price (AUD)</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Complete bike pickup/drop-off</td><td class="pickup-price-highlight">$25 per bike</td></tr>
+                  <tr><td>Complete bike pickup/drop-off</td><td class="pickup-price-highlight">$20 per bike</td></tr>
                   <tr><td>Loose forks pickup/drop-off</td><td class="pickup-price-highlight">$10 per fork set</td></tr>
                   <tr><td>Loose shock pickup/drop-off</td><td class="pickup-price-highlight">$10</td></tr>
-                  <tr><td>Loose forks and shock pickup/drop-off</td><td class="pickup-price-highlight">$10 total</td></tr>
+                  <tr><td>Loose forks and shock pickup/drop-off</td><td class="pickup-price-highlight">$20 total</td></tr>
                 </tbody>
               </table>
               <p class="section-hint">Monday pickup times are grouped by area and confirmed by SMS. We aim to complete the Canberra pickup route and leave Fyshwick by 12:00 noon.</p>
@@ -208,10 +341,10 @@
               <div class="form-field" data-field="pickup_type" style="margin-top: 1rem;">
                 <span class="field-label">Pickup type</span>
                 <div class="choice-row" role="group">
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="complete_bike" /><span>Complete bike — $25</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="complete_bike" /><span>Complete bike — $20</span></label>
                   <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks" /><span>Loose forks only — $10</span></label>
                   <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_shock" /><span>Loose shock only — $10</span></label>
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks_and_shock" /><span>Forks and shock loose — $10 total</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks_and_shock" /><span>Forks and shock loose — $20 total</span></label>
                 </div>
                 <p id="pickupPriceDisplay" class="section-hint" style="margin-top: 0.5rem;"></p>
                 <p class="field-error" role="alert"></p>
@@ -262,13 +395,13 @@
           <!-- Terms -->
           <fieldset class="form-section">
             <div class="notice-box">
-              <p><strong>Important:</strong> Final pricing may depend on inspection, parts required, spring availability and the condition of your suspension.</p>
+              <p><strong>Important:</strong> Final pricing may depend on inspection, parts required, spring availability and the condition of your suspension or engine. Tyre orders are subject to supplier availability.</p>
               <p style="margin-top: 0.75rem;"><strong>Do not send payment until your booking has been confirmed.</strong></p>
             </div>
             <div class="form-field" data-field="accepted_terms" style="margin-top: 1rem;">
               <label class="terms-row">
                 <input type="checkbox" id="accepted_terms" name="accepted_terms" />
-                <span>I understand that final pricing may depend on inspection, parts required, spring availability and the condition of my suspension.</span>
+                <span>I understand that suspension and engine work is quoted before work begins, tyres are order only, brake pads require approval before replacement, and I will not pay until my booking is confirmed.</span>
               </label>
               <p class="field-error" role="alert" style="margin-left: 2rem;"></p>
             </div>
@@ -300,6 +433,7 @@
   </footer>
 
   <script src="assets/js/booking-storage.js"></script>
+  <script src="assets/js/booking-catalog.js"></script>
   <script src="assets/js/booking.js"></script>
 </body>
 </html>

@@ -33,13 +33,47 @@
     return [b.bike_brand, b.bike_model, b.bike_year].filter(Boolean).join(" ");
   }
 
+  function suspensionLabel(b) {
+    if (b.selected_suspension_service) return b.selected_suspension_service;
+    if (b.selected_services?.length) return b.selected_services.join(", ");
+    return "—";
+  }
+
+  function suspensionMeta(b) {
+    const parts = [];
+    if (b.suspension_service_price != null) {
+      parts.push(`$${b.suspension_service_price}`);
+    }
+    if (b.suspension_service_location_type) {
+      parts.push(
+        b.suspension_service_location_type === "on_bike"
+          ? "On bike"
+          : b.suspension_service_location_type === "off_bike"
+            ? "Off bike"
+            : "—"
+      );
+    }
+    if (b.air_fork_service) parts.push("Air fork");
+    return parts.length ? parts.join("<br/>") : "—";
+  }
+
   function pickupLabel(b) {
     if (!b.wants_pickup_dropoff) return "No";
     const type = BookingStorage.PICKUP_PRICING[b.pickup_type];
     const typeLabel = type ? type.label : b.pickup_type;
+    const price =
+      b.pickup_price != null
+        ? ` · $${b.pickup_price}`
+        : type
+          ? ` · $${type.price}`
+          : "";
     const monday = b.preferred_monday_date || "—";
     const area = b.pickup_area || "—";
-    return `Yes — ${typeLabel}<br/><small>${monday} · ${area}</small>`;
+    const wear =
+      b.wear_parts_extra_note || b.extra_parts_note_acknowledged
+        ? "<br/><small>Wear parts extra if needed</small>"
+        : "";
+    return `Yes — ${typeLabel}${price}<br/><small>${monday} · ${area}</small>${wear}`;
   }
 
   function brakeLabel(b) {
@@ -70,7 +104,9 @@
         <td><strong>${escapeHtml(b.customer_name)}</strong><br/><small>${escapeHtml(b.booking_id)}</small></td>
         <td><a href="tel:${escapeAttr(b.phone)}">${escapeHtml(b.phone)}</a></td>
         <td>${escapeHtml(bikeLabel(b))}</td>
-        <td>${escapeHtml(listOrDash(b.selected_services))}</td>
+        <td>${escapeHtml(suspensionLabel(b))}</td>
+        <td>${suspensionMeta(b)}</td>
+        <td>${b.estimated_fixed_total != null ? `$${b.estimated_fixed_total}` : "—"}</td>
         <td>${escapeHtml(listOrDash(b.selected_engine_services))}</td>
         <td>${escapeHtml(listOrDash(b.selected_tyres))}${b.tyre_recommendation_required ? "<br/><small>Recommend tyre</small>" : ""}</td>
         <td>${b.tyre_fitting_cost ? `$${b.tyre_fitting_cost}` : "—"}</td>

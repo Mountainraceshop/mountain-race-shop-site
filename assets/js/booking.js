@@ -9,25 +9,6 @@
     "https://formsubmit.co/ajax/fenianparktrading@gmail.com";
   const SEND_EMAIL_ON_SUBMIT = true;
 
-  const SERVICES = [
-    { id: "fork_seal_replacement", label: "Fork seal replacement" },
-    { id: "fork_service", label: "Fork service" },
-    { id: "shock_service", label: "Shock service" },
-    { id: "fork_revalve", label: "Fork revalve" },
-    { id: "shock_revalve", label: "Shock revalve" },
-    { id: "fork_springs", label: "Fork springs" },
-    { id: "shock_spring", label: "Shock spring" },
-    { id: "full_suspension_setup", label: "Full suspension setup" },
-    { id: "other", label: "Other / not sure" },
-  ];
-
-  const RIDER_WEIGHT_SERVICES = new Set([
-    "fork_springs",
-    "shock_spring",
-    "fork_revalve",
-    "shock_revalve",
-  ]);
-
   const BRAKE_REPLACE_IDS = new Set(["replace_front_quote", "replace_rear_quote"]);
 
   const PICKUP_AREA_NOTES = {
@@ -52,6 +33,11 @@
   const suppliedPartsWrap = document.getElementById("suppliedPartsWrap");
   const tyreFittingQtyWrap = document.getElementById("tyreFittingQtyWrap");
   const tyreFittingCostDisplay = document.getElementById("tyreFittingCostDisplay");
+  const suspensionOnBikeHint = document.getElementById("suspensionOnBikeHint");
+  const suspensionOffBikeHint = document.getElementById("suspensionOffBikeHint");
+  const pickupSuspensionHint = document.getElementById("pickupSuspensionHint");
+  const estimatedTotalBreakdown = document.getElementById("estimatedTotalBreakdown");
+  const estimatedTotalAmount = document.getElementById("estimatedTotalAmount");
 
   if (!form || !window.BookingStorage || !window.BookingCatalog) return;
 
@@ -62,16 +48,32 @@
     TYRE_CATALOG,
     BRAKE_PAD_OPTIONS,
     TYRE_FITTING_RATE,
+    SUSPENSION_SERVICES,
+    getSuspensionServiceById,
+    getRecommendedPickupType,
   } = window.BookingCatalog;
 
   function $(id) {
     return document.getElementById(id);
   }
 
+  function getSelectedSuspensionServiceId() {
+    const el = form.querySelector('input[name="suspension_service"]:checked');
+    return el ? el.value : "";
+  }
+
+  function getSuspensionService() {
+    return getSuspensionServiceById(getSelectedSuspensionServiceId());
+  }
+
+  function hasSuspensionSelection() {
+    return Boolean(getSelectedSuspensionServiceId());
+  }
+
+  /** @deprecated — use selected_suspension_service; kept for admin backward compat */
   function getSelectedServices() {
-    return Array.from(
-      form.querySelectorAll('input[name="services"]:checked')
-    ).map((el) => el.value);
+    const svc = getSuspensionService();
+    return svc ? [svc.label] : [];
   }
 
   function getSelectedEngineServices() {
@@ -123,7 +125,7 @@
 
   function hasAnyBookingSelection() {
     return (
-      getSelectedServices().length > 0 ||
+      hasSuspensionSelection() ||
       getSelectedEngineServices().length > 0 ||
       hasTyreOrder() ||
       hasBrakePadRequest()
@@ -131,7 +133,39 @@
   }
 
   function needsRiderDetails() {
-    return getSelectedServices().some((id) => RIDER_WEIGHT_SERVICES.has(id));
+    const svc = getSuspensionService();
+    return Boolean(svc?.requiresRider);
+  }
+
+  function getEffectivePickupSlots() {
+    if (!wantsPickup()) return { bikes: 0, loose: 0 };
+    const suspension = getSuspensionService();
+    if (suspension && (suspension.pickupBikes > 0 || suspension.pickupLoose > 0)) {
+      return {
+        bikes: suspension.pickupBikes,
+        loose: suspension.pickupLoose,
+      };
+    }
+    const pickupType = getPickupType();
+    const meta = BookingStorage.PICKUP_PRICING[pickupType];
+    if (!meta) return { bikes: 0, loose: 0 };
+    return { bikes: meta.bikes, loose: meta.loose };
+  }
+
+  function getSuspensionPrice() {
+    const svc = getSuspensionService();
+    return svc?.price != null ? svc.price : 0;
+  }
+
+  function computeEstimatedFixedTotal() {
+    let total = getSuspensionPrice();
+    if (wantsPickup()) {
+      const pickupType = getPickupType();
+      const meta = BookingStorage.PICKUP_PRICING[pickupType];
+      if (meta) total += meta.price;
+    }
+    total += getTyreFittingCost();
+    return total;
   }
 
   function needsEngineDetails() {
@@ -293,26 +327,51 @@
       }
     }
 
+    const suspension = getSuspensionService();
+    if (suspension?.price != null && !$("extra_parts_note_acknowledged")?.checked) {
+      setFieldError(
+        "extra_parts_note_acknowledged",
+        "Please acknowledge that wear parts may be extra"
+      );
+      valid = false;
+    }
+
     if (wantsPickup()) {
       const pickupType = getPickupType();
       if (!pickupType) {
         setFieldError("pickup_type", "Select pickup type");
         valid = false;
       }
+      if (suspension?.location === "on_bike" && pickupType && pickupType !== "complete_bike") {
+        setFieldError(
+          "pickup_type",
+          "On-the-bike suspension service requires complete bike pickup/drop-off"
+        );
+        valid = false;
+      }
+      if (
+        suspension?.location === "off_bike" &&
+        suspension.pickupLoose > 0 &&
+        pickupType === "complete_bike"
+      ) {
+        setFieldError(
+          "pickup_type",
+          "Off-the-bike suspension should use loose fork/shock pickup (not complete bike)"
+        );
+        valid = false;
+      }
       const monday = form.querySelector(
         'input[name="preferred_monday_date"]:checked'
       );
+      const slots = getEffectivePickupSlots();
       if (!monday) {
         setFieldError("preferred_monday_date", "Select a Monday date");
         valid = false;
       } else if (monday.disabled) {
         setFieldError("preferred_monday_date", "Selected Monday is at capacity");
         valid = false;
-      } else if (pickupType) {
-        const cap = BookingStorage.getCapacityForPickupType(
-          monday.value,
-          pickupType
-        );
+      } else if (slots.bikes > 0 || slots.loose > 0) {
+        const cap = BookingStorage.getCapacityForSlots(monday.value, slots);
         if (!cap.available) {
           setFieldError("preferred_monday_date", cap.message);
           valid = false;
@@ -366,6 +425,9 @@
     const fittingQty = includeTyreOrder && $("tyreFittingRequired")?.checked
       ? Number($("tyre_fitting_quantity")?.value) || 0
       : 0;
+    const suspension = getSuspensionService();
+    const suspensionId = getSelectedSuspensionServiceId();
+    const pickupSlots = wantsPickup() ? getEffectivePickupSlots() : { bikes: 0, loose: 0 };
 
     return {
       customer_name: $("customer_name").value.trim(),
@@ -384,6 +446,20 @@
         'input[name="suspension_removed_status"]:checked'
       )?.value,
       selected_services: getSelectedServices(),
+      selected_suspension_service: suspension ? suspension.label : null,
+      suspension_service_id: suspensionId || null,
+      suspension_service_price: suspension?.price ?? null,
+      suspension_service_location_type: suspension?.location || null,
+      air_fork_service: suspension?.airFork === true,
+      includes_fork_springs: suspension?.includesForkSprings === true,
+      includes_shock_spring: suspension?.includesShockSpring === true,
+      estimated_fixed_total: computeEstimatedFixedTotal(),
+      extra_parts_note_acknowledged:
+        $("extra_parts_note_acknowledged")?.checked === true,
+      pickup_capacity_bikes: pickupSlots.bikes,
+      pickup_capacity_loose: pickupSlots.loose,
+      wear_parts_extra_note:
+        "Wear parts extra if needed. We will contact you before fitting extra parts.",
       selected_engine_services: getSelectedEngineServices(),
       engine_hours: includeEngineDetails
         ? $("engine_hours")?.value.trim() || null
@@ -480,6 +556,9 @@
       phone: booking.phone,
       email: booking.email,
       bike: `${booking.bike_brand} ${booking.bike_model} (${booking.bike_year})`,
+      selected_suspension_service: booking.selected_suspension_service,
+      suspension_service_price: booking.suspension_service_price,
+      estimated_fixed_total: booking.estimated_fixed_total,
       selected_services: (booking.selected_services || []).join(", "),
       selected_engine_services: (booking.selected_engine_services || []).join(
         ", "
@@ -512,17 +591,18 @@
     if (!mondayOptionsEl) return;
 
     const pickupType = getPickupType();
+    const slots = getEffectivePickupSlots();
     const mondays = BookingStorage.getUpcomingMondays(16);
     mondayOptionsEl.innerHTML = "";
 
-    if (!pickupType) {
+    if (!pickupType && slots.bikes === 0 && slots.loose === 0) {
       mondayOptionsEl.innerHTML =
-        '<p class="section-hint">Select a pickup type to see available Mondays.</p>';
+        '<p class="section-hint">Select a suspension service or pickup type to see available Mondays.</p>';
       return;
     }
 
     for (const iso of mondays) {
-      const cap = BookingStorage.getCapacityForPickupType(iso, pickupType);
+      const cap = BookingStorage.getCapacityForSlots(iso, slots);
       const label = BookingStorage.formatMondayLabel(iso);
       const id = `monday-${iso}`;
 
@@ -582,11 +662,121 @@
     }
   }
 
+  function updateSuspensionHints() {
+    const svc = getSuspensionService();
+    if (suspensionOnBikeHint) {
+      if (svc?.location === "on_bike") {
+        suspensionOnBikeHint.style.display = "block";
+        suspensionOnBikeHint.textContent =
+          svc.onBikeNote ||
+          "Complete bike required. Monday pickup/drop-off uses a complete bike slot (max 3 per Monday).";
+      } else {
+        suspensionOnBikeHint.style.display = "none";
+      }
+    }
+    if (suspensionOffBikeHint) {
+      if (svc?.location === "off_bike" && svc.pickupLoose > 0) {
+        suspensionOffBikeHint.style.display = "block";
+        suspensionOffBikeHint.textContent =
+          "Off-the-bike service: deliver forks/shock loose. Monday pickup uses loose suspension job capacity (max 10 per Monday).";
+      } else {
+        suspensionOffBikeHint.style.display = "none";
+      }
+    }
+    if (pickupSuspensionHint && wantsPickup()) {
+      const rec = getRecommendedPickupType(svc);
+      if (rec && svc) {
+        const label = BookingStorage.PICKUP_PRICING[rec]?.label || rec;
+        pickupSuspensionHint.style.display = "block";
+        pickupSuspensionHint.textContent = `Recommended pickup for your suspension service: ${label}.`;
+      } else {
+        pickupSuspensionHint.style.display = "none";
+      }
+    } else if (pickupSuspensionHint) {
+      pickupSuspensionHint.style.display = "none";
+    }
+  }
+
+  function updateEstimatedTotalDisplay() {
+    if (!estimatedTotalBreakdown || !estimatedTotalAmount) return;
+    const lines = [];
+    const suspension = getSuspensionService();
+    if (suspension?.price != null) {
+      lines.push({ label: suspension.label, amount: suspension.price });
+    } else if (suspension) {
+      lines.push({ label: suspension.label, amount: null });
+    }
+    if (wantsPickup()) {
+      const meta = BookingStorage.PICKUP_PRICING[getPickupType()];
+      if (meta) {
+        lines.push({ label: meta.label, amount: meta.price });
+      }
+    }
+    const fitting = getTyreFittingCost();
+    if (fitting > 0) {
+      lines.push({ label: "Tyre fitting", amount: fitting });
+    }
+
+    estimatedTotalBreakdown.innerHTML = lines
+      .map((line) => {
+        const amt =
+          line.amount != null
+            ? `$${line.amount}`
+            : "<em>Quoted / confirmed later</em>";
+        return `<div class="estimate-line"><span>${line.label}</span><span>${amt}</span></div>`;
+      })
+      .join("");
+
+    const total = computeEstimatedFixedTotal();
+    estimatedTotalAmount.textContent =
+      total > 0 ? `$${total} AUD` : "— (no fixed-price items selected)";
+  }
+
+  function renderSuspensionPricingSchedule() {
+    const el = $("suspensionPricingSchedule");
+    if (!el) return;
+    el.innerHTML = SUSPENSION_SERVICES.filter((s) => s.price != null)
+      .map(
+        (s, i) => `
+      <article class="pricing-schedule-item">
+        <h3>${i + 1}. ${s.label}</h3>
+        <p class="pricing-schedule-price">Price: $${s.price}</p>
+        <p class="section-hint">Includes:</p>
+        <ul class="pricing-includes">${s.includes.map((x) => `<li>${x}</li>`).join("")}</ul>
+      </article>`
+      )
+      .join("");
+  }
+
+  function renderSuspensionCards() {
+    const grid = $("serviceGrid");
+    if (!grid) return;
+    grid.innerHTML = SUSPENSION_SERVICES.map((s) => {
+      const priceHtml = s.price
+        ? `<span class="service-price-badge">${s.priceLabel}</span>`
+        : `<span class="service-price-badge service-price-badge--muted">${s.priceLabel}</span>`;
+      return `
+      <label class="service-card service-card--priced">
+        <input type="radio" name="suspension_service" value="${s.id}" />
+        <span class="service-card-inner">
+          <span class="service-card-check" aria-hidden="true"></span>
+          <span class="service-card-body">
+            <span class="service-card-title">${s.label}${s.price ? ` — ${s.priceLabel}` : ""}</span>
+            ${priceHtml}
+          </span>
+        </span>
+      </label>`;
+    }).join("");
+  }
+
   function togglePanels() {
     if (riderPanel) riderPanel.classList.toggle("is-visible", needsRiderDetails());
     if (enginePanel) enginePanel.classList.toggle("is-visible", needsEngineDetails());
     if (tyrePanel) tyrePanel.classList.toggle("is-visible", hasTyreOrder());
     if (pickupPanel) pickupPanel.classList.toggle("is-visible", wantsPickup());
+
+    updateSuspensionHints();
+    updateEstimatedTotalDisplay();
 
     const supplied =
       form.querySelector('input[name="customer_supplied_engine_parts"]:checked')
@@ -708,19 +898,25 @@
     }
   }
 
-  renderCheckboxGrid("serviceGrid", "services", SERVICES);
+  renderSuspensionPricingSchedule();
+  renderSuspensionCards();
   renderCheckboxGrid("engineGrid", "engine_services", ENGINE_SERVICES);
   renderCheckboxGrid("tyreCategoryGrid", "tyre_categories", TYRE_CATEGORIES);
   renderCheckboxGrid("brakePadGrid", "brake_pad_options", BRAKE_PAD_OPTIONS);
   renderTyreCatalog();
   renderMondayOptions();
   togglePanels();
+  updateEstimatedTotalDisplay();
 
   form.addEventListener("change", (e) => {
     handleBrakeExclusive(e);
     togglePanels();
     updatePickupAreaNotes();
-    if (e.target.name === "pickup_type" || e.target.id === "wantsPickup") {
+    if (
+      e.target.name === "pickup_type" ||
+      e.target.id === "wantsPickup" ||
+      e.target.name === "suspension_service"
+    ) {
       renderMondayOptions();
       updatePickupPriceDisplay();
     }
@@ -729,6 +925,7 @@
       e.target.id === "tyre_fitting_quantity"
     ) {
       updateTyreFittingDisplay();
+      updateEstimatedTotalDisplay();
     }
   });
 

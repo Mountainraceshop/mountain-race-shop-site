@@ -128,7 +128,8 @@
 
           <div class="notice-box form-section" style="margin-bottom: 0;">
             <ul class="booking-notes-list">
-              <li>Suspension servicing and engine rebuild work is quoted before work begins.</li>
+              <li>Suspension fixed prices below; wear parts and unexpected repairs are extra (we will contact you first).</li>
+              <li>Engine rebuild work is quoted after inspection.</li>
               <li>Tyres are order only and subject to availability.</li>
               <li>Tyre fitting is $30 per tyre plus tube if required.</li>
               <li>Brake pads will not be replaced without price confirmation and customer approval.</li>
@@ -138,9 +139,24 @@
 
           <!-- Suspension -->
           <fieldset class="form-section">
-            <h2>Suspension servicing</h2>
-            <p class="section-hint"><span class="quote-badge">Price to be quoted after inspection.</span> Select one or more suspension services, or skip if you are only booking engine/tyre work below.</p>
-            <div id="serviceGrid" class="service-grid" role="group" aria-label="Suspension services"></div>
+            <h2>Suspension Service Pricing</h2>
+            <p class="section-hint">Prices below are for standard motorcycle suspension servicing and setup work. Extra wear parts, damaged components, badly worn bushes, tubes, shafts, coatings, springs or unexpected repairs are extra if required. We will confirm any extra costs before work begins.</p>
+            <p class="section-hint wear-parts-note"><strong>Wear parts extra if needed.</strong> We will contact you before fitting extra parts.</p>
+            <details class="suspension-pricing-details" open>
+              <summary class="field-label">View full pricing schedule</summary>
+              <div id="suspensionPricingSchedule" class="pricing-schedule"></div>
+            </details>
+            <p class="section-hint" style="margin-top: 1.25rem;">Select your suspension service (optional if you are only booking engine or tyre work below):</p>
+            <div id="serviceGrid" class="service-grid service-grid-priced" role="radiogroup" aria-label="Suspension services"></div>
+            <p id="suspensionOnBikeHint" class="capacity-note is-info" style="display: none; margin-top: 0.75rem;"></p>
+            <p id="suspensionOffBikeHint" class="section-hint" style="display: none; margin-top: 0.5rem;"></p>
+            <div class="form-field" data-field="extra_parts_note_acknowledged" style="margin-top: 1rem;">
+              <label class="terms-row">
+                <input type="checkbox" id="extra_parts_note_acknowledged" name="extra_parts_note_acknowledged" />
+                <span>I understand wear parts and unexpected repairs may be extra and will be confirmed before work begins.</span>
+              </label>
+              <p class="field-error" role="alert"></p>
+            </div>
           </fieldset>
 
           <!-- Engine -->
@@ -337,6 +353,7 @@
               </table>
               <p class="section-hint">Monday pickup times are grouped by area and confirmed by SMS. We aim to complete the Canberra pickup route and leave Fyshwick by 12:00 noon.</p>
               <p class="capacity-note is-info">Capacity limits: up to 3 complete bikes and 10 loose suspension jobs per Monday (shared across all bookings).</p>
+              <p id="pickupSuspensionHint" class="section-hint" style="display: none;"></p>
 
               <div class="form-field" data-field="pickup_type" style="margin-top: 1rem;">
                 <span class="field-label">Pickup type</span>
@@ -373,6 +390,13 @@
                 <textarea id="pickup_notes" name="pickup_notes" rows="3" placeholder="Access details, preferred time window, or other location request"></textarea>
               </div>
             </div>
+          </fieldset>
+
+          <fieldset id="estimatePanel" class="form-section estimate-panel">
+            <h2>Estimated booking total</h2>
+            <div id="estimatedTotalBreakdown" class="estimate-breakdown"></div>
+            <p class="estimate-total-line">Estimated booking total: <strong id="estimatedTotalAmount">$0</strong></p>
+            <p class="section-hint">Estimated total includes fixed-price selected services only. Wear parts, damaged components, tyres, tubes, brake pads and engine rebuild work will be confirmed before work begins.</p>
           </fieldset>
 
           <!-- Payment -->

@@ -754,7 +754,18 @@
   function renderSuspensionCards() {
     const grid = $("serviceGrid");
     if (!grid) return;
-    grid.innerHTML = SUSPENSION_SERVICES.map((s) => {
+    const noneCard = `
+      <label class="service-card service-card--priced">
+        <input type="radio" name="suspension_service" value="" checked />
+        <span class="service-card-inner">
+          <span class="service-card-check" aria-hidden="true"></span>
+          <span class="service-card-body">
+            <span class="service-card-title">No suspension service</span>
+            <span class="service-price-badge service-price-badge--muted">Skip</span>
+          </span>
+        </span>
+      </label>`;
+    grid.innerHTML = noneCard + SUSPENSION_SERVICES.map((s) => {
       const priceHtml = s.price
         ? `<span class="service-price-badge">${s.priceLabel}</span>`
         : `<span class="service-price-badge service-price-badge--muted">${s.priceLabel}</span>`;

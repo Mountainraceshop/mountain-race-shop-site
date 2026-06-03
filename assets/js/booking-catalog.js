@@ -300,7 +300,7 @@
       location: "unknown",
       pickupBikes: 0,
       pickupLoose: 0,
-      requiresRider: true,
+      requiresRider: false,
       airFork: false,
       includesForkSprings: false,
       includesShockSpring: false,

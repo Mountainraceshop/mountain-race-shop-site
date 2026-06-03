@@ -42,7 +42,7 @@ Limits enforced in code:
 
 ## Booking sections
 
-- **Suspension** — quoted after inspection
+- **Suspension** — fixed workshop packages (see `booking.html`); wear parts extra
 - **Engine rebuilds (MX/Enduro)** — quoted after inspection
 - **Tyres** — order only; example A1 catalogue SKUs; fitting $30/tyre
 - **Brake pad upsell** — checks and quote-first replacements only

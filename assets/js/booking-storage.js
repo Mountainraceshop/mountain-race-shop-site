@@ -136,36 +136,40 @@
     let loose = 0;
 
     for (const b of bookings) {
-      const meta = PICKUP_PRICING[b.pickup_type];
-      if (!meta) continue;
-      bikes += meta.bikes;
-      loose += meta.loose;
+      const slots = getBookingPickupSlots(b);
+      bikes += slots.bikes;
+      loose += slots.loose;
     }
 
     return { bikes, loose };
   }
 
-  function getCapacityForPickupType(
-    mondayDateIso,
-    pickupType,
-    excludedBookingId
-  ) {
+  /**
+   * Pickup capacity slots for a saved booking (suspension-aware when stored).
+   */
+  function getBookingPickupSlots(booking) {
+    if (!booking.wants_pickup_dropoff) {
+      return { bikes: 0, loose: 0 };
+    }
+    if (
+      typeof booking.pickup_capacity_bikes === "number" &&
+      typeof booking.pickup_capacity_loose === "number"
+    ) {
+      return {
+        bikes: booking.pickup_capacity_bikes,
+        loose: booking.pickup_capacity_loose,
+      };
+    }
+    const meta = PICKUP_PRICING[booking.pickup_type];
+    if (!meta) return { bikes: 0, loose: 0 };
+    return { bikes: meta.bikes, loose: meta.loose };
+  }
+
+  function getCapacityForSlots(mondayDateIso, slots, excludedBookingId) {
     const usage = getMondayUsage(mondayDateIso, excludedBookingId);
     const bikesRemaining = CAPACITY_LIMITS.maxBikesPerMonday - usage.bikes;
     const looseRemaining = CAPACITY_LIMITS.maxLooseJobsPerMonday - usage.loose;
-    const need = PICKUP_PRICING[pickupType];
-
-    if (!need) {
-      return {
-        available: false,
-        message: "Select a valid pickup type.",
-        usage,
-        remaining: {
-          bikes: bikesRemaining,
-          loose: looseRemaining,
-        },
-      };
-    }
+    const need = slots || { bikes: 0, loose: 0 };
 
     const bikeOk = need.bikes === 0 || bikesRemaining >= need.bikes;
     const looseOk = need.loose === 0 || looseRemaining >= need.loose;
@@ -188,12 +192,33 @@
     };
   }
 
+  function getCapacityForPickupType(
+    mondayDateIso,
+    pickupType,
+    excludedBookingId
+  ) {
+    const need = PICKUP_PRICING[pickupType];
+    if (!need) {
+      return getCapacityForSlots(
+        mondayDateIso,
+        { bikes: 0, loose: 0 },
+        excludedBookingId
+      );
+    }
+    return getCapacityForSlots(
+      mondayDateIso,
+      { bikes: need.bikes, loose: need.loose },
+      excludedBookingId
+    );
+  }
+
   function validatePickupCapacity(booking, excludedBookingId) {
     if (!booking.wants_pickup_dropoff || !booking.preferred_monday_date) return;
 
-    const cap = getCapacityForPickupType(
+    const slots = getBookingPickupSlots(booking);
+    const cap = getCapacityForSlots(
       booking.preferred_monday_date,
-      booking.pickup_type,
+      slots,
       excludedBookingId
     );
     if (!cap.available) {
@@ -324,6 +349,8 @@
     createBooking,
     updateBookingStatus,
     getMondayUsage,
+    getBookingPickupSlots,
+    getCapacityForSlots,
     getCapacityForPickupType,
     getUpcomingMondays,
     formatMondayLabel,

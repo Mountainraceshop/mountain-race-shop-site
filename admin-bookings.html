@@ -66,14 +66,14 @@
     <div class="container">
       <h1>Booking requests</h1>
       <p class="admin-note">
-        This page reads bookings saved in this browser (localStorage). For production, connect
-        <code>booking-storage.js</code> to Supabase and protect this route. Email copies are sent via FormSubmit when configured on the booking form.
+        Current static booking form requires backend/email integration before production booking storage is reliable.
+        Connect <code>booking-storage.js</code> to Supabase and protect this route. Email copies are sent via FormSubmit when configured on the booking form.
       </p>
       <div class="admin-toolbar">
         <button type="button" class="button button-sm" id="refreshBookings">Refresh</button>
         <button type="button" class="button button-ghost button-sm" id="exportBookings">Export JSON</button>
       </div>
-      <p id="bookingsEmpty" class="admin-note" hidden>No bookings yet. Submit a test booking from <a href="booking.html">booking.html</a>.</p>
+      <p id="bookingsEmpty" class="admin-note" hidden>No bookings available in this browser. Create a booking from <a href="booking.html">booking.html</a>.</p>
       <div class="bookings-table-wrap card" style="padding: 0;">
         <table class="bookings-table">
           <thead>

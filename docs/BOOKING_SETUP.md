@@ -15,7 +15,7 @@
 
 Bookings are emailed to **fenianparktrading@gmail.com** via [FormSubmit](https://formsubmit.co).
 
-1. Submit one test booking after deploy.
+1. Submit one booking after deploy to confirm email delivery.
 2. Open the activation link sent to that inbox (first-time only).
 3. Endpoint is configured in `assets/js/booking.js` as `BOOKING_EMAIL_ENDPOINT`.
 
@@ -23,7 +23,7 @@ To use a custom API instead, replace `sendBookingEmail()` in `booking.js` with y
 
 ## Capacity (production)
 
-`booking-storage.js` uses **browser localStorage** so capacity is per-device until you connect a database.
+Current static booking form requires backend/email integration before production booking storage is reliable. `booking-storage.js` keeps browser-local booking records until you connect a database.
 
 For live multi-customer capacity:
 

@@ -200,6 +200,14 @@
     }
   }
 
+  function clearFieldError(fieldId) {
+    const wrap = document.querySelector(`[data-field="${fieldId}"]`);
+    if (!wrap) return;
+    wrap.classList.remove("has-error");
+    const err = wrap.querySelector(".field-error");
+    if (err) err.textContent = "";
+  }
+
   function setFieldError(fieldId, message) {
     const wrap = document.querySelector(`[data-field="${fieldId}"]`);
     if (!wrap) return;
@@ -366,6 +374,12 @@
       const slots = getEffectivePickupSlots();
       if (!monday) {
         setFieldError("preferred_monday_date", "Select a Monday date");
+        valid = false;
+      } else if (BookingStorage.isPickupDateBlocked(monday.value)) {
+        setFieldError(
+          "preferred_monday_date",
+          BookingStorage.BLOCKED_PICKUP_DATE_MESSAGE
+        );
         valid = false;
       } else if (monday.disabled) {
         setFieldError("preferred_monday_date", "Selected Monday is at capacity");
@@ -606,6 +620,7 @@
 
     for (const iso of mondays) {
       const cap = BookingStorage.getCapacityForSlots(iso, slots);
+      const isBlocked = BookingStorage.isPickupDateBlocked(iso);
       const label = BookingStorage.formatMondayLabel(iso);
       const id = `monday-${iso}`;
 
@@ -625,15 +640,35 @@
       text.innerHTML = `<strong>${label}</strong>`;
       const meta = document.createElement("div");
       meta.className = "monday-option-meta";
-      meta.textContent = cap.available
-        ? `Remaining — bikes: ${Math.max(0, cap.remaining.bikes)}, loose jobs: ${Math.max(0, cap.remaining.loose)}`
-        : cap.message;
+      meta.textContent = isBlocked
+        ? BookingStorage.BLOCKED_PICKUP_DATE_MESSAGE
+        : cap.available
+          ? `Remaining — bikes: ${Math.max(0, cap.remaining.bikes)}, loose jobs: ${Math.max(0, cap.remaining.loose)}`
+          : cap.message;
 
       text.appendChild(meta);
       wrap.appendChild(input);
       wrap.appendChild(text);
       mondayOptionsEl.appendChild(wrap);
     }
+  }
+
+  function updatePreferredMondayDateError() {
+    const monday = form.querySelector(
+      'input[name="preferred_monday_date"]:checked'
+    );
+    if (
+      wantsPickup() &&
+      monday &&
+      BookingStorage.isPickupDateBlocked(monday.value)
+    ) {
+      setFieldError(
+        "preferred_monday_date",
+        BookingStorage.BLOCKED_PICKUP_DATE_MESSAGE
+      );
+      return;
+    }
+    clearFieldError("preferred_monday_date");
   }
 
   function updatePickupPriceDisplay() {
@@ -933,6 +968,9 @@
     ) {
       renderMondayOptions();
       updatePickupPriceDisplay();
+    }
+    if (e.target.name === "preferred_monday_date") {
+      updatePreferredMondayDateError();
     }
     if (
       e.target.id === "tyreFittingRequired" ||

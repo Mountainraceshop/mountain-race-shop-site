@@ -1,7 +1,7 @@
 /**
  * Mountain Race Shop™ — booking storage layer
  *
- * Default: browser localStorage (single-device demo / workshop tablet).
+ * Current static booking form requires backend/email integration before production booking storage is reliable.
  * Production: replace with SupabaseBookingStorage (see SUPABASE INTEGRATION below).
  */
 
@@ -17,6 +17,13 @@
     maxBikesPerMonday: 3,
     maxLooseJobsPerMonday: 10,
   };
+
+  const BLOCKED_PICKUP_DATES = [
+    "2026-06-08",
+  ];
+
+  const BLOCKED_PICKUP_DATE_MESSAGE =
+    "Monday 8 June is fully booked for Canberra pickup/drop-off. Please choose another Monday.";
 
   const PICKUP_PRICING = {
     complete_bike: { label: "Complete bike pickup/drop-off", price: 20, bikes: 1, loose: 0 },
@@ -166,6 +173,18 @@
   }
 
   function getCapacityForSlots(mondayDateIso, slots, excludedBookingId) {
+    if (isPickupDateBlocked(mondayDateIso)) {
+      return {
+        available: false,
+        message: BLOCKED_PICKUP_DATE_MESSAGE,
+        usage: getMondayUsage(mondayDateIso, excludedBookingId),
+        remaining: {
+          bikes: 0,
+          loose: 0,
+        },
+      };
+    }
+
     const usage = getMondayUsage(mondayDateIso, excludedBookingId);
     const bikesRemaining = CAPACITY_LIMITS.maxBikesPerMonday - usage.bikes;
     const looseRemaining = CAPACITY_LIMITS.maxLooseJobsPerMonday - usage.loose;
@@ -212,8 +231,16 @@
     );
   }
 
+  function isPickupDateBlocked(mondayDateIso) {
+    return BLOCKED_PICKUP_DATES.includes(mondayDateIso);
+  }
+
   function validatePickupCapacity(booking, excludedBookingId) {
     if (!booking.wants_pickup_dropoff || !booking.preferred_monday_date) return;
+
+    if (isPickupDateBlocked(booking.preferred_monday_date)) {
+      throw new Error(BLOCKED_PICKUP_DATE_MESSAGE);
+    }
 
     const slots = getBookingPickupSlots(booking);
     const cap = getCapacityForSlots(
@@ -340,6 +367,8 @@
   const BookingStorage = {
     STORAGE_KEY,
     CAPACITY_LIMITS,
+    BLOCKED_PICKUP_DATES,
+    BLOCKED_PICKUP_DATE_MESSAGE,
     PICKUP_PRICING,
     BOOKING_STATUSES,
     generateBookingId,
@@ -350,6 +379,7 @@
     updateBookingStatus,
     getMondayUsage,
     getBookingPickupSlots,
+    isPickupDateBlocked,
     getCapacityForSlots,
     getCapacityForPickupType,
     getUpcomingMondays,

@@ -432,7 +432,8 @@ p { margin: 0 0 1rem; color: var(--muted); }
 }
 .diag-panel {
   position: relative;
-  min-height: 100%;
+  align-self: stretch;
+  min-height: 18rem;
   border-radius: var(--radius);
   overflow: hidden;
   background:

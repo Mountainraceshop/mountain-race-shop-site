@@ -1,0 +1,194 @@
+/* Mountain Race Shop — internal enquiry assistant */
+
+.enquiry-page .site-header .nav a:not(.button) {
+  color: var(--muted);
+}
+
+.enquiry-hero h1 {
+  max-width: none;
+}
+
+.enquiry-shell {
+  max-width: 1480px;
+}
+
+.enquiry-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(390px, 0.75fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.enquiry-output-panel {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 1rem;
+}
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.compact-row {
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.compact-row h2,
+.result-card h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.25rem;
+}
+
+.form-grid.three-col {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.checkbox-grid label,
+.inline-check label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.65rem 0.75rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.22);
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.checkbox-grid input,
+.inline-check input {
+  margin-top: 0.2rem;
+  accent-color: var(--accent);
+}
+
+.subsection-heading {
+  margin: 1.35rem 0 0.8rem;
+  font-size: 1.05rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+}
+
+.compact-actions {
+  margin-top: 1rem;
+}
+
+.result-card {
+  padding: 1.25rem;
+}
+
+.result-card p {
+  margin-bottom: 0.7rem;
+}
+
+.warning-card {
+  border-color: rgba(255, 211, 107, 0.25);
+}
+
+.result-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.result-badge.warn {
+  color: #111;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+}
+
+.result-list {
+  padding-left: 1.2rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+.result-list li {
+  margin-bottom: 0.45rem;
+}
+
+.result-list.compact li {
+  margin-bottom: 0.35rem;
+}
+
+.output-card textarea {
+  width: 100%;
+  min-height: 210px;
+  resize: vertical;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.35);
+  color: var(--text);
+  padding: 0.9rem;
+  font: 0.95rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.next-step {
+  padding: 0.85rem;
+  border-radius: 14px;
+  background: rgba(243,179,49,0.1);
+  border: 1px solid rgba(243,179,49,0.22);
+  color: #fff;
+  font-weight: 900;
+}
+
+.copy-status {
+  min-height: 1.4rem;
+  margin: 0.75rem 0 0;
+  color: var(--accent-2);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+@media (max-width: 1180px) {
+  .enquiry-layout {
+    grid-template-columns: 1fr;
+  }
+  .enquiry-output-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .form-grid.three-col,
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .section-title-row {
+    flex-direction: column;
+  }
+}

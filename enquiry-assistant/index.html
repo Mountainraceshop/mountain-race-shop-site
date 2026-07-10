@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enquiry Assistant | Mountain Race Shop Workshop Tool</title>
+  <meta name="description" content="Internal Mountain Race Shop workshop tool for classifying customer enquiries and generating practical replies and job summaries." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/booking.css" />
+  <link rel="stylesheet" href="/assets/css/enquiry-assistant.css" />
+</head>
+<body class="booking-page enquiry-page">
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="/">Mountain Race Shop</a>
+      <nav class="nav" aria-label="Internal navigation">
+        <a href="/admin-bookings.html">Booking admin</a>
+        <a href="/booking.html">New booking</a>
+        <a class="button button-ghost button-sm" href="/">Public site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section small-hero booking-hero enquiry-hero">
+      <div class="container narrow center">
+        <p class="eyebrow">Internal workshop tool</p>
+        <h1>Enquiry Assistant</h1>
+        <p class="lead">Classify enquiries, collect the right details, avoid quoting too early, and generate a practical customer reply plus workshop job summary.</p>
+        <p class="muted">Staff use only. This page is marked noindex and is not intended as a public customer-facing page.</p>
+      </div>
+    </section>
+
+    <section class="section section-muted" style="padding-top: 0;">
+      <div class="container enquiry-shell">
+        <div class="section-heading">
+          <p class="eyebrow">Intake form</p>
+          <h2>Workshop enquiry intake and output generator</h2>
+        </div>
+        <div class="enquiry-layout">
+          <form id="enquiryForm" class="booking-form enquiry-form" autocomplete="off">
+            <fieldset class="form-section">
+              <div class="section-title-row">
+                <div>
+                  <h2>1. Customer message</h2>
+                  <p class="section-hint">Paste the first message from phone notes, email, website, Facebook, Instagram, text or walk-in notes.</p>
+                </div>
+                <div class="form-actions compact-actions" style="margin-top: 0;">
+                  <button type="button" class="button button-sm" id="analyseTop">Analyse enquiry</button>
+                  <button type="reset" class="button button-ghost button-sm">Start new enquiry</button>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="customer_message">Customer message</label>
+                <textarea id="customer_message" name="customer_message" rows="7" placeholder="e.g. Hi, I have a 2021 YZ450F and the forks are leaking. Can you do seals and maybe set it up for my weight?"></textarea>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>2. Enquiry source and customer details</h2>
+              <div class="form-grid three-col">
+                <div class="form-field">
+                  <label for="source">Enquiry source</label>
+                  <select id="source" name="source">
+                    <option value="">Select source</option>
+                    <option>Phone</option>
+                    <option>Email</option>
+                    <option>Website form</option>
+                    <option>Facebook Messenger</option>
+                    <option>Instagram</option>
+                    <option>Text</option>
+                    <option>Walk-in</option>
+                    <option>Referral</option>
+                    <option>Existing customer</option>
+                  </select>
+                </div>
+                <div class="form-field"><label for="customer_name">Name</label><input id="customer_name" name="customer_name" type="text" /></div>
+                <div class="form-field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" /></div>
+                <div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" /></div>
+                <div class="form-field"><label for="location">Location</label><input id="location" name="location" type="text" /></div>
+                <div class="form-field">
+                  <label for="preferred_contact_method">Preferred contact method</label>
+                  <select id="preferred_contact_method" name="preferred_contact_method">
+                    <option value="">Select method</option>
+                    <option>Phone</option>
+                    <option>SMS</option>
+                    <option>Email</option>
+                    <option>Messenger</option>
+                    <option>Instagram</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>3. Bike details</h2>
+              <div class="form-grid three-col">
+                <div class="form-field"><label for="bike_make">Make</label><input id="bike_make" name="bike_make" type="text" /></div>
+                <div class="form-field"><label for="bike_model">Model</label><input id="bike_model" name="bike_model" type="text" /></div>
+                <div class="form-field"><label for="bike_year">Year</label><input id="bike_year" name="bike_year" type="number" min="1970" max="2035" step="1" /></div>
+                <div class="form-field">
+                  <label for="bike_type">Bike type</label>
+                  <select id="bike_type" name="bike_type">
+                    <option value="">Select type</option>
+                    <option>Motocross</option>
+                    <option>Enduro</option>
+                    <option>Adventure</option>
+                    <option>Road race</option>
+                    <option>Trail</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="form-field"><label for="fork_type">Fork type, if known</label><input id="fork_type" name="fork_type" type="text" placeholder="e.g. air, spring, WP XACT" /></div>
+                <div class="form-field"><label for="shock_type">Shock type, if known</label><input id="shock_type" name="shock_type" type="text" placeholder="e.g. OEM, aftermarket" /></div>
+              </div>
+              <div class="form-field inline-check" style="margin-top: 1rem;">
+                <label><input type="checkbox" name="modified_before" value="Yes" /> Has the suspension been modified before?</label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>4. Requested work</h2>
+              <p class="section-hint">Tick what the customer asked for or what the message implies.</p>
+              <div class="checkbox-grid" data-checkbox-group="requested_work">
+                <label><input type="checkbox" name="requested_work" value="Fork service" /> Fork service</label>
+                <label><input type="checkbox" name="requested_work" value="Fork seals" /> Fork seals</label>
+                <label><input type="checkbox" name="requested_work" value="Shock service" /> Shock service</label>
+                <label><input type="checkbox" name="requested_work" value="Fork and shock service" /> Fork and shock service</label>
+                <label><input type="checkbox" name="requested_work" value="Springs" /> Springs</label>
+                <label><input type="checkbox" name="requested_work" value="Revalve" /> Revalve</label>
+                <label><input type="checkbox" name="requested_work" value="Springs and revalve" /> Springs and revalve</label>
+                <label><input type="checkbox" name="requested_work" value="Fork cartridges" /> Fork cartridges</label>
+                <label><input type="checkbox" name="requested_work" value="Aftermarket shock" /> Aftermarket shock</label>
+                <label><input type="checkbox" name="requested_work" value="Kashima coating" /> Kashima coating</label>
+                <label><input type="checkbox" name="requested_work" value="DLC coating" /> DLC coating</label>
+                <label><input type="checkbox" name="requested_work" value="Adventure touring setup" /> Adventure touring setup</label>
+                <label><input type="checkbox" name="requested_work" value="Race setup" /> Race setup</label>
+                <label><input type="checkbox" name="requested_work" value="General diagnosis" /> General diagnosis</label>
+                <label><input type="checkbox" name="requested_work" value="Canberra pickup" /> Canberra pickup</label>
+                <label><input type="checkbox" name="requested_work" value="Other" /> Other</label>
+              </div>
+              <div class="form-field" style="margin-top: 1rem;"><label for="job_requested_text">Job requested / notes</label><textarea id="job_requested_text" name="job_requested_text" rows="3"></textarea></div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>5. On-bike / off-bike and pickup</h2>
+              <div class="checkbox-grid" data-checkbox-group="bike_status">
+                <label><input type="checkbox" name="bike_status" value="Forks off bike" /> Forks off bike</label>
+                <label><input type="checkbox" name="bike_status" value="Shock off bike" /> Shock off bike</label>
+                <label><input type="checkbox" name="bike_status" value="Forks still fitted" /> Forks still fitted</label>
+                <label><input type="checkbox" name="bike_status" value="Shock still fitted" /> Shock still fitted</label>
+                <label><input type="checkbox" name="bike_status" value="Complete bike coming in" /> Complete bike coming in</label>
+                <label><input type="checkbox" name="bike_status" value="Customer needs pickup" /> Customer needs pickup</label>
+              </div>
+              <div class="form-grid two-col" style="margin-top: 1rem;">
+                <div class="form-field"><label for="pickup_location">Pickup location / suburb</label><input id="pickup_location" name="pickup_location" type="text" /></div>
+                <div class="form-field"><label for="preferred_booking_date">Preferred booking timeframe</label><input id="preferred_booking_date" name="preferred_booking_date" type="text" placeholder="e.g. next Monday, within two weeks" /></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>6. Rider and use</h2>
+              <div class="form-grid three-col">
+                <div class="form-field"><label for="rider_weight">Rider weight</label><input id="rider_weight" name="rider_weight" type="text" placeholder="e.g. 85 kg" /></div>
+                <div class="form-field"><label for="gear_weight">Riding gear weight</label><input id="gear_weight" name="gear_weight" type="text" /></div>
+                <div class="form-field"><label for="luggage_weight">Luggage / camping gear weight</label><input id="luggage_weight" name="luggage_weight" type="text" /></div>
+                <div class="form-field">
+                  <label for="skill_level">Skill level</label>
+                  <select id="skill_level" name="skill_level">
+                    <option value="">Select level</option>
+                    <option>Beginner</option>
+                    <option>Novice</option>
+                    <option>Club rider</option>
+                    <option>State-level rider</option>
+                    <option>National-level rider</option>
+                    <option>Recreational only</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="main_use">Main use</label>
+                  <select id="main_use" name="main_use">
+                    <option value="">Select use</option>
+                    <option>Fun riding</option>
+                    <option>Motocross</option>
+                    <option>Enduro</option>
+                    <option>Trail riding</option>
+                    <option>Adventure touring</option>
+                    <option>Loaded touring</option>
+                    <option>Racing</option>
+                    <option>Road race</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="form-field"><label for="racing_level">Racing level</label><input id="racing_level" name="racing_level" type="text" placeholder="Optional" /></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>7. Problem description and goal</h2>
+              <div class="checkbox-grid" data-checkbox-group="problem_description">
+                <label><input type="checkbox" name="problem_description" value="Leaking fork seals" /> Leaking fork seals</label>
+                <label><input type="checkbox" name="problem_description" value="Harsh" /> Harsh</label>
+                <label><input type="checkbox" name="problem_description" value="Kicking" /> Kicking</label>
+                <label><input type="checkbox" name="problem_description" value="Diving" /> Diving</label>
+                <label><input type="checkbox" name="problem_description" value="Deflecting" /> Deflecting</label>
+                <label><input type="checkbox" name="problem_description" value="Bottoming" /> Bottoming</label>
+                <label><input type="checkbox" name="problem_description" value="Too soft" /> Too soft</label>
+                <label><input type="checkbox" name="problem_description" value="Too stiff" /> Too stiff</label>
+                <label><input type="checkbox" name="problem_description" value="Poor traction" /> Poor traction</label>
+                <label><input type="checkbox" name="problem_description" value="Poor comfort" /> Poor comfort</label>
+                <label><input type="checkbox" name="problem_description" value="Unstable under load" /> Unstable under load</label>
+                <label><input type="checkbox" name="problem_description" value="Front-end push" /> Front-end push</label>
+                <label><input type="checkbox" name="problem_description" value="Rear-end kicking" /> Rear-end kicking</label>
+                <label><input type="checkbox" name="problem_description" value="Wallowing" /> Wallowing</label>
+                <label><input type="checkbox" name="problem_description" value="Unknown" /> Unknown</label>
+              </div>
+              <div class="form-field" style="margin-top: 1rem;"><label for="customer_description">Customer description</label><textarea id="customer_description" name="customer_description" rows="4"></textarea></div>
+              <h3 class="subsection-heading">Goal of work</h3>
+              <div class="checkbox-grid" data-checkbox-group="goal_of_work">
+                <label><input type="checkbox" name="goal_of_work" value="Basic service" /> Basic service</label>
+                <label><input type="checkbox" name="goal_of_work" value="Fix leaking seals" /> Fix leaking seals</label>
+                <label><input type="checkbox" name="goal_of_work" value="Improve comfort" /> Improve comfort</label>
+                <label><input type="checkbox" name="goal_of_work" value="Improve confidence" /> Improve confidence</label>
+                <label><input type="checkbox" name="goal_of_work" value="Correct spring rate" /> Correct spring rate</label>
+                <label><input type="checkbox" name="goal_of_work" value="Better handling" /> Better handling</label>
+                <label><input type="checkbox" name="goal_of_work" value="Better loaded touring control" /> Better loaded touring control</label>
+                <label><input type="checkbox" name="goal_of_work" value="Better race performance" /> Better race performance</label>
+                <label><input type="checkbox" name="goal_of_work" value="Full race-level setup" /> Full race-level setup</label>
+                <label><input type="checkbox" name="goal_of_work" value="Premium upgrade" /> Premium upgrade</label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>8. Budget, parts and package options</h2>
+              <div class="form-grid three-col">
+                <div class="form-field"><label for="budget_provided">Budget provided?</label><select id="budget_provided" name="budget_provided"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+                <div class="form-field"><label for="budget_amount">Budget amount or range</label><input id="budget_amount" name="budget_amount" type="text" placeholder="e.g. $800, $1200-$1500" /></div>
+                <div class="form-field"><label for="budget_match">Does budget match expectation?</label><select id="budget_match" name="budget_match"><option value="">Select</option><option>Yes</option><option>No</option><option>Unsure</option></select></div>
+              </div>
+              <h3 class="subsection-heading">Parts availability</h3>
+              <div class="checkbox-grid" data-checkbox-group="parts_to_check">
+                <label><input type="checkbox" name="parts_to_check" value="Fork seals" /> Fork seals</label>
+                <label><input type="checkbox" name="parts_to_check" value="Dust seals" /> Dust seals</label>
+                <label><input type="checkbox" name="parts_to_check" value="Fork bushes" /> Fork bushes</label>
+                <label><input type="checkbox" name="parts_to_check" value="Shock seal kit" /> Shock seal kit</label>
+                <label><input type="checkbox" name="parts_to_check" value="Shock bushes" /> Shock bushes</label>
+                <label><input type="checkbox" name="parts_to_check" value="Fork springs" /> Fork springs</label>
+                <label><input type="checkbox" name="parts_to_check" value="Shock spring" /> Shock spring</label>
+                <label><input type="checkbox" name="parts_to_check" value="Fork oil" /> Fork oil</label>
+                <label><input type="checkbox" name="parts_to_check" value="Shock oil" /> Shock oil</label>
+                <label><input type="checkbox" name="parts_to_check" value="Cartridge parts" /> Cartridge parts</label>
+                <label><input type="checkbox" name="parts_to_check" value="Aftermarket shock" /> Aftermarket shock</label>
+                <label><input type="checkbox" name="parts_to_check" value="Coating work" /> Coating work</label>
+                <label><input type="checkbox" name="parts_to_check" value="Other" /> Other</label>
+              </div>
+              <div class="form-grid two-col" style="margin-top: 1rem;">
+                <div class="form-field"><label for="parts_status">Parts status</label><select id="parts_status" name="parts_status"><option value="">Select status</option><option>In stock</option><option>Need to check</option><option>Need to order</option><option>Older model — confirm availability first</option></select></div>
+                <div class="form-field"><label for="recommended_package_override">Recommended package override</label><select id="recommended_package_override" name="recommended_package_override"><option value="">Use assistant recommendation</option><option>Fork service only</option><option>Shock service only</option><option>Fork and shock service package</option><option>Fork service plus bushes</option><option>Springs only</option><option>Springs plus service</option><option>Springs plus revalve</option><option>Fork and shock revalve package</option><option>Revalve plus springs plus service</option><option>Adventure touring upgrade</option><option>Coating package</option><option>Cartridges and shock upgrade</option><option>Full race package</option><option>Staged plan required</option></select></div>
+              </div>
+              <div class="form-grid three-col" style="margin-top: 1rem;">
+                <div class="form-field"><label for="minimum_option">Minimum option</label><textarea id="minimum_option" rows="3"></textarea></div>
+                <div class="form-field"><label for="recommended_option">Recommended option</label><textarea id="recommended_option" rows="3"></textarea></div>
+                <div class="form-field"><label for="premium_option">Premium option</label><textarea id="premium_option" rows="3"></textarea></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <h2>9. Booking details</h2>
+              <div class="form-grid three-col">
+                <div class="form-field"><label for="confirmed_booking_date">Confirmed booking date</label><input id="confirmed_booking_date" name="confirmed_booking_date" type="text" /></div>
+                <div class="form-field"><label for="dropoff_or_pickup">Drop-off or pickup</label><select id="dropoff_or_pickup" name="dropoff_or_pickup"><option value="">Select</option><option>Drop-off</option><option>Pickup</option><option>To be confirmed</option></select></div>
+                <div class="form-field"><label for="final_outcome">Final enquiry outcome</label><select id="final_outcome" name="final_outcome"><option value="">Select outcome</option><option>Booked in</option><option>Quote given — customer deciding</option><option>Waiting on bike details</option><option>Waiting on budget confirmation</option><option>Waiting on parts availability</option><option>Waiting on pickup date</option><option>Not suitable at this stage</option><option>Follow-up required</option></select></div>
+              </div>
+              <div class="form-field" style="margin-top: 1rem;"><label for="special_instructions">Special instructions / workshop notes</label><textarea id="special_instructions" name="special_instructions" rows="4"></textarea></div>
+              <div class="form-actions">
+                <button type="button" class="button" id="analyseBottom">Analyse enquiry</button>
+                <button type="reset" class="button button-ghost">Start new enquiry</button>
+              </div>
+            </fieldset>
+          </form>
+
+          <aside class="enquiry-output-panel" aria-live="polite">
+            <section class="card result-card">
+              <p class="eyebrow">Enquiry classification</p>
+              <h2 id="classificationTitle">Not analysed yet</h2>
+              <p id="classificationReason">Paste a customer message or fill the form, then analyse the enquiry.</p>
+              <div id="classificationBadges" class="result-badges"></div>
+            </section>
+
+            <section class="card result-card warning-card">
+              <h2>Missing information</h2>
+              <ul id="missingList" class="result-list"><li>Run analysis to see what is missing.</li></ul>
+            </section>
+
+            <section class="card result-card">
+              <h2>Recommended package</h2>
+              <p id="packageText">Run analysis to match a package.</p>
+              <ul id="packageWarnings" class="result-list compact"><li>Price is always guide only until bike details, on/off-bike status and parts availability are confirmed.</li></ul>
+            </section>
+
+            <section class="card result-card">
+              <h2>Booking-ready checklist</h2>
+              <ul id="bookingChecklist" class="result-list compact"><li>Run analysis to see booking readiness.</li></ul>
+            </section>
+
+            <section class="card result-card output-card">
+              <div class="section-title-row compact-row"><h2>Customer reply</h2><button type="button" class="button button-sm button-ghost" data-copy-target="customerReply">Copy</button></div>
+              <textarea id="customerReply" readonly rows="12"></textarea>
+            </section>
+
+            <section class="card result-card output-card">
+              <div class="section-title-row compact-row"><h2>Internal job summary</h2><button type="button" class="button button-sm button-ghost" data-copy-target="jobSummary">Copy</button></div>
+              <textarea id="jobSummary" readonly rows="15"></textarea>
+            </section>
+
+            <section class="card result-card">
+              <h2>Recommended next step</h2>
+              <p id="nextStep" class="next-step">Run analysis.</p>
+              <div class="form-actions compact-actions">
+                <button type="button" class="button button-sm" id="copyAll">Copy all outputs</button>
+                <button type="button" class="button button-ghost button-sm" id="exportJson">Export JSON</button>
+              </div>
+              <p id="copyStatus" class="copy-status" role="status" aria-live="polite"></p>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <div>
+        <strong>Mountain Race Shop</strong>
+        <p>Internal enquiry assistant. Review all replies before sending.</p>
+      </div>
+      <div><p><a href="/admin-bookings.html">Booking admin</a><br /><a href="/booking.html">New booking</a></p></div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/enquiry-assistant.js"></script>
+</body>
+</html>

@@ -143,15 +143,23 @@
 }
 
 .output-card textarea {
+  display: block;
   width: 100%;
-  min-height: 210px;
+  height: 250px;
+  max-height: 250px;
   resize: vertical;
+  overflow: auto;
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,0.12);
   background: rgba(0,0,0,0.35);
   color: var(--text);
   padding: 0.9rem;
   font: 0.95rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.output-card textarea#jobSummary {
+  height: 270px;
+  max-height: 270px;
 }
 
 .next-step {

@@ -114,6 +114,7 @@
     budget: "Budget range",
     skill_level: "Realistic skill level",
     racing_level: "Racing level",
+    gear_weight: "Riding gear weight",
     luggage_weight: "Luggage or camping gear weight",
     pickup_location: "Pickup suburb / location",
     fork_status: "Forks off bike or still fitted",
@@ -276,6 +277,7 @@
       budget: !!budget,
       skill_level: !!data.skillLevel,
       racing_level: !!data.racingLevel || data.skillLevel === "Recreational only",
+      gear_weight: !!data.gearWeight,
       luggage_weight: !!data.luggageWeight,
       pickup_location: !!data.pickupLocation,
       fork_status: hasForkStatus,
@@ -306,7 +308,10 @@
       ...(classification.type.required || []),
     ]);
     if (needsPerformanceInfo(data, classification)) required.add("rider_weight");
-    if (classification.key === "adventure") required.add("luggage_weight");
+    if (classification.key === "adventure") {
+      required.add("gear_weight");
+      required.add("luggage_weight");
+    }
 
     return Array.from(required)
       .filter((field) => !fieldPresent(field, data))
@@ -330,9 +335,10 @@
   function packageRecommendation(data, classification) {
     let packageName = data.overridePackage || classification.type.package || "Staged plan required";
     const text = textBlob();
+    const includesCombinedService = data.requested.includes("Fork and shock service");
     if (!data.overridePackage) {
-      if (classification.key === "fork") packageName = data.requested.includes("Shock service") ? "Fork and shock service package" : "Fork service only";
-      if (classification.key === "shock") packageName = data.requested.includes("Fork service") ? "Fork and shock service package" : "Shock service only";
+      if (classification.key === "fork") packageName = data.requested.includes("Shock service") || includesCombinedService ? "Fork and shock service package" : "Fork service only";
+      if (classification.key === "shock") packageName = data.requested.includes("Fork service") || includesCombinedService ? "Fork and shock service package" : "Shock service only";
       if (classification.key === "both") packageName = "Fork and shock service package";
       if (classification.key === "mx") packageName = "Revalve plus springs plus service";
       if (classification.key === "adventure") packageName = data.budgetMatch === "No" ? "Staged plan required" : "Adventure touring upgrade";
@@ -419,6 +425,8 @@
     if (classification.key === "adventure") {
       lines.push("");
       lines.push("For adventure bikes I need to work off total load, not just rider weight. Luggage, camping gear and two-up use change the recommendation.");
+      const loadDetails = [data.riderWeight && `rider ${data.riderWeight}`, data.gearWeight && `gear ${data.gearWeight}`, data.luggageWeight && `luggage ${data.luggageWeight}`].filter(Boolean);
+      if (loadDetails.length) lines.push(`Current load notes: ${loadDetails.join(", ")}.`);
     }
     if (data.budgetMatch === "No") {
       lines.push("");
@@ -427,7 +435,7 @@
 
     lines.push("");
     lines.push("Bushes, wear parts, springs, coatings, cartridges, aftermarket shocks, pickup/delivery and extra labour can be extra if needed. For older bikes I need to check parts availability first.");
-    lines.push("Once I have the missing details, I can give you the right price guide and booking direction.");
+    if (missing.length) lines.push("Once I have the missing details, I can give you the right price guide and booking direction.");
     lines.push("");
     lines.push(`Next step: ${step}.`);
     return lines.join("\n");
@@ -448,6 +456,8 @@
       `Year: ${data.year || "—"}`,
       `Work requested: ${requested}`,
       `Rider weight: ${data.riderWeight || "—"}`,
+      `Riding gear weight: ${data.gearWeight || "—"}`,
+      `Luggage/camping gear weight: ${data.luggageWeight || "—"}`,
       `Riding type: ${data.mainUse || data.bikeType || "—"}`,
       `Skill level: ${data.skillLevel || "—"}`,
       `Problem described: ${problem}`,

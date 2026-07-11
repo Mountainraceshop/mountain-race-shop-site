@@ -10,8 +10,11 @@
 
   const SDK_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
   const config = window.MRS_SUPABASE_CONFIG || {};
+  window.MRS_PRODUCTION_BOOKING_READY = false;
+  window.MRS_PRODUCTION_BOOKING_UNAVAILABLE = false;
 
   if (!config.url || !config.anonKey) {
+    window.MRS_PRODUCTION_BOOKING_UNAVAILABLE = true;
     const form = document.getElementById("bookingForm");
     form?.addEventListener(
       "submit",
@@ -418,9 +421,13 @@
     });
     scheduleRefresh();
     window.setInterval(() => refreshSharedCapacity(client), 60000);
+    window.MRS_PRODUCTION_BOOKING_READY = true;
+    window.MRS_PRODUCTION_BOOKING_UNAVAILABLE = false;
   }
 
   init().catch((error) => {
+    window.MRS_PRODUCTION_BOOKING_READY = false;
+    window.MRS_PRODUCTION_BOOKING_UNAVAILABLE = true;
     console.error("Production booking system failed to initialise", error);
     window.alert(
       "Online booking is temporarily unavailable. Please contact Mountain Race Shop directly."

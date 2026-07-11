@@ -214,6 +214,71 @@ as $$
   order by d.pickup_date;
 $$;
 
+create or replace function public.validate_booking_pickup_capacity_update()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_date_status text := 'available';
+  v_customer_message text;
+  v_used_bikes integer := 0;
+  v_used_loose integer := 0;
+begin
+  if new.wants_pickup_dropoff
+     and new.booking_status <> 'Cancelled'
+     and (
+       old.booking_status = 'Cancelled'
+       or old.wants_pickup_dropoff is distinct from new.wants_pickup_dropoff
+       or old.preferred_monday_date is distinct from new.preferred_monday_date
+       or old.pickup_capacity_bikes is distinct from new.pickup_capacity_bikes
+       or old.pickup_capacity_loose is distinct from new.pickup_capacity_loose
+     ) then
+    if new.preferred_monday_date is null then
+      raise exception 'MRS_INVALID: pickup date is required';
+    end if;
+
+    perform pg_advisory_xact_lock(hashtextextended('mrs-pickup-' || new.preferred_monday_date::text, 0));
+
+    select status, customer_message
+      into v_date_status, v_customer_message
+    from public.pickup_date_settings
+    where pickup_date = new.preferred_monday_date;
+
+    v_date_status := coalesce(v_date_status, 'available');
+    if v_date_status <> 'available' then
+      raise exception 'MRS_DATE_UNAVAILABLE: %',
+        coalesce(v_customer_message, 'No Canberra pickup run is available on this date.');
+    end if;
+
+    select
+      coalesce(sum(pickup_capacity_bikes), 0)::integer,
+      coalesce(sum(pickup_capacity_loose), 0)::integer
+    into v_used_bikes, v_used_loose
+    from public.bookings
+    where wants_pickup_dropoff
+      and preferred_monday_date = new.preferred_monday_date
+      and booking_status <> 'Cancelled'
+      and id <> old.id;
+
+    if v_used_bikes + new.pickup_capacity_bikes > 3 then
+      raise exception 'MRS_CAPACITY: bike pickup capacity is full';
+    end if;
+    if v_used_loose + new.pickup_capacity_loose > 10 then
+      raise exception 'MRS_CAPACITY: loose suspension capacity is full';
+    end if;
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists bookings_validate_pickup_capacity on public.bookings;
+create trigger bookings_validate_pickup_capacity
+before update on public.bookings
+for each row execute function public.validate_booking_pickup_capacity_update();
+
 create or replace function public.create_booking_atomic(p_payload jsonb)
 returns jsonb
 language plpgsql

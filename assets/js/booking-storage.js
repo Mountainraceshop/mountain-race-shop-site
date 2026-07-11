@@ -57,6 +57,7 @@
     month: "2-digit",
     day: "2-digit",
   });
+  let productionBookingUnavailable = false;
 
   function generateBookingId() {
     const now = new Date();
@@ -195,6 +196,21 @@
   function updateBookingStatus(bookingId, status) {
     const booking = getBookingById(bookingId);
     if (!booking) throw new Error("Booking not found");
+    if (
+      booking.booking_status === "Cancelled" &&
+      status !== "Cancelled" &&
+      booking.wants_pickup_dropoff
+    ) {
+      const slots = getBookingPickupSlots(booking);
+      const capacity = getCapacityForSlots(
+        booking.preferred_monday_date,
+        slots,
+        booking.booking_id
+      );
+      if (!capacity.available) {
+        throw new Error(capacity.message || "Selected Monday is at capacity.");
+      }
+    }
     booking.booking_status = status;
     return saveBooking(booking);
   }
@@ -273,10 +289,37 @@
     });
   }
 
+  function guardProductionSubmit(event) {
+    if (global.MRS_PRODUCTION_BOOKING_READY) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const config = global.MRS_SUPABASE_CONFIG || {};
+    const hasProductionConfig = Boolean(config.url && config.anonKey);
+    const message =
+      hasProductionConfig &&
+      !productionBookingUnavailable &&
+      !global.MRS_PRODUCTION_BOOKING_UNAVAILABLE
+        ? "Secure online booking is still loading. Please try again in a moment."
+        : "Online booking is temporarily unavailable. Please contact Mountain Race Shop directly.";
+    global.alert?.(message);
+  }
+
   if (typeof document !== "undefined" && document.getElementById("bookingForm")) {
+    document
+      .getElementById("bookingForm")
+      .addEventListener("submit", guardProductionSubmit, true);
+
     loadScript("assets/js/supabase-config.js")
       .catch(() => undefined)
-      .then(() => loadScript("assets/js/booking-production.js"))
-      .catch((error) => console.warn("Production booking adapter did not load", error));
+      .then(() => {
+        const config = global.MRS_SUPABASE_CONFIG || {};
+        productionBookingUnavailable = !(config.url && config.anonKey);
+        return loadScript("assets/js/booking-production.js");
+      })
+      .catch((error) => {
+        productionBookingUnavailable = true;
+        console.warn("Production booking adapter did not load", error);
+      });
   }
 })(typeof window !== "undefined" ? window : globalThis);

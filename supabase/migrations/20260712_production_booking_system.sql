@@ -68,6 +68,9 @@ create table if not exists public.bookings (
   referral_code text,
   landing_page text,
   internal_notes text,
+  notification_token text,
+  notification_claimed_at timestamptz,
+  notification_sent_at timestamptz,
 
   payload jsonb not null default '{}'::jsonb,
   constraint pickup_date_required_when_requested check (
@@ -219,21 +222,62 @@ set search_path = public
 as $$
 declare
   v_booking_id text;
+  v_notification_token text;
+  v_payload jsonb;
   v_wants_pickup boolean := coalesce((p_payload->>'wants_pickup_dropoff')::boolean, false);
   v_pickup_date date;
-  v_need_bikes integer := greatest(0, coalesce((p_payload->>'pickup_capacity_bikes')::integer, 0));
-  v_need_loose integer := greatest(0, coalesce((p_payload->>'pickup_capacity_loose')::integer, 0));
+  v_pickup_type text := nullif(p_payload->>'pickup_type', '');
+  v_expected_pickup_type text;
+  v_need_bikes integer := 0;
+  v_need_loose integer := 0;
   v_used_bikes integer := 0;
   v_used_loose integer := 0;
   v_date_status text := 'available';
   v_customer_message text;
+  v_service_id text := nullif(p_payload->>'suspension_service_id', '');
+  v_service_label text;
+  v_service_price numeric(10,2);
+  v_service_location text;
+  v_pickup_price numeric(10,2) := 0;
+  v_tyre_fitting_quantity integer := 0;
+  v_tyre_fitting_cost numeric(10,2) := 0;
+  v_estimated_total numeric(10,2) := 0;
 begin
   if nullif(trim(p_payload->>'customer_name'), '') is null
      or nullif(trim(p_payload->>'phone'), '') is null
      or nullif(trim(p_payload->>'email'), '') is null
+     or nullif(trim(p_payload->>'suburb'), '') is null
      or nullif(trim(p_payload->>'bike_brand'), '') is null
      or nullif(trim(p_payload->>'bike_model'), '') is null then
     raise exception 'MRS_INVALID: required customer or motorcycle details are missing';
+  end if;
+
+  if lower(trim(p_payload->>'email')) !~ '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$' then
+    raise exception 'MRS_INVALID: email address is invalid';
+  end if;
+
+  if not coalesce((p_payload->>'accepted_terms')::boolean, false) then
+    raise exception 'MRS_INVALID: booking terms must be accepted';
+  end if;
+
+  select service_label, service_price, service_location, expected_pickup_type
+  into v_service_label, v_service_price, v_service_location, v_expected_pickup_type
+  from (values
+    ('fork_off', 'Fork service — off the bike', 320::numeric, 'off_bike', 'loose_forks'),
+    ('shock_off', 'Shock service — off the bike', 340::numeric, 'off_bike', 'loose_shock'),
+    ('fork_shock_off', 'Fork and shock service — off the bike, delivered together', 600::numeric, 'off_bike', 'loose_forks_and_shock'),
+    ('fork_on', 'Fork service — on the bike', 360::numeric, 'on_bike', 'complete_bike'),
+    ('shock_on', 'Shock service — on the bike', 460::numeric, 'on_bike', 'complete_bike'),
+    ('revalve_off', 'Revalve, springs and service — fork and shock, off the bike', 1260::numeric, 'off_bike', 'loose_forks_and_shock'),
+    ('revalve_on', 'Revalve, springs and service — fork and shock, on the bike', 1470::numeric, 'on_bike', 'complete_bike'),
+    ('air_fork_off', 'Air fork bike revalve and service — fork and shock, off the bike', 1080::numeric, 'off_bike', 'loose_forks_and_shock'),
+    ('air_fork_on', 'Air fork bike revalve and service — fork and shock, on the bike', 1260::numeric, 'on_bike', 'complete_bike'),
+    ('suspension_other', 'Other / not sure — contact me before booking', null::numeric, 'unknown', null::text)
+  ) as services(service_id, service_label, service_price, service_location, expected_pickup_type)
+  where service_id = v_service_id;
+
+  if v_service_id is not null and v_service_label is null then
+    raise exception 'MRS_INVALID: unknown suspension service';
   end if;
 
   if v_wants_pickup then
@@ -241,9 +285,38 @@ begin
     if v_pickup_date is null then
       raise exception 'MRS_INVALID: pickup date is required';
     end if;
+    if extract(isodow from v_pickup_date) <> 1 then
+      raise exception 'MRS_INVALID: Canberra pickup date must be a Monday';
+    end if;
+    if v_pickup_date < (current_timestamp at time zone 'Australia/Sydney')::date then
+      raise exception 'MRS_INVALID: pickup date is in the past';
+    end if;
 
-    -- One transaction owns the date check and insert, preventing two customers
-    -- from simultaneously taking the final bike or loose-job position.
+    if v_expected_pickup_type is not null and v_pickup_type <> v_expected_pickup_type then
+      raise exception 'MRS_INVALID: pickup type does not match selected suspension service';
+    end if;
+
+    case v_pickup_type
+      when 'complete_bike' then
+        v_need_bikes := 1;
+        v_need_loose := 0;
+        v_pickup_price := 20;
+      when 'loose_forks' then
+        v_need_bikes := 0;
+        v_need_loose := 1;
+        v_pickup_price := 10;
+      when 'loose_shock' then
+        v_need_bikes := 0;
+        v_need_loose := 1;
+        v_pickup_price := 10;
+      when 'loose_forks_and_shock' then
+        v_need_bikes := 0;
+        v_need_loose := 2;
+        v_pickup_price := 20;
+      else
+        raise exception 'MRS_INVALID: unknown pickup type';
+    end case;
+
     perform pg_advisory_xact_lock(hashtextextended('mrs-pickup-' || v_pickup_date::text, 0));
 
     select status, customer_message
@@ -272,11 +345,45 @@ begin
     if v_used_loose + v_need_loose > 10 then
       raise exception 'MRS_CAPACITY: loose suspension capacity is full';
     end if;
+  else
+    v_pickup_type := null;
+    v_pickup_date := null;
   end if;
 
+  if coalesce((p_payload->>'tyre_fitting_required')::boolean, false) then
+    v_tyre_fitting_quantity := coalesce((p_payload->>'tyre_fitting_quantity')::integer, 0);
+    if v_tyre_fitting_quantity < 1 or v_tyre_fitting_quantity > 4 then
+      raise exception 'MRS_INVALID: tyre fitting quantity must be between 1 and 4';
+    end if;
+    v_tyre_fitting_cost := v_tyre_fitting_quantity * 30;
+  end if;
+
+  if v_service_id is null
+     and jsonb_array_length(coalesce(p_payload->'selected_engine_services', '[]'::jsonb)) = 0
+     and jsonb_array_length(coalesce(p_payload->'selected_tyres', '[]'::jsonb)) = 0
+     and jsonb_array_length(coalesce(p_payload->'brake_pad_check_options', '[]'::jsonb)) = 0
+     and v_tyre_fitting_quantity = 0 then
+    raise exception 'MRS_INVALID: at least one workshop service is required';
+  end if;
+
+  v_estimated_total := coalesce(v_service_price, 0) + v_pickup_price + v_tyre_fitting_cost;
   v_booking_id := 'MRS-' ||
     to_char(current_timestamp at time zone 'Australia/Sydney', 'YYYYMMDD') || '-' ||
     upper(substr(encode(gen_random_bytes(4), 'hex'), 1, 4));
+  v_notification_token := encode(gen_random_bytes(24), 'hex');
+
+  v_payload := p_payload || jsonb_build_object(
+    'selected_suspension_service', v_service_label,
+    'suspension_service_price', v_service_price,
+    'suspension_service_location_type', v_service_location,
+    'pickup_type', v_pickup_type,
+    'pickup_price', case when v_wants_pickup then v_pickup_price else null end,
+    'pickup_capacity_bikes', v_need_bikes,
+    'pickup_capacity_loose', v_need_loose,
+    'tyre_fitting_quantity', nullif(v_tyre_fitting_quantity, 0),
+    'tyre_fitting_cost', nullif(v_tyre_fitting_cost, 0),
+    'estimated_fixed_total', v_estimated_total
+  );
 
   insert into public.bookings (
     booking_id,
@@ -309,6 +416,7 @@ begin
     medium,
     referral_code,
     landing_page,
+    notification_token,
     payload
   ) values (
     v_booking_id,
@@ -322,14 +430,14 @@ begin
     nullif(p_payload->>'bike_year', '')::integer,
     nullif(p_payload->>'motorcycle_type', ''),
     nullif(p_payload->>'suspension_removed_status', ''),
-    nullif(p_payload->>'selected_suspension_service', ''),
-    nullif(p_payload->>'suspension_service_id', ''),
-    nullif(p_payload->>'suspension_service_price', '')::numeric,
-    nullif(p_payload->>'suspension_service_location_type', ''),
-    coalesce(nullif(p_payload->>'estimated_fixed_total', '')::numeric, 0),
+    v_service_label,
+    v_service_id,
+    v_service_price,
+    v_service_location,
+    v_estimated_total,
     v_wants_pickup,
-    nullif(p_payload->>'pickup_type', ''),
-    nullif(p_payload->>'pickup_price', '')::numeric,
+    v_pickup_type,
+    case when v_wants_pickup then v_pickup_price else null end,
     v_pickup_date,
     nullif(p_payload->>'pickup_area', ''),
     nullif(p_payload->>'pickup_notes', ''),
@@ -341,21 +449,53 @@ begin
     nullif(p_payload->>'medium', ''),
     nullif(p_payload->>'referral_code', ''),
     nullif(p_payload->>'landing_page', ''),
-    p_payload
+    v_notification_token,
+    v_payload
   );
 
   return jsonb_build_object(
     'booking_id', v_booking_id,
     'booking_status', 'New request',
-    'preferred_monday_date', v_pickup_date
+    'preferred_monday_date', v_pickup_date,
+    'estimated_fixed_total', v_estimated_total,
+    'notification_token', v_notification_token
   );
+end;
+$$;
+
+create or replace function public.claim_booking_notification(
+  p_booking_id text,
+  p_notification_token text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_booking public.bookings%rowtype;
+begin
+  update public.bookings
+  set notification_token = null,
+      notification_claimed_at = now()
+  where booking_id = p_booking_id
+    and notification_token = p_notification_token
+    and notification_claimed_at is null
+  returning * into v_booking;
+
+  if not found then
+    return null;
+  end if;
+  return to_jsonb(v_booking);
 end;
 $$;
 
 revoke all on function public.get_pickup_availability(date[]) from public;
 revoke all on function public.create_booking_atomic(jsonb) from public;
+revoke all on function public.claim_booking_notification(text, text) from public;
 grant execute on function public.get_pickup_availability(date[]) to anon, authenticated;
 grant execute on function public.create_booking_atomic(jsonb) to anon, authenticated;
+grant execute on function public.claim_booking_notification(text, text) to service_role;
 
 -- After creating Craig's Supabase Auth account, run this once with the correct UUID:
 -- insert into public.workshop_admin_users (user_id, email)

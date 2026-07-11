@@ -58,28 +58,41 @@ Deno.serve(async (request) => {
       });
     }
 
-    const { booking_id } = await request.json();
-    if (!booking_id || typeof booking_id !== "string") {
-      return new Response(JSON.stringify({ error: "booking_id is required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    const { booking_id, notification_token } = await request.json();
+    if (
+      !booking_id ||
+      typeof booking_id !== "string" ||
+      !notification_token ||
+      typeof notification_token !== "string"
+    ) {
+      return new Response(
+        JSON.stringify({ error: "booking_id and notification_token are required" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     const adminClient = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false },
     });
-    const { data: booking, error } = await adminClient
-      .from("bookings")
-      .select("*")
-      .eq("booking_id", booking_id)
-      .single();
+    const { data: booking, error } = await adminClient.rpc(
+      "claim_booking_notification",
+      {
+        p_booking_id: booking_id,
+        p_notification_token: notification_token,
+      },
+    );
 
     if (error || !booking) {
-      return new Response(JSON.stringify({ error: "Booking not found" }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "Notification token is invalid or already used" }),
+        {
+          status: 409,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     const payload = booking.payload || {};
@@ -136,6 +149,11 @@ Deno.serve(async (request) => {
         customerHtml,
       ),
     ]);
+
+    await adminClient
+      .from("bookings")
+      .update({ notification_sent_at: new Date().toISOString() })
+      .eq("booking_id", booking.booking_id);
 
     return new Response(JSON.stringify({ delivered: true }), {
       status: 200,

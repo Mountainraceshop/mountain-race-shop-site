@@ -314,6 +314,20 @@
     });
   }
 
+  function markPickupAvailabilityUnavailable(radios) {
+    for (const radio of radios) {
+      radio.disabled = true;
+      if (radio.checked) radio.checked = false;
+      const label = radio.closest("label");
+      label?.classList.add("is-disabled");
+      const meta = label?.querySelector(".monday-option-meta");
+      if (meta) {
+        meta.textContent =
+          "Canberra pickup availability could not be loaded. Please try again in a moment.";
+      }
+    }
+  }
+
   async function refreshSharedCapacity(client) {
     if (!checked("wantsPickup")) return;
     const radios = Array.from(
@@ -327,6 +341,7 @@
     });
     if (error) {
       console.warn("Could not refresh shared pickup capacity", error);
+      markPickupAvailabilityUnavailable(radios);
       return;
     }
 
@@ -334,7 +349,10 @@
     const byDate = new Map((data || []).map((row) => [row.pickup_date, row]));
     for (const radio of radios) {
       const row = byDate.get(radio.value);
-      if (!row) continue;
+      if (!row) {
+        markPickupAvailabilityUnavailable([radio]);
+        continue;
+      }
       const statusAvailable = row.date_status === "available";
       const enoughCapacity =
         Number(row.bikes_remaining) >= need.bikes &&

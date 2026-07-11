@@ -77,13 +77,10 @@ Deno.serve(async (request) => {
     const adminClient = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false },
     });
-    const { data: booking, error } = await adminClient
-      .from("bookings")
-      .select("*")
-      .eq("booking_id", booking_id)
-      .eq("notification_token", notification_token)
-      .is("notification_claimed_at", null)
-      .maybeSingle();
+    const { data: booking, error } = await adminClient.rpc("claim_booking_notification", {
+      p_booking_id: booking_id,
+      p_notification_token: notification_token,
+    });
 
     if (error || !booking) {
       return new Response(
@@ -154,13 +151,10 @@ Deno.serve(async (request) => {
     const { error: deliveryMarkError } = await adminClient
       .from("bookings")
       .update({
-        notification_token: null,
-        notification_claimed_at: deliveredAt,
         notification_sent_at: deliveredAt,
       })
       .eq("id", booking.id)
-      .eq("notification_token", notification_token)
-      .is("notification_claimed_at", null);
+      .is("notification_token", null);
     if (deliveryMarkError) {
       throw deliveryMarkError;
     }

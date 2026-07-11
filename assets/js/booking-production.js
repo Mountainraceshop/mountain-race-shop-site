@@ -148,6 +148,16 @@
     ) {
       return fail("Enter a tyre size, choose a catalogue tyre, or request a recommendation.", byId("front_tyre_size"));
     }
+    if (checked("tyreFittingRequired")) {
+      const fittingQuantity = Number(fieldValue("tyre_fitting_quantity"));
+      if (
+        !Number.isInteger(fittingQuantity) ||
+        fittingQuantity < 1 ||
+        fittingQuantity > 4
+      ) {
+        return fail("Enter how many tyres need fitting (1 to 4).", byId("tyre_fitting_quantity"));
+      }
+    }
 
     if (service?.price != null && !checked("extra_parts_note_acknowledged")) {
       return fail("Please acknowledge that extra wear parts may be required.", byId("extra_parts_note_acknowledged"));
@@ -394,12 +404,15 @@
           showConfirmation(bookingId);
         } catch (error) {
           const message = String(error?.message || "");
-          const capacityMessage = message.includes("MRS_CAPACITY")
+          const invalidMatch = message.match(/MRS_INVALID:\s*(.+)$/);
+          const alertMessage = message.includes("MRS_CAPACITY")
             ? "That Monday filled while you were completing the form. Please choose another available Monday."
             : message.includes("MRS_DATE_UNAVAILABLE")
               ? "That Monday is no longer available for Canberra pickup. Please choose another date."
-              : "Your booking was not saved. Please check your connection and try again.";
-          window.alert(capacityMessage);
+              : message.includes("MRS_INVALID")
+                ? `Your booking was not saved. Please check the form: ${invalidMatch?.[1] || "some details are invalid."}`
+                : "Your booking was not saved. Please check your connection and try again.";
+          window.alert(alertMessage);
           await refreshSharedCapacity(client);
         } finally {
           button.disabled = false;

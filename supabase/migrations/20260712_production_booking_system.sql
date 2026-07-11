@@ -131,7 +131,8 @@ revoke all on public.bookings from anon, authenticated;
 revoke all on public.pickup_date_settings from anon, authenticated;
 revoke all on public.workshop_admin_users from anon, authenticated;
 
-grant select, update on public.bookings to authenticated;
+grant select on public.bookings to authenticated;
+grant update (booking_status, internal_notes) on public.bookings to authenticated;
 grant select, insert, update, delete on public.pickup_date_settings to authenticated;
 grant select on public.workshop_admin_users to authenticated;
 

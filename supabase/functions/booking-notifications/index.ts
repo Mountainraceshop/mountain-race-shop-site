@@ -77,13 +77,13 @@ Deno.serve(async (request) => {
     const adminClient = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false },
     });
-    const { data: booking, error } = await adminClient.rpc(
-      "claim_booking_notification",
-      {
-        p_booking_id: booking_id,
-        p_notification_token: notification_token,
-      },
-    );
+    const { data: booking, error } = await adminClient
+      .from("bookings")
+      .select("*")
+      .eq("booking_id", booking_id)
+      .eq("notification_token", notification_token)
+      .is("notification_claimed_at", null)
+      .maybeSingle();
 
     if (error || !booking) {
       return new Response(
@@ -150,10 +150,20 @@ Deno.serve(async (request) => {
       ),
     ]);
 
-    await adminClient
+    const deliveredAt = new Date().toISOString();
+    const { error: deliveryMarkError } = await adminClient
       .from("bookings")
-      .update({ notification_sent_at: new Date().toISOString() })
-      .eq("booking_id", booking.booking_id);
+      .update({
+        notification_token: null,
+        notification_claimed_at: deliveredAt,
+        notification_sent_at: deliveredAt,
+      })
+      .eq("id", booking.id)
+      .eq("notification_token", notification_token)
+      .is("notification_claimed_at", null);
+    if (deliveryMarkError) {
+      throw deliveryMarkError;
+    }
 
     return new Response(JSON.stringify({ delivered: true }), {
       status: 200,

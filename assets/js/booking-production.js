@@ -12,9 +12,19 @@
   const config = window.MRS_SUPABASE_CONFIG || {};
 
   if (!config.url || !config.anonKey) {
-    console.info(
-      "Mountain Race Shop booking system is using local fallback. Configure Supabase to enable shared bookings."
+    const form = document.getElementById("bookingForm");
+    form?.addEventListener(
+      "submit",
+      (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        window.alert(
+          "Online booking is not configured yet. Please contact Mountain Race Shop directly."
+        );
+      },
+      true
     );
+    console.error("Supabase booking configuration is missing.");
     return;
   }
 
@@ -150,8 +160,16 @@
       if (!selectedValue("pickup_area")) {
         return fail("Select a Canberra pickup area.", document.querySelector('[data-field="pickup_area"]'));
       }
-      if (service?.location === "on_bike" && selectedValue("pickup_type") !== "complete_bike") {
-        return fail("On-bike suspension service requires complete-bike pickup.", document.querySelector('[data-field="pickup_type"]'));
+      const recommendedPickup =
+        window.BookingCatalog?.getRecommendedPickupType?.(service) || null;
+      if (recommendedPickup && selectedValue("pickup_type") !== recommendedPickup) {
+        const pickupLabel =
+          window.BookingStorage?.PICKUP_PRICING?.[recommendedPickup]?.label ||
+          recommendedPickup;
+        return fail(
+          `This suspension service requires: ${pickupLabel}.`,
+          document.querySelector('[data-field="pickup_type"]')
+        );
       }
     }
 
@@ -359,12 +377,17 @@
 
           if (config.notificationsFunction) {
             client.functions
-              .invoke(config.notificationsFunction, { body: { booking_id: bookingId } })
+              .invoke(config.notificationsFunction, {
+                body: {
+                  booking_id: bookingId,
+                  notification_token: result.notification_token,
+                },
+              })
               .catch((notificationError) =>
                 console.warn("Booking saved; notification delivery needs attention", notificationError)
               );
           }
-          trackBookingRequest(bookingId, payload.estimated_fixed_total);
+          trackBookingRequest(bookingId, result.estimated_fixed_total);
           showConfirmation(bookingId);
         } catch (error) {
           const message = String(error?.message || "");

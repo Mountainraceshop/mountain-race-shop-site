@@ -1,6 +1,6 @@
 # Draft booking update — Rider Setup, Spring Ready and September return bookings
 
-Status: draft branch only. Do not merge/deploy until `craig@mountainraceshop.com.au` is created and tested.
+Status: draft branch only. Do not merge/deploy until `craig@mountainraceshop.com.au` has received a successful dummy booking test.
 
 ## Commercial goal
 
@@ -100,29 +100,34 @@ The branch includes a draft drop-in script:
 
 The new script must load after `booking-catalog.js` and before `booking.js` so the new service cards exist before the booking form renders.
 
-## Email update to apply once mailbox exists
+## Email update now that mailbox exists
 
-Current booking email endpoint in `assets/js/booking.js`:
+The new mailbox is:
+
+```text
+craig@mountainraceshop.com.au
+```
+
+Visible booking-page contact links have moved to:
+
+```html
+<a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a>
+```
+
+`assets/js/booking.js` still contains the original FormSubmit constant:
 
 ```js
 const BOOKING_EMAIL_ENDPOINT =
   "https://formsubmit.co/ajax/fenianparktrading@gmail.com";
 ```
 
-Update to:
+The draft script now redirects that FormSubmit request to:
 
 ```js
-const BOOKING_EMAIL_ENDPOINT =
-  "https://formsubmit.co/ajax/craig@mountainraceshop.com.au";
+"https://formsubmit.co/ajax/craig@mountainraceshop.com.au"
 ```
 
-Visible booking-page contact links should also move to:
-
-```html
-<a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a>
-```
-
-Note: the draft branch has visible page contact links using `craig@mountainraceshop.com.au`. The live merge should still wait until the mailbox exists and has been tested.
+This keeps the draft branch safer because the large booking logic file is not rewritten through the connector. Before merge, browser-test one dummy booking and confirm the email arrives at `craig@mountainraceshop.com.au`. If preferred, the redirect can later be replaced with a direct edit to `assets/js/booking.js`.
 
 ## Admin/job-sheet notes
 

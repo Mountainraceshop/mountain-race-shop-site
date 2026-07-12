@@ -1,12 +1,17 @@
 // Mountain Race Shop™ — France return sales + Rider Setup draft update
 // Draft branch only. Load this script after assets/js/booking-catalog.js and before assets/js/booking.js.
-// Purpose: add low-risk sales entry points for September bookings while keeping production unchanged until this PR is merged.
+// Purpose: add low-risk sales entry points for September bookings and redirect draft booking emails to the new Mountain Race Shop mailbox once created.
 
 (function (global) {
   "use strict";
 
   const bookingCatalog = global.BookingCatalog;
   if (!bookingCatalog || !Array.isArray(bookingCatalog.SUSPENSION_SERVICES)) return;
+
+  const OLD_BOOKING_EMAIL_ENDPOINT =
+    "https://formsubmit.co/ajax/fenianparktrading@gmail.com";
+  const NEW_BOOKING_EMAIL_ENDPOINT =
+    "https://formsubmit.co/ajax/craig@mountainraceshop.com.au";
 
   const draftServices = [
     {
@@ -100,6 +105,25 @@
     return bookingCatalog.SUSPENSION_SERVICES.find((service) => service.id === id) || null;
   };
 
-  // Draft email target for tomorrow once the mailbox exists.
+  // Draft email target now that the mailbox has been created.
   global.MRS_DRAFT_BOOKING_EMAIL = "craig@mountainraceshop.com.au";
+
+  // The existing booking.js file still has the original FormSubmit constant.
+  // This draft-only redirect avoids rewriting the large booking.js file through the connector.
+  // It should be browser-tested with one dummy booking before merge.
+  if (typeof global.fetch === "function" && !global.MRS_BOOKING_EMAIL_REDIRECT_INSTALLED) {
+    const originalFetch = global.fetch.bind(global);
+    global.fetch = function mountainRaceShopBookingFetch(input, init) {
+      if (input === OLD_BOOKING_EMAIL_ENDPOINT) {
+        return originalFetch(NEW_BOOKING_EMAIL_ENDPOINT, init);
+      }
+
+      if (input instanceof Request && input.url === OLD_BOOKING_EMAIL_ENDPOINT) {
+        return originalFetch(new Request(NEW_BOOKING_EMAIL_ENDPOINT, input), init);
+      }
+
+      return originalFetch(input, init);
+    };
+    global.MRS_BOOKING_EMAIL_REDIRECT_INSTALLED = true;
+  }
 })(typeof window !== "undefined" ? window : globalThis);

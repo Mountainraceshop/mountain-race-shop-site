@@ -30,13 +30,20 @@
       <div class="container narrow center">
         <p class="eyebrow">Mountain Race Shop™</p>
         <h1>Book Suspension Service</h1>
-        <p class="lead">Book suspension work, engine rebuilds, tyre orders or Canberra pickup/drop-off online. Please provide accurate bike and rider details so we can prepare the correct parts, setup notes and workshop schedule.</p>
+        <p class="lead">September suspension bookings are open while Craig is away in France through August. Book suspension work, rider setup, engine rebuilds, tyre orders or Canberra pickup/drop-off online so we can line up the right parts, setup notes and workshop schedule for your return-to-riding window.</p>
         <p class="muted">Engineering-backed suspension tuning — proven on track, validated by data.</p>
       </div>
     </section>
 
     <section class="section section-muted" style="padding-top: 0;">
       <div class="container booking-form-shell">
+        <div class="notice-box form-section" style="margin-bottom: 1rem;">
+          <h2>September bookings now open</h2>
+          <p><strong>Craig is away in France until late August.</strong> The workshop diary is open now for September return bookings, with limited first-week workshop slots available.</p>
+          <p style="margin-top: 0.75rem;">Not sure what the bike needs? Start with the <strong>Rider Setup &amp; Baseline Recommendation — $50</strong>. The $50 fee is credited toward recommended suspension work booked within 30 days.</p>
+          <p style="margin-top: 0.75rem;"><strong>Best booking paths:</strong> choose a fixed service if you know what you need, choose Rider Setup if you want the bike measured first, or choose Spring Ready / September Priority if you want a slot held for Craig's return.</p>
+        </div>
+
         <div id="bookingConfirmation" class="booking-confirmation card" role="status" aria-live="polite">
           <h2>Booking request received</h2>
           <p>Thanks — your booking request has been received. Mountain Race Shop™ will confirm your suspension, engine, tyre or brake pad request, price estimate, parts availability and pickup/drop-off details by phone or SMS.</p>
@@ -128,6 +135,7 @@
 
           <div class="notice-box form-section" style="margin-bottom: 0;">
             <ul class="booking-notes-list">
+              <li><strong>September bookings are open now.</strong> Book early if you want work lined up for Craig's return from France.</li>
               <li>Suspension fixed prices below; wear parts and unexpected repairs are extra (we will contact you first).</li>
               <li>Engine rebuild work is quoted after inspection.</li>
               <li>Tyres are order only and subject to availability.</li>
@@ -146,7 +154,7 @@
               <summary class="field-label">View full pricing schedule</summary>
               <div id="suspensionPricingSchedule" class="pricing-schedule"></div>
             </details>
-            <p class="section-hint" style="margin-top: 1.25rem;">Select your suspension service (optional if you are only booking engine or tyre work below):</p>
+            <p class="section-hint" style="margin-top: 1.25rem;">Select your suspension service. If you are not sure what the bike needs, choose Rider Setup &amp; Baseline Recommendation. If you want work held for Craig's return from France, choose Spring Ready or September Priority.</p>
             <div id="serviceGrid" class="service-grid service-grid-priced" role="radiogroup" aria-label="Suspension services"></div>
             <p id="suspensionOnBikeHint" class="capacity-note is-info" style="display: none; margin-top: 0.75rem;"></p>
             <p id="suspensionOffBikeHint" class="section-hint" style="display: none; margin-top: 0.5rem;"></p>
@@ -286,7 +294,7 @@
           <!-- Rider -->
           <fieldset id="riderPanel" class="form-section rider-panel">
             <h2>Rider setup information</h2>
-            <p class="section-hint">Required when fork/shock springs or revalving is selected.</p>
+            <p class="section-hint">Required for springs, revalving, Rider Setup, Spring Ready checks and September priority bookings.</p>
             <div class="form-grid two-col">
               <div class="form-field" data-field="rider_body_weight_kg">
                 <label for="rider_body_weight_kg">Rider body weight without riding gear (kg)</label>
@@ -327,7 +335,7 @@
             </div>
             <div class="form-field" style="margin-top: 1rem;">
               <label for="rider_complaint_or_goal">Rider complaint / goal</label>
-              <textarea id="rider_complaint_or_goal" name="rider_complaint_or_goal" placeholder="e.g. harsh over chop, front diving, rear kicking, packing, bottoming, poor grip, too soft, too stiff, needs setup from scratch"></textarea>
+              <textarea id="rider_complaint_or_goal" name="rider_complaint_or_goal" placeholder="e.g. harsh over chop, front diving, rear kicking, packing, bottoming, poor grip, too soft, too stiff, needs setup from scratch, or race/event date the bike must be ready for"></textarea>
             </div>
           </fieldset>
 
@@ -433,7 +441,7 @@
 
           <div class="form-actions">
             <button type="submit" class="button" id="submitBooking">Submit booking request</button>
-            <p class="booking-footer-note center">Questions before booking? Contact Mountain Race Shop™ at <a href="mailto:fenianparktrading@gmail.com">fenianparktrading@gmail.com</a></p>
+            <p class="booking-footer-note center">Questions before booking? Contact Mountain Race Shop™ at <a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a></p>
           </div>
         </form>
       </div>
@@ -448,7 +456,7 @@
         <p class="copyright-line">© 2026 Mountain Race Shop™. All rights reserved.</p>
       </div>
       <div>
-        <p>Questions before booking? <a href="mailto:fenianparktrading@gmail.com">fenianparktrading@gmail.com</a><br/>
+        <p>Questions before booking? <a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a><br/>
         <a href="mailto:sales@mountainraceshop.com.au">sales@mountainraceshop.com.au</a><br/>
         <a href="tel:+61420947505">0420 947 505</a></p>
         <p style="margin-top: 0.75rem;"><a href="admin-bookings.html">Staff: view bookings</a></p>
@@ -458,6 +466,7 @@
 
   <script src="assets/js/booking-storage.js"></script>
   <script src="assets/js/booking-catalog.js"></script>
+  <script src="assets/js/rider-setup-credit-draft.js"></script>
   <script src="assets/js/booking.js"></script>
 </body>
 </html>

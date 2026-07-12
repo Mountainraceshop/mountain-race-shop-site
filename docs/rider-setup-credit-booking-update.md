@@ -1,8 +1,28 @@
-# Draft booking update — Rider Setup & Baseline Recommendation
+# Draft booking update — Rider Setup, Spring Ready and September return bookings
 
 Status: draft branch only. Do not merge/deploy until `craig@mountainraceshop.com.au` is created and tested.
 
-## Requested change
+## Commercial goal
+
+Come back from France with September bookings already waiting, not a cold restart.
+
+The booking flow should support three customer paths:
+
+1. **I know what I need** — fork service, shock service, revalve, springs or full package.
+2. **I am not sure what I need** — Rider Setup & Baseline Recommendation.
+3. **I need a slot when Craig returns** — Spring Ready / September Priority booking.
+
+## Homepage and booking-page banner
+
+Customer-facing banner copy:
+
+> September suspension bookings are now open. Craig is away in France through August, but the workshop diary is open for return bookings. Book now if your bike is harsh, kicking, diving, deflecting or overdue before spring riding.
+
+Booking-page support copy:
+
+> Craig is away in France until late August. The workshop diary is open now for September return bookings, with limited first-week workshop slots available.
+
+## Rider Setup service
 
 Add a new booking option to the Mountain Race Shop booking form:
 
@@ -39,6 +59,34 @@ Important: this is not a cash refund. Treat it as a credit against booked worksh
 - General advice with no booked workshop work
 - Work booked more than 30 days later
 
+## Spring Ready / September Priority paths
+
+The draft script now adds two extra return-from-France sales paths:
+
+### Spring Ready Suspension Check — September priority
+
+Use this for riders who want the bike ready for spring but are not sure which exact service package is correct.
+
+Includes:
+
+- Priority booking request for September return work
+- Suspension health assessment
+- Rider weight and spring-rate suitability check
+- Clicker baseline and sag recommendation
+- Tyre wear / tyre pressure notes
+- Written recommendation before parts, springs, revalving or repairs are approved
+- Final job price confirmed before work begins
+
+### September priority booking / waitlist
+
+Use this for riders who want a slot held for when Craig returns from France.
+
+Includes:
+
+- Best for riders who know they need work but are not sure which package yet
+- Customer should include any race, ride or event date in the rider complaint / goal field
+- Mountain Race Shop confirms the correct job, date and price before work begins
+
 ## Booking-form integration
 
 The branch includes a draft drop-in script:
@@ -50,7 +98,7 @@ The branch includes a draft drop-in script:
 <script src="assets/js/booking.js"></script>
 ```
 
-The new script must load after `booking-catalog.js` and before `booking.js` so the new service appears in the rendered suspension service cards.
+The new script must load after `booking-catalog.js` and before `booking.js` so the new service cards exist before the booking form renders.
 
 ## Email update to apply once mailbox exists
 
@@ -74,9 +122,11 @@ Visible booking-page contact links should also move to:
 <a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a>
 ```
 
+Note: the draft branch has visible page contact links using `craig@mountainraceshop.com.au`. The live merge should still wait until the mailbox exists and has been tested.
+
 ## Admin/job-sheet notes
 
-When this service is selected, admin output should show:
+When Rider Setup is selected, admin output should show:
 
 - Service: Rider Setup & Baseline Recommendation
 - Price: $50
@@ -93,6 +143,16 @@ When this service is selected, admin output should show:
 - Tyre pressure notes
 - Final recommendations
 
+When Spring Ready or September Priority is selected, admin output should show:
+
+- Service selected
+- No payment now / price to be confirmed
+- Customer's target date or event from rider complaint / goal
+- Rider details
+- Bike details
+- Recommended next contact date
+- Whether parts may need to be ordered before September
+
 ## Extra booking fields to add in a future full-code pass
 
 The current form already captures rider weight, skill level, riding type and complaint/goal when `requiresRider` is true. Recommended extra fields for the final version:
@@ -103,6 +163,7 @@ The current form already captures rider weight, skill level, riding type and com
 - Current tyre pressures, optional
 - Are the forks or shock leaking? yes / no / unsure
 - Has the suspension been serviced in the last 12 months? yes / no / unsure
+- Target event / ride date
 - Written recommendations requested? default yes
 
 ## Brand line

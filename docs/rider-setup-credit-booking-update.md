@@ -1,6 +1,6 @@
 # Live release notes — Rider Setup, Spring Ready and September return bookings
 
-Status: ready to merge once the PR is marked ready. `craig@mountainraceshop.com.au` has been created and is forwarding into `fenianparktrading@gmail.com`.
+Status: release-ready. `craig@mountainraceshop.com.au` has been created and forwards into `fenianparktrading@gmail.com`.
 
 ## Commercial goal
 

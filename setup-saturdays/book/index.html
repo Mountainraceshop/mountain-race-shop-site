@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book a Motorcycle Handling Assessment | Mountain Race Shop</title>
+  <meta name="description" content="Book a $50 Saturday motorcycle handling and suspension assessment in a 45-minute group session with a maximum of four riders." />
+  <link rel="canonical" href="https://www.mountainraceshop.com.au/setup-saturdays/book/" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/booking.css" />
+</head>
+<body class="booking-page">
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/">Mountain Race Shop</a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="/setup-saturdays/">Setup Saturdays</a>
+      <a href="/services/fork-servicing/">Services</a>
+      <a class="button button-ghost button-sm" href="/booking.html">Other Workshop Booking</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero section small-hero booking-hero">
+    <div class="container narrow center">
+      <p class="eyebrow">Suspension Diagnosis &amp; Setup Saturdays</p>
+      <h1>Book Your Motorcycle Handling Assessment</h1>
+      <p class="lead"><strong>$50 per rider.</strong> Each booking is a 45-minute group engineering session with a maximum of four riders.</p>
+      <p class="muted">Bring the complete motorcycle and your normal riding gear. The $50 fee is credited toward recommended suspension work booked within 30 days.</p>
+    </div>
+  </section>
+
+  <section class="section section-muted" style="padding-top:0">
+    <div class="container booking-form-shell">
+      <div class="notice-box form-section">
+        <h2>Saturday timetable</h2>
+        <p><strong>08:30–09:15 · 09:15–10:00 · 10:00–10:45 · 10:45–11:30 · 11:30–12:15</strong></p>
+        <p>The final session includes planned run-over time. Each time slot is capped at four riders. Bookings remain requests until confirmed by Mountain Race Shop.</p>
+      </div>
+
+      <form class="booking-form" action="https://formsubmit.co/craig@mountainraceshop.com.au" method="POST">
+        <input type="hidden" name="_subject" value="New Setup Saturday booking request" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="booking_type" value="Motorcycle Handling Assessment — Setup Saturday" />
+
+        <fieldset class="form-section">
+          <h2>Rider details</h2>
+          <div class="form-grid two-col">
+            <div class="form-field"><label for="name">Full name</label><input id="name" name="rider_name" type="text" required /></div>
+            <div class="form-field"><label for="phone">Mobile</label><input id="phone" name="mobile" type="tel" required /></div>
+            <div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" required /></div>
+            <div class="form-field"><label for="weight">Rider weight without gear (kg)</label><input id="weight" name="rider_weight_without_gear_kg" type="number" min="30" max="200" step="0.5" required /></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <h2>Motorcycle and riding</h2>
+          <div class="form-grid two-col">
+            <div class="form-field"><label for="make">Make</label><input id="make" name="motorcycle_make" type="text" required /></div>
+            <div class="form-field"><label for="model">Model</label><input id="model" name="motorcycle_model" type="text" required /></div>
+            <div class="form-field"><label for="year">Year</label><input id="year" name="motorcycle_year" type="number" min="1970" max="2030" required /></div>
+            <div class="form-field"><label for="discipline">Riding discipline</label><select id="discipline" name="riding_discipline" required><option value="">Select</option><option>Motocross</option><option>Enduro</option><option>Trail</option><option>Adventure</option><option>Road</option><option>Road race / track</option><option>Other</option></select></div>
+            <div class="form-field"><label for="skill">Skill level</label><select id="skill" name="skill_level" required><option value="">Select</option><option>Beginner</option><option>Club rider</option><option>Intermediate</option><option>Advanced</option><option>Expert / Pro</option></select></div>
+            <div class="form-field"><label for="goal">Primary goal</label><select id="goal" name="primary_goal" required><option value="">Select</option><option>More comfort</option><option>More confidence</option><option>Better traction</option><option>Better cornering</option><option>More stability</option><option>Less arm pump</option><option>Better jumping / bottoming control</option><option>General setup from scratch</option></select></div>
+          </div>
+          <div class="form-field" style="margin-top:1rem"><label for="complaint">What is the bike doing that you want improved?</label><textarea id="complaint" name="main_handling_complaint" rows="4" required placeholder="For example: harsh over chop, rear kicks, front pushes, headshake, bottoms too easily or lacks traction."></textarea></div>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <h2>Choose your session</h2>
+          <div class="form-grid two-col">
+            <div class="form-field"><label for="date">Saturday date</label><select id="date" name="preferred_saturday" required><option value="">Select</option><option>12 September 2026</option><option>26 September 2026</option><option>10 October 2026</option><option>17 October 2026</option><option>31 October 2026</option><option>21 November 2026</option><option>28 November 2026</option></select></div>
+            <div class="form-field"><label for="slot">45-minute time slot</label><select id="slot" name="preferred_time_slot" required><option value="">Select</option><option>08:30–09:15</option><option>09:15–10:00</option><option>10:00–10:45</option><option>10:45–11:30</option><option>11:30–12:15</option></select></div>
+          </div>
+          <p class="section-hint">Maximum four riders per time slot. Your place is secured only after confirmation from Mountain Race Shop.</p>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <h2>Risk acknowledgement and participant declaration</h2>
+          <div class="notice-box">
+            <p><strong>Important:</strong> Motorcycling is an inherently dangerous recreational activity. It may result in serious injury, permanent disability, death, or damage to property. Suspension inspection, setup or adjustment cannot remove those risks.</p>
+          </div>
+          <label class="terms-row"><input type="checkbox" name="acknowledge_inherent_risk" value="Agreed" required /><span>I understand and voluntarily accept the inherent risks associated with riding, operating, transporting and testing a motorcycle.</span></label>
+          <label class="terms-row"><input type="checkbox" name="motorcycle_safe_fit_for_purpose" value="Confirmed" required /><span>I confirm that the motorcycle I bring is safe and fit for its intended purpose, whether registered, unregistered, road, track, motocross, enduro or off-road.</span></label>
+          <label class="terms-row"><input type="checkbox" name="setup_not_safety_guarantee" value="Agreed" required /><span>I understand that a suspension assessment or adjustment is not a guarantee that the motorcycle is free from defects, safe in every circumstance, or suitable for every rider, speed, surface or condition.</span></label>
+          <label class="terms-row"><input type="checkbox" name="rider_responsibility" value="Agreed" required /><span>I remain responsible for inspecting the motorcycle, riding within my ability, wearing appropriate protective equipment and deciding whether conditions are safe before riding.</span></label>
+          <label class="terms-row"><input type="checkbox" name="release_acknowledgement" value="Agreed" required /><span>To the maximum extent permitted by law, I accept responsibility for injury, loss or damage arising from my participation or subsequent use of the motorcycle and release Mountain Race Shop, its owner, workers and agents from claims arising from the ordinary inherent risks of motorcycling.</span></label>
+          <label class="terms-row"><input type="checkbox" name="non_excludable_rights" value="Acknowledged" required /><span>I understand that this declaration does not exclude any right, consumer guarantee or liability that cannot lawfully be excluded.</span></label>
+          <label class="terms-row"><input type="checkbox" name="instructions_and_information" value="Agreed" required /><span>I will follow reasonable workshop instructions and have provided accurate information about the rider, motorcycle, intended use and known faults.</span></label>
+
+          <div class="form-grid two-col" style="margin-top:1rem">
+            <div class="form-field"><label for="signature">Digital signature — type full legal name</label><input id="signature" name="digital_signature" type="text" required /></div>
+            <div class="form-field"><label for="signed-date">Date signed</label><input id="signed-date" name="date_signed" type="date" required /></div>
+          </div>
+          <p class="section-hint">Participants under 18 require a parent or legal guardian to complete the declaration and attend or provide written consent.</p>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <label class="terms-row"><input type="checkbox" name="booking_terms_confirmed" value="Agreed" required /><span>I confirm that the information above is correct and understand this is a booking request pending confirmation.</span></label>
+          <button class="button button-lg" type="submit">Send Setup Saturday Booking Request</button>
+          <p class="section-hint">Do not send payment until your session has been confirmed.</p>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+</main>
+<footer class="site-footer"><div class="container footer-wrap"><div><strong>Mountain Race Shop</strong><p>Motorcycle handling and suspension engineering since 1995.</p></div><div><p><a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a><br><a href="tel:+61420947505">0420 947 505</a><br>2572 Shannons Flat Rd, Shannons Flat NSW 2620</p></div></div></footer>
+</body>
+</html>

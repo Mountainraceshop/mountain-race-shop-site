@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clickers Won't Fix a Bad Damping Curve | Mountain Race Shop Technical Series 002</title>
+  <meta name="description" content="Why motorcycle suspension clickers cannot turn a poor damping curve into a good one, and why rider weight, spring choice and accurate setup information still matter." />
+  <link rel="canonical" href="https://www.mountainraceshop.com.au/knowledge-centre/clickers-wont-fix-a-bad-damping-curve/" />
+  <meta property="og:title" content="Clickers Won't Fix a Bad Damping Curve | Technical Series 002" />
+  <meta property="og:description" content="Clickers adjust bleed flow. They do not rewrite the shim stack or replace the correct spring rate, rider data and damping curve." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.mountainraceshop.com.au/knowledge-centre/clickers-wont-fix-a-bad-damping-curve/" />
+  <meta property="og:image" content="https://www.mountainraceshop.com.au/assets/images/book-cover-tuning-simple.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Clickers Won't Fix a Bad Damping Curve | Technical Series 002" />
+  <meta name="twitter:description" content="Why clickers can fine tune damping but cannot rescue a bad shim stack or incorrect setup information." />
+  <meta name="twitter:image" content="https://www.mountainraceshop.com.au/assets/images/book-cover-tuning-simple.png" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <style>
+    .technical-number{display:inline-block;margin-bottom:1rem;padding:.4rem .75rem;border:1px solid currentColor;border-radius:999px;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .engineering-figure{margin:2rem 0;padding:1rem;border:1px solid rgba(127,127,127,.3);border-radius:16px;background:rgba(127,127,127,.06)}
+    .engineering-figure svg{display:block;width:100%;height:auto}
+    .engineering-figure figcaption{margin-top:.8rem;font-size:.9rem;line-height:1.5;opacity:.82}
+    .pull-quote{margin:2rem 0;padding:1.25rem 1.5rem;border-left:4px solid currentColor;font-size:1.35rem;font-weight:700}
+    .author-block{margin-top:2rem;padding-top:1.25rem;border-top:1px solid rgba(127,127,127,.3)}
+    .takeaway-list li{margin:.45rem 0}
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.mountainraceshop.com.au/"},{"@type":"ListItem","position":2,"name":"Knowledge Centre","item":"https://www.mountainraceshop.com.au/knowledge-centre/"},{"@type":"ListItem","position":3,"name":"Clickers Won't Fix a Bad Damping Curve","item":"https://www.mountainraceshop.com.au/knowledge-centre/clickers-wont-fix-a-bad-damping-curve/"}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Clickers Won't Fix a Bad Damping Curve","description":"Why motorcycle suspension clickers cannot turn a poor damping curve into a good one, and why rider weight, spring choice and accurate setup information still matter.","datePublished":"2026-08-07","dateModified":"2026-08-07","author":{"@type":"Person","name":"Craig Dixon","jobTitle":"Suspension Engineer"},"publisher":{"@type":"Organization","name":"Mountain Race Shop"},"mainEntityOfPage":"https://www.mountainraceshop.com.au/knowledge-centre/clickers-wont-fix-a-bad-damping-curve/","articleSection":"Mountain Race Shop Technical Series"}
+  </script>
+</head>
+<body>
+<header class="site-header"><div class="container nav-wrap"><a class="brand" href="/">Mountain Race Shop</a><nav class="nav" aria-label="Primary navigation"><a href="/services/fork-servicing/">Services</a><a href="/shim-calculator/">Shim Calculator</a><a href="/suspension-engineers-handbook/">Handbook</a><a href="/knowledge-centre/">Knowledge Centre</a><a href="/suspension-academy/">Academy</a><a class="button button-ghost button-sm" href="/booking.html">Book Service</a></nav></div></header>
+<main>
+<section class="hero section small-hero"><div class="container hero-shell"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span> / </span><a href="/knowledge-centre/">Knowledge Centre</a><span> / </span><span>Technical Series 002</span></nav><div class="hero-copy article-hero"><span class="technical-number">Technical Series — Article 002</span><h1>Clickers Won't Fix a Bad Damping Curve</h1><p class="lead">Clickers are useful. They are not magic.</p><p>By <strong>Craig Dixon</strong>, Suspension Engineer, Mountain Race Shop&trade;</p><div class="cta-row"><a class="button" href="/booking.html">Book Suspension Work</a><a class="button button-secondary" href="/knowledge-centre/clickers-wont-fix-the-wrong-spring/">Read Article 001</a><a class="button button-ghost" href="/knowledge-centre/">More Technical Articles</a></div></div></div></section>
+<section class="section section-muted"><div class="container article-shell"><article class="article-body">
+<p class="article-lead">Last week we spoke about how using incorrect spring rates for your weight and use is detrimental to how your bike handles. A big part of that is simple: you, as the rider, have mass. On a motorcycle, that rider mass is a massive percentage of the total bike-and-rider system.</p>
+<p>That means even a small change in rider weight can have a large percentage effect on total mass, suspension balance and handling. A motorcycle does not carry a rider as a minor accessory. The rider is a major part of the sprung mass the suspension has to control.</p>
+<p>Now let’s go the other way and talk about damping.</p>
+
+<h2>Springs hold the bike up. Damping controls the motion.</h2>
+<p>In the simplest suspension model, the bike and rider are treated as a mass supported by a spring and controlled by a damper. The spring rate decides how much force the suspension produces for a given displacement. Damping decides how much force the suspension produces for a given velocity.</p>
+<p>The full equations are in the book and go into the detail properly, but the practical target is simple enough: control the suspension so it can return from movement toward zero velocity in the shortest useful time without oscillating, bouncing or losing traction.</p>
+<p>That is true in both compression and rebound. The suspension is always moving somewhere, and the damper’s job is to manage that movement without turning the wheel into a pogo stick or a brick.</p>
+
+<h2>Why travel and velocity matter</h2>
+<p>Spring calculations use suspension travel and the desired sag point because we are deciding where the bike should sit in its stroke. Damping calculations also use travel because we are controlling how quickly the suspension can move through that distance and return to a stable state.</p>
+<p>At any point in the stroke, and at any shaft velocity, we can calculate a damping target for the bike and rider system. Change the mass, change the spring, change the tyre weight or change the unsprung mass, and the required damping target changes as well.</p>
+
+<figure class="engineering-figure">
+<svg viewBox="0 0 900 540" role="img" aria-labelledby="damping-chart-title damping-chart-desc">
+  <title id="damping-chart-title">Clickers shift bleed flow but do not rewrite the damping curve</title>
+  <desc id="damping-chart-desc">A target damping curve rises smoothly with shaft velocity. A poor curve remains the wrong shape even when clickers are opened or closed, because the clicker mostly changes bleed flow rather than the shim stack curve.</desc>
+  <rect x="0" y="0" width="900" height="540" fill="none" />
+  <g stroke="currentColor" opacity="0.18" stroke-width="1">
+    <line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="355" x2="850" y2="355"/><line x1="95" y1="255" x2="850" y2="255"/><line x1="95" y1="155" x2="850" y2="155"/><line x1="95" y1="55" x2="850" y2="55"/>
+    <line x1="95" y1="55" x2="95" y2="455"/><line x1="246" y1="55" x2="246" y2="455"/><line x1="397" y1="55" x2="397" y2="455"/><line x1="548" y1="55" x2="548" y2="455"/><line x1="699" y1="55" x2="699" y2="455"/><line x1="850" y1="55" x2="850" y2="455"/>
+  </g>
+  <g stroke="currentColor" stroke-width="2"><line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="55" x2="95" y2="455"/></g>
+  <g fill="currentColor" font-family="Arial, sans-serif" font-size="16">
+    <text x="472" y="515" text-anchor="middle">Shaft velocity</text>
+    <text x="28" y="255" text-anchor="middle" transform="rotate(-90 28 255)">Damping force</text>
+    <text x="95" y="480" text-anchor="middle">low</text><text x="472" y="480" text-anchor="middle">medium</text><text x="850" y="480" text-anchor="middle">high</text>
+  </g>
+  <polyline points="95,420 190,365 290,303 400,245 520,193 650,148 780,112 850,95" fill="none" stroke="var(--viz-accent, currentColor)" stroke-width="5"/>
+  <polyline points="95,392 190,346 290,315 400,293 520,278 650,262 780,247 850,240" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="12 8" opacity="0.85"/>
+  <polyline points="95,438 190,386 290,352 400,329 520,313 650,297 780,282 850,276" fill="none" stroke="currentColor" stroke-width="3" opacity="0.55"/>
+  <polyline points="95,350 190,315 290,292 400,276 520,264 650,253 780,242 850,237" fill="none" stroke="currentColor" stroke-width="3" opacity="0.55"/>
+  <g fill="currentColor" font-family="Arial, sans-serif">
+    <text x="120" y="85" font-size="18" font-weight="700">Target damping curve</text>
+    <text x="120" y="112" font-size="18" font-weight="700">Bad curve after clicker changes</text>
+    <text x="120" y="139" font-size="16">Opening or closing the clicker shifts bleed flow; it does not rebuild the shim stack.</text>
+    <text x="230" y="335" font-size="16">Clickers mainly influence bleed and low-speed feel</text>
+    <text x="600" y="235" font-size="16">The main curve shape still comes from the valving</text>
+  </g>
+</svg>
+<figcaption>Illustrative damping-curve concept only. Clickers can move the feel around the bleed range, especially at low shaft speeds, but they do not change the shim stack architecture that shapes the main damping curve.</figcaption>
+</figure>
+
+<h2>Where it all goes pear-shaped: the rider</h2>
+<p>Some riders like firmer damping. Some like a plusher feel. Some like a slow rebound, which both dumbfounds me and causes lost traction. Some riders want more spring. Some want less. That is normal rider preference, but preference does not cancel physics.</p>
+<p>Just like you cannot fix a bad spring choice with clickers or preload, you cannot make a bad damping curve good again with clickers either.</p>
+
+<h2>What a clicker actually changes</h2>
+<p>Changing clickers does not change the shim stack. It does not alter the clamp shim, crossover, face shim stiffness, piston port area or the main valving architecture.</p>
+<p>Changing clickers changes the volume and velocity of oil passing through the clicker orifice. In simple terms, the suspension bleeds more or less fluid around the main circuit relative to the centre point of the clicker range. That bleed effect can be calculated with an orifice equation, but the workshop takeaway is simple: clickers are a fine adjustment, not a revalve.</p>
+<p>If the damping curve is fundamentally wrong, the correct answer is not to keep winding adjusters until the screw slots wear out. The correct answer is to change the valving so the adjusters come back into a useful working range.</p>
+
+<h2>When clickers become useless</h2>
+<p>The exact point depends on the adjuster design, the orifice size and the taper of the needle. But as a practical rule, if you are within about three clicks of fully closed or within about three clicks of fully open, you are outside the useful tuning window.</p>
+<p>At that point, the bike is telling you something. It needs a shim change to bring the clickers back toward the centre of their range.</p>
+<p>Most shops will charge for that adjustment. At Mountain Race Shop, if we have revalved the units for the original owner, or if the change is done with a service, we bring the clickers back into range as part of looking after the setup properly.</p>
+
+<h2>But — and this is a big but — the springs still have to be right</h2>
+<p>The springs you use still need to suit the rider’s weight, use, speed and riding style. Damping cannot rescue a spring package that is wrong for the job.</p>
+<p>And riders are terrible at being honest with this.</p>
+<p>If you are 75 kg and you put on 10 kg, your suspension is going to feel soft and soggy. If you then screw the adjusters in to firm it up, it will often feel harsh because you are adding hydraulic resistance to cover a mechanical support problem.</p>
+<p>If you are 110 kg and you lose 10 kg, then unscrew the clickers to soften the bike, it can feel overly stiff and harsh because the spring and damping package are no longer matched to the actual load and use.</p>
+
+<h2>The information you give your suspension shop matters</h2>
+<p>This brings us to one of the most important points in the whole process: the information you give your suspension shop dictates the quality of the work you get back.</p>
+<p>Your actual weight, riding gear, bike model, fuel load, skill level, terrain, speed, luggage, tyre choice and what the bike is actually doing all matter. If the starting information is wrong, the setup target will be wrong.</p>
+<p>It is just the way it is.</p>
+
+<h2>Mountain Race Shop Takeaway</h2>
+<ul class="takeaway-list">
+  <li>Springs control support, ride height and stored energy.</li>
+  <li>Damping controls the speed of movement in compression and rebound.</li>
+  <li>Clickers change bleed flow; they do not change the shim stack.</li>
+  <li>If you are near either end of the clicker range, the valving needs attention.</li>
+  <li>If your weight or use changes, your setup target changes with it.</li>
+</ul>
+<div class="pull-quote">You cannot clicker-adjust your way around a bad damping curve.</div>
+<p>Have a great week.</p>
+<div class="author-block"><p><strong>Craig Dixon</strong><br />Suspension Engineer<br />Mountain Race Shop&trade;</p></div>
+</article><aside class="card"><h2>Need the setup checked?</h2><p>If the clickers are near the end of their range, the bike is not asking for another guess. It is asking for diagnosis.</p><ul class="check-list"><li>Spring rate check</li><li>Clicker range assessment</li><li>Revalve and service options</li><li>Rider-weight and use-based setup</li></ul><a class="button" href="/booking.html">Book Service</a><a class="button button-secondary" href="/knowledge-centre/clickers-wont-fix-the-wrong-spring/">Read Article 001</a></aside></div></section>
+<section class="section final-cta"><div class="container center narrow"><p class="eyebrow">Diagnose. Engineer. Tune. Teach.</p><h2>Stop chasing clickers. Start with the right target.</h2><div class="cta-row center-cta"><a class="button button-lg" href="/booking.html">Book a Service</a><a class="button button-secondary button-lg" href="/knowledge-centre/">Knowledge Centre</a></div></div></section>
+</main>
+<footer class="site-footer"><div class="container footer-wrap"><div><strong>Mountain Race Shop</strong><p>Motorcycle suspension engineering, tuning, education and workshop services since 1995.</p><p class="copyright-line">&copy; 2026 Mountain Race Shop&trade;. All rights reserved.</p></div><div><p><a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a><br /><a href="tel:+61420947505">0420 947 505</a><br />2572 Shannons Flat Rd, Shannons Flat NSW 2620</p></div></div></footer>
+</body>
+</html>

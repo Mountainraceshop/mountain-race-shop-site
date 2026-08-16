@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What Causes Fork Harshness? | Mountain Race Shop Technical Series 003</title>
+  <meta name="description" content="Why motocross and enduro forks feel harsh: orifice-dominated damping, damping-curve shape, mid-valve behaviour and valve opening force explained in rider-friendly engineering terms." />
+  <link rel="canonical" href="https://www.mountainraceshop.com.au/knowledge-centre/what-causes-fork-harshness/" />
+  <meta property="og:title" content="What Causes Fork Harshness? | Technical Series 003" />
+  <meta property="og:description" content="Harshness is not simply too much damping. It is often caused by how quickly damping force rises and how the valve begins to flow." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.mountainraceshop.com.au/knowledge-centre/what-causes-fork-harshness/" />
+  <meta property="og:image" content="https://www.mountainraceshop.com.au/assets/images/book-cover-tuning-simple.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="What Causes Fork Harshness? | Technical Series 003" />
+  <meta name="twitter:description" content="Why damping-curve shape, restricted flow and valve opening force can turn a fork into a hand-beater." />
+  <meta name="twitter:image" content="https://www.mountainraceshop.com.au/assets/images/book-cover-tuning-simple.png" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <style>
+    .technical-number{display:inline-block;margin-bottom:1rem;padding:.4rem .75rem;border:1px solid currentColor;border-radius:999px;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .engineering-figure{margin:2rem 0;padding:1rem;border:1px solid rgba(127,127,127,.3);border-radius:16px;background:rgba(127,127,127,.06)}
+    .engineering-figure svg{display:block;width:100%;height:auto}
+    .engineering-figure figcaption{margin-top:.8rem;font-size:.9rem;line-height:1.5;opacity:.82}
+    .equation{margin:1.4rem 0;padding:1rem 1.2rem;border-left:4px solid currentColor;background:rgba(127,127,127,.06);font-family:Georgia,serif;font-size:1.1rem;overflow-wrap:anywhere}
+    .pull-quote{margin:2rem 0;padding:1.25rem 1.5rem;border-left:4px solid currentColor;font-size:1.35rem;font-weight:700}
+    .author-block{margin-top:2rem;padding-top:1.25rem;border-top:1px solid rgba(127,127,127,.3)}
+    .takeaway-list li{margin:.45rem 0}
+    .note{font-size:.92rem;opacity:.82}
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.mountainraceshop.com.au/"},{"@type":"ListItem","position":2,"name":"Knowledge Centre","item":"https://www.mountainraceshop.com.au/knowledge-centre/"},{"@type":"ListItem","position":3,"name":"What Causes Fork Harshness?","item":"https://www.mountainraceshop.com.au/knowledge-centre/what-causes-fork-harshness/"}]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"What Causes Fork Harshness?","description":"Why motocross and enduro forks feel harsh: orifice-dominated damping, damping-curve shape, mid-valve behaviour and valve opening force explained in rider-friendly engineering terms.","datePublished":"2026-08-17","dateModified":"2026-08-17","author":{"@type":"Person","name":"Craig Dixon","jobTitle":"Suspension Engineer"},"publisher":{"@type":"Organization","name":"Mountain Race Shop"},"mainEntityOfPage":"https://www.mountainraceshop.com.au/knowledge-centre/what-causes-fork-harshness/","articleSection":"Mountain Race Shop Technical Series"}
+  </script>
+</head>
+<body>
+<header class="site-header"><div class="container nav-wrap"><a class="brand" href="/">Mountain Race Shop</a><nav class="nav" aria-label="Primary navigation"><a href="/services/fork-servicing/">Services</a><a href="/shim-calculator/">Shim Calculator</a><a href="/suspension-engineers-handbook/">Handbook</a><a href="/knowledge-centre/">Knowledge Centre</a><a href="/suspension-academy/">Academy</a><a class="button button-ghost button-sm" href="/booking.html">Book Service</a></nav></div></header>
+<main>
+<section class="hero section small-hero"><div class="container hero-shell"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span> / </span><a href="/knowledge-centre/">Knowledge Centre</a><span> / </span><span>Technical Series 003</span></nav><div class="hero-copy article-hero"><span class="technical-number">Technical Series — Article 003</span><h1>What Causes Fork Harshness?</h1><p class="lead">Harshness is not simply “too much damping”. Very often, the problem is how the damping force is generated and how quickly it rises.</p><p>By <strong>Craig Dixon</strong>, Suspension Engineer, Mountain Race Shop&trade;</p><div class="cta-row"><a class="button" href="/booking.html">Book Suspension Work</a><a class="button button-secondary" href="/knowledge-centre/clickers-wont-fix-a-bad-damping-curve/">Read Article 002</a><a class="button button-ghost" href="/knowledge-centre/">More Technical Articles</a></div></div></div></section>
+<section class="section section-muted"><div class="container article-shell"><article class="article-body">
+<p class="article-lead">Off-road and motocross forks can feel harsh for plenty of reasons, but the hydraulic side of the problem can usually be reduced to two main concerns: an orifice-like rise in damping force, and excessive force required before a valve begins to flow properly.</p>
+<p>Before we start turning clickers or blaming oil height, we need to define what the rider is actually feeling.</p>
+
+<h2>What do riders mean by “harsh”?</h2>
+<p>Harshness is the sharp hit through the bars that makes square edges, braking bumps and repeated chop feel harder than they should. It is the sensation that the wheel is not getting out of the way of the ground quickly enough. At its worst you get sore hands, arm pump, reduced front-tyre contact and a bike that skips rather than follows the surface.</p>
+<p>That feeling can have mechanical causes such as friction, alignment or an incorrect spring package, but this article is about the hydraulic causes: oil flow, pressure rise and valve behaviour.</p>
+
+<h2>The first rule: oil can only flow through the area available</h2>
+<p>Every hydraulic damper is governed by the same basic physics. You cannot push an unlimited amount of fluid through a fixed restriction. Flow depends on the available area, the pressure difference across the restriction, the fluid density and the discharge characteristics of the passage.</p>
+<p>Using the standard incompressible orifice relation:</p>
+<div class="equation"><strong>Q = C<sub>d</sub>A √(2ΔP / ρ)</strong></div>
+<p>where <strong>Q</strong> is volumetric flow rate, <strong>C<sub>d</sub></strong> is discharge coefficient, <strong>A</strong> is effective flow area, <strong>ΔP</strong> is pressure differential and <strong>ρ</strong> is fluid density.</p>
+<p>Rearrange that relationship and the important part becomes obvious: for a substantially fixed flow area, the pressure required rises approximately with the square of flow. In a damper, flow is tied to shaft or piston velocity. So if the effective flow area does not increase enough as velocity rises, pressure — and therefore damping force — can climb extremely quickly.</p>
+
+<h2>Why old damper-rod forks earned their reputation</h2>
+<p>Older damper-rod systems often relied heavily on fixed holes for compression and rebound control. Oil viscosity and orifice size dictated much of the damping characteristic. At low velocity this can feel acceptable. As velocity rises, however, the fixed restriction demands a rapidly increasing pressure differential.</p>
+<p>That is the classic “fine here, brick wall there” problem. The rider does not necessarily object to one particular peak force number. What the rider feels is the sudden increase in force as wheel velocity rises.</p>
+
+<figure class="engineering-figure">
+<svg viewBox="0 0 900 540" role="img" aria-labelledby="force-chart-title force-chart-desc">
+  <title id="force-chart-title">Conceptual orifice-dominated damping versus a controlled shim-valve curve</title>
+  <desc id="force-chart-desc">A fixed-orifice dominated curve rises increasingly steeply with shaft velocity, while a well controlled shim-valve curve opens additional flow area and rises more progressively.</desc>
+  <g stroke="currentColor" opacity="0.18" stroke-width="1"><line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="355" x2="850" y2="355"/><line x1="95" y1="255" x2="850" y2="255"/><line x1="95" y1="155" x2="850" y2="155"/><line x1="95" y1="55" x2="850" y2="55"/><line x1="95" y1="55" x2="95" y2="455"/><line x1="246" y1="55" x2="246" y2="455"/><line x1="397" y1="55" x2="397" y2="455"/><line x1="548" y1="55" x2="548" y2="455"/><line x1="699" y1="55" x2="699" y2="455"/><line x1="850" y1="55" x2="850" y2="455"/></g>
+  <g stroke="currentColor" stroke-width="2"><line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="55" x2="95" y2="455"/></g>
+  <g fill="currentColor" font-family="Arial, sans-serif" font-size="16"><text x="472" y="515" text-anchor="middle">Shaft / piston velocity</text><text x="28" y="255" text-anchor="middle" transform="rotate(-90 28 255)">Damping force</text><text x="95" y="480" text-anchor="middle">low</text><text x="472" y="480" text-anchor="middle">medium</text><text x="850" y="480" text-anchor="middle">high</text></g>
+  <path d="M95 445 C250 430 390 380 505 300 C630 212 740 120 850 62" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="12 8"/>
+  <path d="M95 445 C250 405 420 330 565 250 C690 182 785 145 850 125" fill="none" stroke="var(--viz-accent, currentColor)" stroke-width="5"/>
+  <g fill="currentColor" font-family="Arial, sans-serif"><text x="550" y="86" font-size="18" font-weight="700">Orifice-dominated: force rises sharply</text><text x="565" y="228" font-size="18" font-weight="700">Controlled shim valve: added area moderates the rise</text></g>
+</svg>
+<figcaption>Conceptual comparison, not dyno data. A fixed or effectively fixed restriction tends toward a velocity-squared pressure relationship. A correctly working shim valve can increase effective flow area as pressure rises, changing the shape of the damping curve.</figcaption>
+</figure>
+
+<h2>Why modern forks can recreate an old problem</h2>
+<p>A modern cartridge fork gives us shim valves specifically so the effective flow area can change with pressure. The shims deflect, the opening increases and the valve can control the rate at which damping force rises.</p>
+<p>But fitting shims does not automatically guarantee a good curve.</p>
+<p>If a stack is built so stiffly that it barely deflects through an important part of the operating range, or if another restriction becomes the controlling flow area, the system can begin to behave much more like fixed-orifice damping. The fork may start with modest force, move through the stroke too freely, then hit a region where the available flow area cannot keep up with velocity. Pressure rises rapidly and the rider gets the spike.</p>
+<div class="pull-quote">The technical problem is often the way damping is rising — not simply the damping number at the final high-velocity point.</div>
+
+<h2>The slope of the curve is what your hands feel</h2>
+<p>Two forks can produce a similar damping force at one chosen shaft velocity and still feel completely different on the track. If one reaches that force smoothly and the other arrives there through a sudden rise, the second fork will normally feel sharper and less compliant.</p>
+<p>This is why looking at one dyno number in isolation can be misleading. The shape and gradient of the curve matter.</p>
+
+<figure class="engineering-figure">
+<svg viewBox="0 0 900 540" role="img" aria-labelledby="gradient-title gradient-desc">
+  <title id="gradient-title">Conceptual rate of damping-force increase</title>
+  <desc id="gradient-desc">The gradient of an orifice-dominated force curve grows rapidly with velocity, while a better controlled valve maintains a smoother rate of increase.</desc>
+  <g stroke="currentColor" opacity="0.18" stroke-width="1"><line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="355" x2="850" y2="355"/><line x1="95" y1="255" x2="850" y2="255"/><line x1="95" y1="155" x2="850" y2="155"/><line x1="95" y1="55" x2="850" y2="55"/><line x1="95" y1="55" x2="95" y2="455"/></g>
+  <g stroke="currentColor" stroke-width="2"><line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="55" x2="95" y2="455"/></g>
+  <g fill="currentColor" font-family="Arial, sans-serif" font-size="16"><text x="472" y="515" text-anchor="middle">Shaft / piston velocity</text><text x="26" y="255" text-anchor="middle" transform="rotate(-90 26 255)">Rate of damping-force increase</text><text x="95" y="480">low</text><text x="812" y="480">high</text></g>
+  <path d="M95 438 C280 420 455 345 610 245 C725 170 795 105 850 62" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="12 8"/>
+  <path d="M95 425 C300 365 520 315 850 270" fill="none" stroke="var(--viz-accent, currentColor)" stroke-width="5"/>
+  <g fill="currentColor" font-family="Arial, sans-serif"><text x="575" y="88" font-size="18" font-weight="700">Rapidly increasing gradient = spike sensation</text><text x="510" y="300" font-size="18" font-weight="700">Smoother gradient = more predictable support</text></g>
+</svg>
+<figcaption>Conceptual derivative of the first figure. It illustrates the article’s central point: harshness can come from a rapidly changing damping gradient even when a single peak-force comparison looks reasonable.</figcaption>
+</figure>
+
+<h2>Mid-valve float: support first, restriction later</h2>
+<p>One pattern I have repeatedly seen in older off-road fork designs is a mid-valve with very large float. With enough float, the mid-valve contributes little compression damping early in the stroke and behaves more like a check-valve arrangement for part of its travel.</p>
+<p>The rider can then get a fork that initially feels under-supported and moves too easily. When velocity and flow rise far enough for another restriction — piston port area, post area, shim stiffness or another part of the hydraulic circuit — to become dominant, pressure rises sharply. The fork goes from “blowing through” to “hitting a wall”.</p>
+<p>That combination is important because the first instinct is often to add more damping at the clicker. But a clicker cannot redesign the relationship between mid-valve float, shim stiffness and available flow area. It can move the symptom around without fixing the architecture.</p>
+
+<h2>The second type of harshness: opening force</h2>
+<p>The other problem is not necessarily a velocity-squared rise. It is the force required before the valve begins to open.</p>
+<p>A spring-loaded cone valve is a simple example. A tapered element is held into a matching seat by spring force. Pressure must build until the hydraulic force is sufficient to unseat the cone. Once it begins moving, the spring and geometry determine how the opening area grows.</p>
+<p>That does not make a cone valve inherently bad. In high-load applications the design can produce excellent support and pressure control. But if the opening force and ramp are too high for the rider, terrain and required compliance, that initial resistance can be felt directly as harshness and reduced small-bump response.</p>
+
+<figure class="engineering-figure">
+<svg viewBox="0 0 900 540" role="img" aria-labelledby="opening-title opening-desc">
+  <title id="opening-title">Conceptual shim-valve and spring-loaded cone-valve opening characteristics</title>
+  <desc id="opening-desc">The shim valve begins opening progressively from low force, while the spring-loaded cone requires a threshold force before lift begins and then ramps upward.</desc>
+  <g stroke="currentColor" opacity="0.18" stroke-width="1"><line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="355" x2="850" y2="355"/><line x1="95" y1="255" x2="850" y2="255"/><line x1="95" y1="155" x2="850" y2="155"/><line x1="95" y1="55" x2="850" y2="55"/><line x1="95" y1="55" x2="95" y2="455"/></g>
+  <g stroke="currentColor" stroke-width="2"><line x1="95" y1="455" x2="850" y2="455"/><line x1="95" y1="55" x2="95" y2="455"/></g>
+  <g fill="currentColor" font-family="Arial, sans-serif" font-size="16"><text x="472" y="515" text-anchor="middle">Valve lift / opening</text><text x="28" y="255" text-anchor="middle" transform="rotate(-90 28 255)">Required hydraulic force</text></g>
+  <path d="M95 440 C230 408 390 355 540 285 C680 220 785 165 850 132" fill="none" stroke="var(--viz-accent, currentColor)" stroke-width="5"/>
+  <path d="M95 330 L210 330 C280 300 370 252 475 205 C610 145 735 92 850 62" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="12 8"/>
+  <g fill="currentColor" font-family="Arial, sans-serif"><text x="180" y="416" font-size="18" font-weight="700">Shim valve: progressive deflection</text><text x="120" y="302" font-size="18" font-weight="700">Cone valve: opening threshold</text><text x="565" y="112" font-size="17">Spring force and geometry control the ramp after opening</text></g>
+</svg>
+<figcaption>Conceptual valve-opening behaviour only. Real curves depend on geometry, preload, spring stiffness, shim dimensions, oil properties and the rest of the hydraulic circuit.</figcaption>
+</figure>
+
+<h2>Why more pressure is not automatically more grip</h2>
+<p>A suspension system needs enough pressure differential to create the damping force required to control the bike. But pressure is not the objective by itself. The objective is controlled wheel movement.</p>
+<p>For supercross-style loads, a high-support setting and strong opening characteristic may be exactly what the rider needs. For lower-speed motocross, enduro and mid-corner grip, the same characteristic can be too resistant to small and medium wheel movements. The tyre then spends less time following the surface and more time being pushed away from it.</p>
+<p>The correct question is not “How much damping can we make?” It is “What damping characteristic keeps this wheel in contact with the ground while still controlling chassis movement and bottoming?”</p>
+
+<h2>The quick workshop diagnosis</h2>
+<p>If a fork feels harsh, do not immediately assume the compression clicker is simply too far in. First decide where the harshness occurs.</p>
+<ul>
+  <li><strong>Sharp edges and braking chop:</strong> look at friction, initial valve opening, bleed, mid-valve behaviour and how rapidly pressure rises.</li>
+  <li><strong>Deeper in the stroke:</strong> look at spring support, oil height, mid-valve and base-valve balance, and whether a restriction is becoming dominant.</li>
+  <li><strong>Only at very high load or landing:</strong> separate true bottoming control from general harshness. They are not the same problem.</li>
+</ul>
+<p>Then change the part of the system responsible for that job. Do not ask the clicker to fix spring rate, ask oil height to fix the first 30 mm of travel, or ask an excessively stiff valve to provide compliance it was never designed to give.</p>
+
+<h2>Mountain Race Shop Takeaway</h2>
+<ul class="takeaway-list">
+  <li>Harshness is not simply “too much damping”.</li>
+  <li>A fixed or effectively fixed restriction can drive pressure toward a velocity-squared relationship.</li>
+  <li>The shape and gradient of the damping curve matter as much as a single force number.</li>
+  <li>Large mid-valve float can create a blow-through-then-spike behaviour when another restriction takes control.</li>
+  <li>High valve opening force can create a different kind of harshness before significant flow even begins.</li>
+  <li>The correct setup is the one that controls the chassis while allowing the wheel to follow the ground.</li>
+</ul>
+<div class="pull-quote">Harshness is rarely caused by one damping number. It is created by the way damping is generated.</div>
+<p>Enjoy.</p>
+<div class="author-block"><p><strong>Craig Dixon</strong><br />Suspension Engineer<br />Mountain Race Shop&trade;</p></div>
+</article><aside class="card"><h2>Fork still beating you up?</h2><p>Stop guessing. Get the suspension diagnosed properly. We can check spring balance, damping range and the hydraulic setup rather than simply winding clickers in and out.</p><div class="cta-row"><a class="button" href="/booking.html">Book a Service</a><a class="button button-secondary" href="/services/revalving/">Revalving</a></div><p class="note">Technical figures are conceptual illustrations intended to explain the underlying relationships; they are not measured dyno traces for a specific fork.</p></aside></div></section>
+<section class="section final-cta"><div class="container center narrow"><p class="eyebrow">Diagnose. Engineer. Tune. Teach.</p><h2>Fix the cause, not the symptom.</h2><div class="cta-row center-cta"><a class="button button-lg" href="/booking.html">Book Suspension Work</a><a class="button button-secondary button-lg" href="/knowledge-centre/">Back to Knowledge Centre</a></div></div></section>
+</main>
+<footer class="site-footer"><div class="container footer-wrap"><div><strong>Mountain Race Shop</strong><p>Motorcycle suspension engineering, tuning, education and workshop services since 1995.</p><p class="copyright-line">&copy; 2026 Mountain Race Shop&trade;. All rights reserved.</p></div><div><p><a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a><br /><a href="tel:+61420947505">0420 947 505</a><br />2572 Shannons Flat Rd, Shannons Flat NSW 2620</p></div></div></footer>
+</body>
+</html>

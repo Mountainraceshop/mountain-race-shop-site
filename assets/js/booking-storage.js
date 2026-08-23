@@ -1,34 +1,40 @@
 /**
- * Mountain Race Shop™ — booking storage layer
+ * Mountain Race Shop™ — booking UI storage and capacity helpers.
  *
- * Current static booking form requires backend/email integration before production booking storage is reliable.
- * Production: replace with SupabaseBookingStorage (see SUPABASE INTEGRATION below).
+ * The public form still uses these synchronous helpers to render prices and
+ * Monday choices. When Supabase is configured, booking-production.js takes
+ * over submission and refreshes capacity from the shared database.
  */
-
 (function (global) {
   "use strict";
 
   const STORAGE_KEY = "mrs_bookings_v1";
-  const STORAGE_LOCK_KEY = `${STORAGE_KEY}_lock`;
-  const STORAGE_LOCK_TTL_MS = 2000;
-  const STORAGE_LOCK_WAIT_MS = 1000;
-
   const CAPACITY_LIMITS = {
     maxBikesPerMonday: 3,
     maxLooseJobsPerMonday: 10,
   };
-
-  const BLOCKED_PICKUP_DATES = [
-    "2026-06-08",
-  ];
-
+  const BLOCKED_PICKUP_DATES = [];
   const BLOCKED_PICKUP_DATE_MESSAGE =
-    "Monday 8 June is fully booked for Canberra pickup/drop-off. Please choose another Monday.";
-
+    "This Canberra pickup date is unavailable. Please choose another Monday.";
   const PICKUP_PRICING = {
-    complete_bike: { label: "Complete bike pickup/drop-off", price: 20, bikes: 1, loose: 0 },
-    loose_forks: { label: "Loose forks only", price: 10, bikes: 0, loose: 1 },
-    loose_shock: { label: "Loose shock only", price: 10, bikes: 0, loose: 1 },
+    complete_bike: {
+      label: "Complete bike pickup/drop-off",
+      price: 20,
+      bikes: 1,
+      loose: 0,
+    },
+    loose_forks: {
+      label: "Loose forks only",
+      price: 10,
+      bikes: 0,
+      loose: 1,
+    },
+    loose_shock: {
+      label: "Loose shock only",
+      price: 10,
+      bikes: 0,
+      loose: 1,
+    },
     loose_forks_and_shock: {
       label: "Loose forks and shock",
       price: 20,
@@ -36,140 +42,87 @@
       loose: 2,
     },
   };
-
   const BOOKING_STATUSES = [
     "New request",
+    "Awaiting customer confirmation",
     "Confirmed",
     "Waiting on parts",
+    "Booked into workshop",
     "Completed",
     "Cancelled",
   ];
-
-  const WORKSHOP_TIME_ZONE = "Australia/Sydney";
   const WORKSHOP_DATE_FORMAT = new Intl.DateTimeFormat("en-AU", {
-    timeZone: WORKSHOP_TIME_ZONE,
+    timeZone: "Australia/Sydney",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   });
+  let productionBookingUnavailable = false;
 
   function generateBookingId() {
-    const d = new Date();
-    const ymd =
-      d.getFullYear().toString() +
-      String(d.getMonth() + 1).padStart(2, "0") +
-      String(d.getDate()).padStart(2, "0");
-    const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
-    return `MRS-${ymd}-${rand}`;
+    const now = new Date();
+    const parts = WORKSHOP_DATE_FORMAT.formatToParts(now);
+    const value = (type) => parts.find((part) => part.type === type)?.value || "";
+    const random = Math.random().toString(36).slice(2, 6).toUpperCase();
+    return `MRS-${value("year")}${value("month")}${value("day")}-${random}`;
   }
 
   function readAllRaw() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
+      const raw = global.localStorage?.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-      console.error("Failed to read bookings", e);
+    } catch (error) {
+      console.warn("Could not read local booking fallback", error);
       return [];
     }
   }
 
   function writeAllRaw(bookings) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
-  }
-
-  function readStorageLock() {
     try {
-      const raw = localStorage.getItem(STORAGE_LOCK_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch (e) {
-      return null;
+      global.localStorage?.setItem(STORAGE_KEY, JSON.stringify(bookings));
+    } catch (error) {
+      console.warn("Could not write local booking fallback", error);
     }
   }
 
-  function acquireStorageLock() {
-    const token = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    const deadline = Date.now() + STORAGE_LOCK_WAIT_MS;
-
-    while (Date.now() <= deadline) {
-      const now = Date.now();
-      const current = readStorageLock();
-      if (!current || current.expires_at <= now) {
-        localStorage.setItem(
-          STORAGE_LOCK_KEY,
-          JSON.stringify({ token, expires_at: now + STORAGE_LOCK_TTL_MS })
-        );
-
-        const stored = readStorageLock();
-        if (stored && stored.token === token) {
-          return token;
-        }
-      }
-    }
-
-    throw new Error("Booking storage is busy. Please try again.");
-  }
-
-  function releaseStorageLock(token) {
-    const current = readStorageLock();
-    if (current && current.token === token) {
-      localStorage.removeItem(STORAGE_LOCK_KEY);
-    }
-  }
-
-  function withStorageLock(callback) {
-    const token = acquireStorageLock();
-    try {
-      return callback();
-    } finally {
-      releaseStorageLock(token);
-    }
-  }
-
-  /**
-   * Aggregate Monday capacity from non-cancelled bookings with pickup enabled.
-   */
-  function getMondayUsage(mondayDateIso, excludedBookingId) {
-    const bookings = readAllRaw().filter(
-      (b) =>
-        b.wants_pickup_dropoff &&
-        b.preferred_monday_date === mondayDateIso &&
-        b.booking_status !== "Cancelled" &&
-        b.booking_id !== excludedBookingId
-    );
-
-    let bikes = 0;
-    let loose = 0;
-
-    for (const b of bookings) {
-      const slots = getBookingPickupSlots(b);
-      bikes += slots.bikes;
-      loose += slots.loose;
-    }
-
-    return { bikes, loose };
-  }
-
-  /**
-   * Pickup capacity slots for a saved booking (suspension-aware when stored).
-   */
   function getBookingPickupSlots(booking) {
-    if (!booking.wants_pickup_dropoff) {
-      return { bikes: 0, loose: 0 };
-    }
+    if (!booking?.wants_pickup_dropoff) return { bikes: 0, loose: 0 };
     if (
-      typeof booking.pickup_capacity_bikes === "number" &&
-      typeof booking.pickup_capacity_loose === "number"
+      Number.isFinite(Number(booking.pickup_capacity_bikes)) &&
+      Number.isFinite(Number(booking.pickup_capacity_loose))
     ) {
       return {
-        bikes: booking.pickup_capacity_bikes,
-        loose: booking.pickup_capacity_loose,
+        bikes: Number(booking.pickup_capacity_bikes),
+        loose: Number(booking.pickup_capacity_loose),
       };
     }
     const meta = PICKUP_PRICING[booking.pickup_type];
-    if (!meta) return { bikes: 0, loose: 0 };
-    return { bikes: meta.bikes, loose: meta.loose };
+    return meta ? { bikes: meta.bikes, loose: meta.loose } : { bikes: 0, loose: 0 };
+  }
+
+  function getMondayUsage(mondayDateIso, excludedBookingId) {
+    return readAllRaw()
+      .filter(
+        (booking) =>
+          booking.wants_pickup_dropoff &&
+          booking.preferred_monday_date === mondayDateIso &&
+          booking.booking_status !== "Cancelled" &&
+          booking.booking_id !== excludedBookingId
+      )
+      .reduce(
+        (usage, booking) => {
+          const slots = getBookingPickupSlots(booking);
+          usage.bikes += slots.bikes;
+          usage.loose += slots.loose;
+          return usage;
+        },
+        { bikes: 0, loose: 0 }
+      );
+  }
+
+  function isPickupDateBlocked(mondayDateIso) {
+    return BLOCKED_PICKUP_DATES.includes(mondayDateIso);
   }
 
   function getCapacityForSlots(mondayDateIso, slots, excludedBookingId) {
@@ -177,159 +130,95 @@
       return {
         available: false,
         message: BLOCKED_PICKUP_DATE_MESSAGE,
-        usage: getMondayUsage(mondayDateIso, excludedBookingId),
-        remaining: {
-          bikes: 0,
-          loose: 0,
-        },
+        usage: { bikes: 0, loose: 0 },
+        remaining: { bikes: 0, loose: 0 },
       };
     }
-
     const usage = getMondayUsage(mondayDateIso, excludedBookingId);
-    const bikesRemaining = CAPACITY_LIMITS.maxBikesPerMonday - usage.bikes;
-    const looseRemaining = CAPACITY_LIMITS.maxLooseJobsPerMonday - usage.loose;
+    const remaining = {
+      bikes: CAPACITY_LIMITS.maxBikesPerMonday - usage.bikes,
+      loose: CAPACITY_LIMITS.maxLooseJobsPerMonday - usage.loose,
+    };
     const need = slots || { bikes: 0, loose: 0 };
-
-    const bikeOk = need.bikes === 0 || bikesRemaining >= need.bikes;
-    const looseOk = need.loose === 0 || looseRemaining >= need.loose;
-
-    let message = "";
-    if (!bikeOk) {
-      message = "Bike pickup capacity full for this Monday.";
-    } else if (!looseOk) {
-      message = "Loose suspension pickup capacity full for this Monday.";
-    }
-
+    const bikeOk = need.bikes === 0 || remaining.bikes >= need.bikes;
+    const looseOk = need.loose === 0 || remaining.loose >= need.loose;
     return {
       available: bikeOk && looseOk,
-      message,
+      message: !bikeOk
+        ? "Bike pickup capacity full for this Monday."
+        : !looseOk
+          ? "Loose suspension pickup capacity full for this Monday."
+          : "",
       usage,
-      remaining: {
-        bikes: bikesRemaining,
-        loose: looseRemaining,
-      },
+      remaining,
     };
   }
 
-  function getCapacityForPickupType(
-    mondayDateIso,
-    pickupType,
-    excludedBookingId
-  ) {
-    const need = PICKUP_PRICING[pickupType];
-    if (!need) {
-      return getCapacityForSlots(
-        mondayDateIso,
-        { bikes: 0, loose: 0 },
-        excludedBookingId
-      );
-    }
-    return getCapacityForSlots(
-      mondayDateIso,
-      { bikes: need.bikes, loose: need.loose },
-      excludedBookingId
-    );
-  }
-
-  function isPickupDateBlocked(mondayDateIso) {
-    return BLOCKED_PICKUP_DATES.includes(mondayDateIso);
-  }
-
-  function validatePickupCapacity(booking, excludedBookingId) {
-    if (!booking.wants_pickup_dropoff || !booking.preferred_monday_date) return;
-
-    if (isPickupDateBlocked(booking.preferred_monday_date)) {
-      throw new Error(BLOCKED_PICKUP_DATE_MESSAGE);
-    }
-
-    const slots = getBookingPickupSlots(booking);
-    const cap = getCapacityForSlots(
-      booking.preferred_monday_date,
-      slots,
-      excludedBookingId
-    );
-    if (!cap.available) {
-      throw new Error(cap.message || "Selected Monday is at capacity.");
-    }
+  function getCapacityForPickupType(mondayDateIso, pickupType, excludedBookingId) {
+    const meta = PICKUP_PRICING[pickupType] || { bikes: 0, loose: 0 };
+    return getCapacityForSlots(mondayDateIso, meta, excludedBookingId);
   }
 
   function listBookings() {
     return readAllRaw().sort(
-      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      (a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0)
     );
   }
 
   function getBookingById(bookingId) {
-    return readAllRaw().find((b) => b.booking_id === bookingId) || null;
+    return readAllRaw().find((booking) => booking.booking_id === bookingId) || null;
   }
 
   function saveBooking(booking) {
     const all = readAllRaw();
-    const idx = all.findIndex((b) => b.booking_id === booking.booking_id);
-    if (idx >= 0) {
-      all[idx] = booking;
-    } else {
-      all.push(booking);
-    }
+    const index = all.findIndex((item) => item.booking_id === booking.booking_id);
+    if (index >= 0) all[index] = booking;
+    else all.push(booking);
     writeAllRaw(all);
     return booking;
   }
 
   function createBooking(payload) {
-    return withStorageLock(() => {
-      const booking = {
-        booking_id: generateBookingId(),
-        created_at: new Date().toISOString(),
-        booking_status: "New request",
-        ...payload,
-      };
-
-      validatePickupCapacity(booking);
-
-      return saveBooking(booking);
-    });
+    const booking = {
+      booking_id: generateBookingId(),
+      created_at: new Date().toISOString(),
+      booking_status: "New request",
+      ...payload,
+    };
+    const slots = getBookingPickupSlots(booking);
+    const capacity = getCapacityForSlots(booking.preferred_monday_date, slots);
+    if (booking.wants_pickup_dropoff && !capacity.available) {
+      throw new Error(capacity.message || "Selected Monday is at capacity.");
+    }
+    return saveBooking(booking);
   }
 
   function updateBookingStatus(bookingId, status) {
-    return withStorageLock(() => {
-      const booking = getBookingById(bookingId);
-      if (!booking) throw new Error("Booking not found");
-      if (booking.booking_status === "Cancelled" && status !== "Cancelled") {
-        validatePickupCapacity(booking, booking.booking_id);
+    const booking = getBookingById(bookingId);
+    if (!booking) throw new Error("Booking not found");
+    if (
+      booking.booking_status === "Cancelled" &&
+      status !== "Cancelled" &&
+      booking.wants_pickup_dropoff
+    ) {
+      const slots = getBookingPickupSlots(booking);
+      const capacity = getCapacityForSlots(
+        booking.preferred_monday_date,
+        slots,
+        booking.booking_id
+      );
+      if (!capacity.available) {
+        throw new Error(capacity.message || "Selected Monday is at capacity.");
       }
-      booking.booking_status = status;
-      return saveBooking(booking);
-    });
-  }
-
-  /**
-   * Next N Mondays (ISO date strings YYYY-MM-DD) in Australia/Sydney calendar day.
-   */
-  function getUpcomingMondays(count = 16) {
-    const mondays = [];
-    const today = getWorkshopDateParts();
-    const cursor = new Date(Date.UTC(today.year, today.month - 1, today.day));
-    const day = cursor.getUTCDay();
-    const daysUntilMonday = day === 0 ? 1 : day === 1 ? 0 : 8 - day;
-    if (day !== 1) {
-      cursor.setUTCDate(cursor.getUTCDate() + daysUntilMonday);
     }
-
-    while (mondays.length < count) {
-      const iso = formatUtcDate(cursor);
-      mondays.push(iso);
-      cursor.setUTCDate(cursor.getUTCDate() + 7);
-    }
-    return mondays;
+    booking.booking_status = status;
+    return saveBooking(booking);
   }
 
   function getWorkshopDateParts(date = new Date()) {
     const parts = WORKSHOP_DATE_FORMAT.formatToParts(date);
-    return {
-      year: Number(parts.find((part) => part.type === "year").value),
-      month: Number(parts.find((part) => part.type === "month").value),
-      day: Number(parts.find((part) => part.type === "day").value),
-    };
+    const value = (type) => Number(parts.find((part) => part.type === type)?.value);
+    return { year: value("year"), month: value("month"), day: value("day") };
   }
 
   function formatUtcDate(date) {
@@ -340,9 +229,22 @@
     ].join("-");
   }
 
+  function getUpcomingMondays(count = 16) {
+    const today = getWorkshopDateParts();
+    const cursor = new Date(Date.UTC(today.year, today.month - 1, today.day));
+    const day = cursor.getUTCDay();
+    const daysUntilMonday = day === 1 ? 0 : day === 0 ? 1 : 8 - day;
+    cursor.setUTCDate(cursor.getUTCDate() + daysUntilMonday);
+    const mondays = [];
+    while (mondays.length < count) {
+      mondays.push(formatUtcDate(cursor));
+      cursor.setUTCDate(cursor.getUTCDate() + 7);
+    }
+    return mondays;
+  }
+
   function formatMondayLabel(isoDate) {
-    const d = new Date(isoDate + "T12:00:00");
-    return d.toLocaleDateString("en-AU", {
+    return new Date(`${isoDate}T12:00:00`).toLocaleDateString("en-AU", {
       weekday: "long",
       day: "numeric",
       month: "long",
@@ -350,21 +252,7 @@
     });
   }
 
-  /* --------------------------------------------------------------------------
-   * SUPABASE INTEGRATION (replace localStorage for multi-user production)
-   *
-   * 1. Create table `bookings` with columns matching the booking object below.
-   * 2. Implement async methods:
-   *    - listBookings() -> select * order by created_at desc
-   *    - createBooking(payload) -> insert + RPC to check capacity atomically
-   *    - getMondayUsage(date) -> SQL aggregate:
-   *        sum(bikes) where status != 'Cancelled' and wants_pickup_dropoff
-   *    - updateBookingStatus(id, status) -> update
-   * 3. Use a Postgres function or edge function to enforce capacity in one
-   *    transaction so two customers cannot overbook the same Monday.
-   * -------------------------------------------------------------------------- */
-
-  const BookingStorage = {
+  global.BookingStorage = {
     STORAGE_KEY,
     CAPACITY_LIMITS,
     BLOCKED_PICKUP_DATES,
@@ -386,5 +274,52 @@
     formatMondayLabel,
   };
 
-  global.BookingStorage = BookingStorage;
-})(typeof window !== "undefined" ? window : global);
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector(`script[src="${src}"]`)) {
+        resolve();
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = src;
+      script.defer = true;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function guardProductionSubmit(event) {
+    if (global.MRS_PRODUCTION_BOOKING_READY) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const config = global.MRS_SUPABASE_CONFIG || {};
+    const hasProductionConfig = Boolean(config.url && config.anonKey);
+    const message =
+      hasProductionConfig &&
+      !productionBookingUnavailable &&
+      !global.MRS_PRODUCTION_BOOKING_UNAVAILABLE
+        ? "Secure online booking is still loading. Please try again in a moment."
+        : "Online booking is temporarily unavailable. Please contact Mountain Race Shop directly.";
+    global.alert?.(message);
+  }
+
+  if (typeof document !== "undefined" && document.getElementById("bookingForm")) {
+    document
+      .getElementById("bookingForm")
+      .addEventListener("submit", guardProductionSubmit, true);
+
+    loadScript("assets/js/supabase-config.js")
+      .catch(() => undefined)
+      .then(() => {
+        const config = global.MRS_SUPABASE_CONFIG || {};
+        productionBookingUnavailable = !(config.url && config.anonKey);
+        return loadScript("assets/js/booking-production.js");
+      })
+      .catch((error) => {
+        productionBookingUnavailable = true;
+        console.warn("Production booking adapter did not load", error);
+      });
+  }
+})(typeof window !== "undefined" ? window : globalThis);

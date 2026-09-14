@@ -421,7 +421,7 @@
         const item = group.items.find((i) => i.id === code);
         if (item) {
           selected.push(
-            `${group.group} ${item.size} (${item.code}) RRP $${item.rrp.toFixed(2)} — order only`
+            `${group.group} ${item.size} (${item.code}) RRP A$${item.rrp.toFixed(2)} — order only`
           );
         }
       }
@@ -680,7 +680,7 @@
       return;
     }
     const p = BookingStorage.PICKUP_PRICING[type];
-    el.innerHTML = `Selected pickup fee: <span class="pickup-price-highlight">$${p.price} AUD</span>`;
+    el.innerHTML = `Selected pickup fee: <span class="pickup-price-highlight">A$${p.price}</span>`;
   }
 
   function updateTyreFittingDisplay() {
@@ -693,7 +693,7 @@
         const cost = getTyreFittingCost();
         const qty = Number($("tyre_fitting_quantity")?.value) || 0;
         tyreFittingCostDisplay.style.display = "block";
-        tyreFittingCostDisplay.textContent = `Estimated fitting: $${cost} AUD (${qty} tyre${qty === 1 ? "" : "s"} × $${TYRE_FITTING_RATE}). Tube extra if required.`;
+        tyreFittingCostDisplay.textContent = `Estimated fitting: A$${cost} (${qty} tyre${qty === 1 ? "" : "s"} × A$${TYRE_FITTING_RATE}). Tube extra if required.`;
       } else {
         tyreFittingCostDisplay.style.display = "none";
       }
@@ -759,7 +759,7 @@
       .map((line) => {
         const amt =
           line.amount != null
-            ? `$${line.amount}`
+            ? `A$${line.amount}`
             : "<em>Quoted / confirmed later</em>";
         return `<div class="estimate-line"><span>${line.label}</span><span>${amt}</span></div>`;
       })
@@ -767,7 +767,7 @@
 
     const total = computeEstimatedFixedTotal();
     estimatedTotalAmount.textContent =
-      total > 0 ? `$${total} AUD` : "— (no fixed-price items selected)";
+      total > 0 ? `A$${total}` : "— (no fixed-price items selected)";
   }
 
   function renderSuspensionPricingSchedule() {
@@ -778,7 +778,7 @@
         (s, i) => `
       <article class="pricing-schedule-item">
         <h3>${i + 1}. ${s.label}</h3>
-        <p class="pricing-schedule-price">Price: $${s.price}</p>
+        <p class="pricing-schedule-price">Price: A$${s.price}</p>
         <p class="section-hint">Includes:</p>
         <ul class="pricing-includes">${s.includes.map((x) => `<li>${x}</li>`).join("")}</ul>
       </article>`
@@ -886,7 +886,7 @@
               <span class="service-card-inner">
                 <span class="service-card-check" aria-hidden="true"></span>
                 <span class="service-card-title">${item.size}</span>
-                <span class="tyre-catalog-meta">Code ${item.code} · Listed $${item.tradeExGst.toFixed(2)} ex GST · RRP $${item.rrp.toFixed(2)}</span>
+                <span class="tyre-catalog-meta">Code ${item.code} · Listed A$${item.tradeExGst.toFixed(2)} ex GST · RRP A$${item.rrp.toFixed(2)}</span>
               </span>
             </label>`
             )

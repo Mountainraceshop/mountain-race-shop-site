@@ -30,7 +30,8 @@
       <div class="container narrow center">
         <p class="eyebrow">Mountain Race Shop™</p>
         <h1>Book Suspension Service</h1>
-        <p class="lead">September suspension bookings are open while Craig is away in France through August. Book suspension work, rider setup, engine rebuilds, tyre orders or Canberra pickup/drop-off online so we can line up the right parts, setup notes and workshop schedule for your return-to-riding window.</p>
+        <p class="lead">Book suspension work, rider setup, engine rebuilds, tyre orders or Canberra pickup and drop-off. Craig will confirm the right service, parts, price and workshop timing before work begins.</p>
+        <div class="cta-row center-cta"><a class="button button-lg" href="tel:+61420947505">Call Craig 0420 947 505</a><a class="button button-secondary button-lg" href="#bookingForm">Start booking request</a></div>
         <p class="muted">Engineering-backed suspension tuning — proven on track, validated by data.</p>
       </div>
     </section>
@@ -38,10 +39,10 @@
     <section class="section section-muted" style="padding-top: 0;">
       <div class="container booking-form-shell">
         <div class="notice-box form-section" style="margin-bottom: 1rem;">
-          <h2>September bookings now open</h2>
-          <p><strong>Craig is away in France until late August.</strong> The workshop diary is open now for September return bookings, with limited first-week workshop slots available.</p>
-          <p style="margin-top: 0.75rem;">Not sure what the bike needs? Start with the <strong>Rider Setup &amp; Baseline Recommendation — $50</strong>. The $50 fee is credited toward recommended suspension work booked within 30 days.</p>
-          <p style="margin-top: 0.75rem;"><strong>Best booking paths:</strong> choose a fixed service if you know what you need, choose Rider Setup if you want the bike measured first, or choose Spring Ready / September Priority if you want a slot held for Craig's return.</p>
+          <h2>Workshop bookings now open</h2>
+          <p>Choose a fixed suspension service if you know what the bike needs, or start with an <strong>A$50 Rider Setup and Baseline Recommendation</strong> when the problem needs diagnosing first.</p>
+          <p style="margin-top: 0.75rem;">The A$50 assessment fee is credited toward recommended suspension work booked within 30 days.</p>
+          <p style="margin-top: 0.75rem;"><strong>Not sure which path fits?</strong> Call Craig on <a href="tel:+61420947505">0420 947 505</a> and describe what the bike is doing.</p>
         </div>
 
         <div id="bookingConfirmation" class="booking-confirmation card" role="status" aria-live="polite">
@@ -135,11 +136,11 @@
 
           <div class="notice-box form-section" style="margin-bottom: 0;">
             <ul class="booking-notes-list">
-              <li><strong>September bookings are open now.</strong> Book early if you want work lined up for Craig's return from France.</li>
+              <li><strong>Workshop bookings are open.</strong> Submit the request below or call Craig if you are unsure what to select.</li>
               <li>Suspension fixed prices below; wear parts and unexpected repairs are extra (we will contact you first).</li>
               <li>Engine rebuild work is quoted after inspection.</li>
               <li>Tyres are order only and subject to availability.</li>
-              <li>Tyre fitting is $30 per tyre plus tube if required.</li>
+              <li>Tyre fitting is A$30 per tyre plus tube if required.</li>
               <li>Brake pads will not be replaced without price confirmation and customer approval.</li>
               <li><strong>Do not send payment until your booking has been confirmed.</strong></li>
             </ul>
@@ -154,7 +155,7 @@
               <summary class="field-label">View full pricing schedule</summary>
               <div id="suspensionPricingSchedule" class="pricing-schedule"></div>
             </details>
-            <p class="section-hint" style="margin-top: 1.25rem;">Select your suspension service. If you are not sure what the bike needs, choose Rider Setup &amp; Baseline Recommendation. If you want work held for Craig's return from France, choose Spring Ready or September Priority.</p>
+            <p class="section-hint" style="margin-top: 1.25rem;">Select your suspension service. If you are not sure what the bike needs, choose Rider Setup &amp; Baseline Recommendation or call Craig before booking.</p>
             <div id="serviceGrid" class="service-grid service-grid-priced" role="radiogroup" aria-label="Suspension services"></div>
             <p id="suspensionOnBikeHint" class="capacity-note is-info" style="display: none; margin-top: 0.75rem;"></p>
             <p id="suspensionOffBikeHint" class="section-hint" style="display: none; margin-top: 0.5rem;"></p>
@@ -222,7 +223,7 @@
           <!-- Tyres -->
           <fieldset class="form-section">
             <h2>Tyres — Order Only</h2>
-            <p class="section-hint">Tyres are currently order only. Fitting is $30 per tyre plus tube if required. Final price and availability will be confirmed before ordering. <strong>No online payment for tyres.</strong></p>
+            <p class="section-hint">Tyres are currently order only. Fitting is A$30 per tyre plus tube if required. Final price and availability will be confirmed before ordering. <strong>No online payment for tyres.</strong></p>
             <div id="tyreCategoryGrid" class="service-grid" role="group" aria-label="Tyre categories"></div>
             <details class="tyre-catalog-details" style="margin-top: 1rem;">
               <summary class="field-label">Browse example tyres (order only — availability to be confirmed)</summary>
@@ -265,7 +266,7 @@
             </div>
             <label class="terms-row" style="margin-top: 1rem;">
               <input type="checkbox" id="tyreFittingRequired" name="tyre_fitting_required" />
-              <span>I need tyres fitted at the workshop ($30 per tyre)</span>
+              <span>I need tyres fitted at the workshop (A$30 per tyre)</span>
             </label>
             <div class="form-field" data-field="tyre_fitting_quantity" id="tyreFittingQtyWrap" style="margin-top: 0.75rem; display: none;">
               <label for="tyre_fitting_quantity">Number of tyres to fit</label>
@@ -294,7 +295,7 @@
           <!-- Rider -->
           <fieldset id="riderPanel" class="form-section rider-panel">
             <h2>Rider setup information</h2>
-            <p class="section-hint">Required for springs, revalving, Rider Setup, Spring Ready checks and September priority bookings.</p>
+            <p class="section-hint">Required for springs, revalving and Rider Setup recommendations.</p>
             <div class="form-grid two-col">
               <div class="form-field" data-field="rider_body_weight_kg">
                 <label for="rider_body_weight_kg">Rider body weight without riding gear (kg)</label>
@@ -353,10 +354,10 @@
                   <tr><th>Pickup type</th><th>Price (AUD)</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Complete bike pickup/drop-off</td><td class="pickup-price-highlight">$20 per bike</td></tr>
-                  <tr><td>Loose forks pickup/drop-off</td><td class="pickup-price-highlight">$10 per fork set</td></tr>
-                  <tr><td>Loose shock pickup/drop-off</td><td class="pickup-price-highlight">$10</td></tr>
-                  <tr><td>Loose forks and shock pickup/drop-off</td><td class="pickup-price-highlight">$20 total</td></tr>
+                  <tr><td>Complete bike pickup/drop-off</td><td class="pickup-price-highlight">A$20 per bike</td></tr>
+                  <tr><td>Loose forks pickup/drop-off</td><td class="pickup-price-highlight">A$10 per fork set</td></tr>
+                  <tr><td>Loose shock pickup/drop-off</td><td class="pickup-price-highlight">A$10</td></tr>
+                  <tr><td>Loose forks and shock pickup/drop-off</td><td class="pickup-price-highlight">A$20 total</td></tr>
                 </tbody>
               </table>
               <p class="section-hint">Monday pickup times are grouped by area and confirmed by SMS. We aim to complete the Canberra pickup route and leave Fyshwick by 12:00 noon.</p>
@@ -366,10 +367,10 @@
               <div class="form-field" data-field="pickup_type" style="margin-top: 1rem;">
                 <span class="field-label">Pickup type</span>
                 <div class="choice-row" role="group">
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="complete_bike" /><span>Complete bike — $20</span></label>
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks" /><span>Loose forks only — $10</span></label>
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_shock" /><span>Loose shock only — $10</span></label>
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks_and_shock" /><span>Forks and shock loose — $20 total</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="complete_bike" /><span>Complete bike — A$20</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks" /><span>Loose forks only — A$10</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_shock" /><span>Loose shock only — A$10</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks_and_shock" /><span>Forks and shock loose — A$20 total</span></label>
                 </div>
                 <p id="pickupPriceDisplay" class="section-hint" style="margin-top: 0.5rem;"></p>
                 <p class="field-error" role="alert"></p>
@@ -403,7 +404,7 @@
           <fieldset id="estimatePanel" class="form-section estimate-panel">
             <h2>Estimated booking total</h2>
             <div id="estimatedTotalBreakdown" class="estimate-breakdown"></div>
-            <p class="estimate-total-line">Estimated booking total: <strong id="estimatedTotalAmount">$0</strong></p>
+            <p class="estimate-total-line">Estimated booking total: <strong id="estimatedTotalAmount">A$0</strong></p>
             <p class="section-hint">Estimated total includes fixed-price selected services only. Wear parts, damaged components, tyres, tubes, brake pads and engine rebuild work will be confirmed before work begins.</p>
           </fieldset>
 

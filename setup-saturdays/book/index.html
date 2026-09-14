@@ -41,6 +41,7 @@
 
       <form class="booking-form" action="https://formsubmit.co/craig@mountainraceshop.com.au" method="POST">
         <input type="hidden" name="_subject" value="New Setup Saturday booking request" />
+        <input type="hidden" id="lead-source" name="lead_source" value="Direct / unknown" />
         <input type="hidden" name="_template" value="table" />
         <input type="hidden" name="booking_type" value="Motorcycle Handling Assessment — Setup Saturday" />
 
@@ -106,5 +107,9 @@
   </section>
 </main>
 <footer class="site-footer"><div class="container footer-wrap"><div><strong>Mountain Race Shop</strong><p>Motorcycle handling and suspension engineering since 1995.</p></div><div><p><a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a><br><a href="tel:+61420947505">0420 947 505</a><br>2572 Shannons Flat Rd, Shannons Flat NSW 2620</p></div></div></footer>
+<script>
+  const source = new URLSearchParams(window.location.search).get("source");
+  if (source) document.getElementById("lead-source").value = source;
+</script>
 </body>
 </html>

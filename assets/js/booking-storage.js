@@ -18,12 +18,16 @@
     maxLooseJobsPerMonday: 10,
   };
 
-  const BLOCKED_PICKUP_DATES = [
-    "2026-06-08",
-  ];
+  const BLOCKED_PICKUP_DATES = [];
+
+  // Move a normal Monday route when a confirmed event or public holiday
+  // makes that Monday unsuitable. The replacement date is shown to customers.
+  const PICKUP_DATE_OVERRIDES = {
+    "2026-10-05": "2026-10-08",
+  };
 
   const BLOCKED_PICKUP_DATE_MESSAGE =
-    "Monday 8 June is fully booked for Canberra pickup/drop-off. Please choose another Monday.";
+    "This pickup date is unavailable. Please choose another listed date.";
 
   const PICKUP_PRICING = {
     complete_bike: { label: "Complete bike pickup/drop-off", price: 20, bikes: 1, loose: 0 },
@@ -316,8 +320,10 @@
     }
 
     while (mondays.length < count) {
-      const iso = formatUtcDate(cursor);
-      mondays.push(iso);
+      const normalMondayIso = formatUtcDate(cursor);
+      const pickupDateIso =
+        PICKUP_DATE_OVERRIDES[normalMondayIso] || normalMondayIso;
+      mondays.push(pickupDateIso);
       cursor.setUTCDate(cursor.getUTCDate() + 7);
     }
     return mondays;

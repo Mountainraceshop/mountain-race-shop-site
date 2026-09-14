@@ -81,7 +81,7 @@
     {
       id: "fork_off",
       label: "Fork service — off the bike",
-      priceLabel: "$320",
+      priceLabel: "A$320",
       price: 320,
       location: "off_bike",
       pickupBikes: 0,
@@ -102,7 +102,7 @@
     {
       id: "shock_off",
       label: "Shock service — off the bike",
-      priceLabel: "$340",
+      priceLabel: "A$340",
       price: 340,
       location: "off_bike",
       pickupBikes: 0,
@@ -125,7 +125,7 @@
     {
       id: "fork_shock_off",
       label: "Fork and shock service — off the bike, delivered together",
-      priceLabel: "$600",
+      priceLabel: "A$600",
       price: 600,
       location: "off_bike",
       pickupBikes: 0,
@@ -147,7 +147,7 @@
     {
       id: "fork_on",
       label: "Fork service — on the bike",
-      priceLabel: "$360",
+      priceLabel: "A$360",
       price: 360,
       location: "on_bike",
       pickupBikes: 1,
@@ -171,7 +171,7 @@
     {
       id: "shock_on",
       label: "Shock service — on the bike",
-      priceLabel: "$460",
+      priceLabel: "A$460",
       price: 460,
       location: "on_bike",
       pickupBikes: 1,
@@ -197,7 +197,7 @@
     {
       id: "revalve_off",
       label: "Revalve, springs and service — fork and shock, off the bike",
-      priceLabel: "$1260",
+      priceLabel: "A$1260",
       price: 1260,
       location: "off_bike",
       pickupBikes: 0,
@@ -221,7 +221,7 @@
     {
       id: "revalve_on",
       label: "Revalve, springs and service — fork and shock, on the bike",
-      priceLabel: "$1470",
+      priceLabel: "A$1470",
       price: 1470,
       location: "on_bike",
       pickupBikes: 1,
@@ -247,7 +247,7 @@
     {
       id: "air_fork_off",
       label: "Air fork bike revalve and service — fork and shock, off the bike",
-      priceLabel: "$1080",
+      priceLabel: "A$1080",
       price: 1080,
       location: "off_bike",
       pickupBikes: 0,
@@ -270,7 +270,7 @@
     {
       id: "air_fork_on",
       label: "Air fork bike revalve and service — fork and shock, on the bike",
-      priceLabel: "$1260",
+      priceLabel: "A$1260",
       price: 1260,
       location: "on_bike",
       pickupBikes: 1,

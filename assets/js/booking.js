@@ -57,6 +57,10 @@
     return document.getElementById(id);
   }
 
+  const leadSource =
+    new URLSearchParams(window.location.search).get("source") ||
+    "Direct / unknown";
+
   function getSelectedSuspensionServiceId() {
     const el = form.querySelector('input[name="suspension_service"]:checked');
     return el ? el.value : "";
@@ -449,6 +453,7 @@
       customer_name: $("customer_name").value.trim(),
       phone: $("phone").value.trim(),
       email: $("email").value.trim(),
+      lead_source: leadSource,
       suburb: $("suburb").value.trim(),
       preferred_contact_method: form.querySelector(
         'input[name="preferred_contact_method"]:checked'

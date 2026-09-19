@@ -30,12 +30,12 @@
     "This pickup date is unavailable. Please choose another listed date.";
 
   const PICKUP_PRICING = {
-    complete_bike: { label: "Complete bike pickup/drop-off", price: 20, bikes: 1, loose: 0 },
-    loose_forks: { label: "Loose forks only", price: 10, bikes: 0, loose: 1 },
-    loose_shock: { label: "Loose shock only", price: 10, bikes: 0, loose: 1 },
+    complete_bike: { label: "Complete bike pickup/drop-off", price: 0, bikes: 1, loose: 0 },
+    loose_forks: { label: "Loose forks only", price: 0, bikes: 0, loose: 1 },
+    loose_shock: { label: "Loose shock only", price: 0, bikes: 0, loose: 1 },
     loose_forks_and_shock: {
       label: "Loose forks and shock",
-      price: 20,
+      price: 0,
       bikes: 0,
       loose: 2,
     },

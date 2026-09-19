@@ -349,17 +349,7 @@
             </label>
 
             <div id="pickupPanel" class="pickup-panel">
-              <table class="pickup-pricing-table" aria-label="Pickup pricing">
-                <thead>
-                  <tr><th>Pickup type</th><th>Price (AUD)</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Complete bike pickup/drop-off</td><td class="pickup-price-highlight">A$20 per bike</td></tr>
-                  <tr><td>Loose forks pickup/drop-off</td><td class="pickup-price-highlight">A$10 per fork set</td></tr>
-                  <tr><td>Loose shock pickup/drop-off</td><td class="pickup-price-highlight">A$10</td></tr>
-                  <tr><td>Loose forks and shock pickup/drop-off</td><td class="pickup-price-highlight">A$20 total</td></tr>
-                </tbody>
-              </table>
+              <p class="section-hint"><strong>Canberra Monday pickup/drop-off is included with your confirmed workshop booking.</strong></p>
               <p class="section-hint">Monday pickup times are grouped by area and confirmed by SMS. We aim to complete the Canberra pickup route and leave Fyshwick by 12:00 noon.</p>
               <p class="capacity-note is-info">Capacity limits: up to 3 complete bikes and 10 loose suspension jobs per Monday (shared across all bookings).</p>
               <p id="pickupSuspensionHint" class="section-hint" style="display: none;"></p>
@@ -367,10 +357,10 @@
               <div class="form-field" data-field="pickup_type" style="margin-top: 1rem;">
                 <span class="field-label">Pickup type</span>
                 <div class="choice-row" role="group">
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="complete_bike" /><span>Complete bike — A$20</span></label>
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks" /><span>Loose forks only — A$10</span></label>
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_shock" /><span>Loose shock only — A$10</span></label>
-                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks_and_shock" /><span>Forks and shock loose — A$20 total</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="complete_bike" /><span>Complete bike</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks" /><span>Loose forks only</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_shock" /><span>Loose shock only</span></label>
+                  <label class="choice-pill"><input type="radio" name="pickup_type" value="loose_forks_and_shock" /><span>Forks and shock loose</span></label>
                 </div>
                 <p id="pickupPriceDisplay" class="section-hint" style="margin-top: 0.5rem;"></p>
                 <p class="field-error" role="alert"></p>

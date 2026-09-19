@@ -685,7 +685,7 @@
       return;
     }
     const p = BookingStorage.PICKUP_PRICING[type];
-    el.innerHTML = `Selected pickup fee: <span class="pickup-price-highlight">A$${p.price}</span>`;
+    el.textContent = "Canberra Monday pickup/drop-off included.";
   }
 
   function updateTyreFittingDisplay() {
@@ -752,7 +752,7 @@
     if (wantsPickup()) {
       const meta = BookingStorage.PICKUP_PRICING[getPickupType()];
       if (meta) {
-        lines.push({ label: meta.label, amount: meta.price });
+        lines.push({ label: `${meta.label} — included`, amount: 0 });
       }
     }
     const fitting = getTyreFittingCost();

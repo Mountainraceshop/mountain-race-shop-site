@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en-AU"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wet vs Dry Torque | Mountain Race Shop Knowledge Centre</title>
+<meta name="description" content="How grease, anti-seize, threadlocker, shaft coatings and prevailing-torque nuts change the torque-to-preload relationship in motorcycle suspension hardware.">
+<link rel="canonical" href="https://www.mountainraceshop.com.au/knowledge-centre/wet-vs-dry-torque/">
+<meta property="og:type" content="article"><meta property="og:title" content="Wet Torque Versus Dry Torque: Friction, Preload and Assembly Control in Motorcycle Suspension Hardware"><meta property="og:description" content="How grease, anti-seize, threadlocker, shaft coatings and prevailing-torque nuts change the torque-to-preload relationship in motorcycle suspension hardware."><meta property="og:url" content="https://www.mountainraceshop.com.au/knowledge-centre/wet-vs-dry-torque/">
+<meta name="theme-color" content="#0b0f1a"><link rel="stylesheet" href="/assets/css/styles.css">
+<style>
+.torque-guide h1{display:none}.torque-guide h2{margin-top:2.6rem}.torque-guide h3{margin-top:1.8rem}
+.torque-guide p,.torque-guide li{line-height:1.75}.torque-guide li{margin:.42rem 0}
+.torque-guide strong{font-weight:700}.torque-guide .table-wrap{overflow-x:auto;margin:1.5rem 0}
+.torque-guide table{width:100%;min-width:680px;border-collapse:collapse}
+.torque-guide th,.torque-guide td{padding:.75rem .8rem;border-bottom:1px solid rgba(127,127,127,.28);vertical-align:top;text-align:left}
+.torque-guide th{font-weight:700}.torque-guide a{overflow-wrap:anywhere;text-decoration-thickness:1px}
+.torque-guide aside.footnotes{font-size:.95rem;overflow-wrap:anywhere;border-top:1px solid rgba(127,127,127,.35);margin-top:2rem}
+.torque-guide ol{padding-left:1.4rem}.torque-guide .footnote-ref{font-size:.9em}
+@media(max-width:640px){.torque-guide h2{font-size:1.55rem}.torque-guide th,.torque-guide td{padding:.65rem}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Wet Torque Versus Dry Torque: Friction, Preload and Assembly Control in Motorcycle Suspension Hardware","datePublished":"2026-09-24","dateModified":"2026-09-24","publisher":{"@type":"Organization","name":"Mountain Race Shop"},"mainEntityOfPage":"https://www.mountainraceshop.com.au/knowledge-centre/wet-vs-dry-torque/","articleSection":"Workshop Engineering"}</script>
+</head><body>
+<header class="site-header"><div class="container nav-wrap"><a class="brand" href="/">Mountain Race Shop</a><nav class="nav" aria-label="Primary navigation"><a href="/services/fork-servicing/">Services</a><a href="/shim-calculator/">Shim Calculator</a><a href="/suspension-engineers-handbook/">Handbook</a><a href="/knowledge-centre/">Knowledge Centre</a><a class="button button-ghost button-sm" href="/booking.html">Book Service</a></nav></div></header>
+<main><section class="hero section small-hero"><div class="container hero-shell"><nav class="breadcrumb"><a href="/">Home</a> / <a href="/knowledge-centre/">Knowledge Centre</a> / Wet Versus Dry Torque</nav><div class="hero-copy article-hero"><p class="eyebrow">Workshop Engineering · Technical Article</p><h1>Wet Torque Versus Dry Torque: Friction, Preload and Assembly Control in Motorcycle Suspension Hardware</h1><p class="lead">How grease, anti-seize, threadlocker, shaft coatings and prevailing-torque nuts change the torque-to-preload relationship in motorcycle suspension hardware.</p></div></div></section>
+<section class="section section-muted"><div class="container article-shell"><article class="article-body torque-guide">
+<h1 id="wet-torque-versus-dry-torque-friction-preload-and-assembly-control-in-motorcycle-suspension-hardware">Wet Torque Versus Dry Torque: Friction, Preload and Assembly Control in Motorcycle Suspension Hardware</h1>
+<p><strong>Workshop Engineering · Technical Article</strong></p>
+<p>A torque value is valid for the assembly condition in which it was established. Change the coating, lubricant, nut, washer, bearing surface, tightening sequence or reuse status, and the same reading on the wrench can produce a different bolt preload. This matters particularly for shock-shaft nuts, triple-clamp pinch bolts, axle clamps and other safety-critical suspension hardware.</p>
+<p>There is no universal percentage that converts a dry torque specification to one for grease, anti-seize or liquid threadlocker. The reliable workshop approach is to reproduce the component manufacturer’s specified condition or obtain a validated method for the changed assembly.</p>
+<h2 id="torque-is-an-indirect-measure-of-preload">Torque is an indirect measure of preload</h2>
+<p>Most bolted joints rely on <strong>preload</strong>: tightening stretches the fastener, compresses the joint and develops the contact force needed to resist service loads. The torque wrench measures applied twisting moment, not this clamp force. Torque is consumed by friction along the loaded thread flanks and beneath the rotating nut, bolt head or washer. Only part of the applied work becomes useful fastener stretch.</p>
+<p>A common engineering approximation is:</p>
+<p><strong>T = KFd</strong></p>
+<p>Here <strong>T</strong> is applied tightening torque, <strong>F</strong> is estimated preload, <strong>d</strong> is nominal fastener diameter, and <strong>K</strong> is an empirical <em>nut factor</em> for the complete assembly. K is not a constant for steel, nickel plating or a bottle of lubricant. It represents the combined behaviour of the actual threads and bearing surfaces under the test conditions. Henkel specifically cautions that a measured K factor describes a particular assembly, not a particular lubricant in isolation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>One more detailed expression separates the thread and bearing terms:</p>
+<p><strong>T ≈ F [(d₂/2) tan(λ + φ′) + μᵦDᵦ/2]</strong></p>
+<p>In this expression, <strong>d₂</strong> is pitch diameter, <strong>λ</strong> is thread helix angle, <strong>φ′</strong> represents thread friction and geometry, <strong>μᵦ</strong> is the bearing friction coefficient, and <strong>Dᵦ</strong> is an effective bearing diameter. The useful point is practical: lubricating only the underside of a nut may change preload even when the threads remain untouched. These are simplified elastic-joint models; a particular suspension assembly still needs its own validated procedure.</p>
+<h3 id="an-illustrative-m8-calculation">An illustrative M8 calculation</h3>
+<p>Suppose an M8 fastener is tightened to <strong>20 N·m</strong>. With an <em>illustrative</em> K of 0.20, the estimate is <strong>F = 20/(0.20 × 0.008) = 12.5 kN</strong>. If a changed assembly has K = 0.15, the same 20 N·m gives approximately <strong>16.7 kN</strong>, an increase of about <strong>33%</strong>. This calculation explains sensitivity to friction. It establishes neither a safe preload nor a torque setting for any motorcycle part. Fastenal’s bolted-joint guide similarly illustrates how changes in K produce large preload changes at a fixed torque.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Even at a correct nominal torque, preload scatters. Coating, surface finish, contamination, contact pressure, washer design, installation speed, thread damage and reuse all contribute. Where greater accuracy is required, an engineered procedure may use staged torque, torque-angle, direct tension or another validated control method. Do not replace a manufacturer’s torque-angle sequence with a single torque value.</p>
+<h2 id="what-dry-and-wet-describe">What “dry” and “wet” describe</h2>
+<p>“Dry” is not one universal friction state. It may describe bare steel, a specified plated fastener or hardware used as supplied with a controlled residual film. A new zinc-plated bolt, a reused black-finish bolt and a nickel-plated shaft should not be assigned one friction coefficient merely because no additional grease was applied. “Wet” is equally incomplete until the exact product, its quantity and application location are known.</p>
+<div class="table-wrap"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Assembly condition</th>
+<th>What can change</th>
+<th>Workshop decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Clean or as-supplied fastener</td>
+<td>Coating, residual film, thread and bearing friction</td>
+<td>Reproduce the condition assumed by the exact procedure.</td>
+</tr>
+<tr class="even">
+<td>Oil or grease</td>
+<td>Usually lowers friction; threads and bearing face may change differently</td>
+<td>Apply only where the procedure directs, with its matching torque and sequence.</td>
+</tr>
+<tr class="odd">
+<td>Anti-seize</td>
+<td>Product- and joint-dependent lubrication, corrosion and galling behaviour</td>
+<td>Read both the joint procedure and the product directions; do not invent a universal reduction.</td>
+</tr>
+<tr class="even">
+<td>Liquid threadlocker</td>
+<td>Installation friction before cure; locking resistance after cure</td>
+<td>Use the specified grade, cleaning, quantity, placement and tightening method.</td>
+</tr>
+<tr class="odd">
+<td>Prevailing-torque nut</td>
+<td>Adds resistance while the nut is being run down and tightened</td>
+<td>Use the method specified for that nut; its run-down torque is not clamp force.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="oil-and-grease">Oil and grease</h3>
+<p>Oil and grease commonly reduce friction. Applying a torque intended for a higher-friction condition may then increase bolt stretch, thread stress, contact pressure or joint distortion. The scale of the change depends on the product and assembly. Putting oil on the threads alone is not equivalent to putting it under the rotating head or washer too. If a service manual specifies oiled threads, use that preparation <strong>with the torque from the same procedure</strong>. Generic rules such as “reduce by 20% for oil” are not validated specifications for suspension hardware.</p>
+<h3 id="anti-seize">Anti-seize</h3>
+<p>Anti-seize products can reduce galling and aid later disassembly, but copper, nickel and metal-free products do not share one universal torque conversion. Application thickness, fastener coating and the bearing surface also matter. Permatex’s technical sheet for its <strong>Copper Anti-Seize</strong> tells users to reassemble using normal torque values.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> That is a direction for a named product, not proof that every anti-seize is torque-neutral on every joint. Equally, a generic fastener chart showing different K factors for dry and anti-seize conditions does not validate a correction for a motorcycle clamp.</p>
+<p>A hypothetical <strong>25% reduction of 20 N·m gives 15 N·m</strong>. The arithmetic is valid; the assembly method is unverified. Do not use 15 N·m as a triple-clamp torque based on that calculation.</p>
+<h3 id="liquid-threadlocker">Liquid threadlocker</h3>
+<p>Threadlocker has two separate effects. <strong>Before cure</strong>, its liquid state may modify assembly friction. <strong>After cure</strong>, it resists relative rotation. A bottle’s cured breakaway-torque figure is a removal-test result, not an installation setting. Henkel measures the torque–tension behaviour of uncured assemblies separately from cured breakaway strength.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>The grade and surface preparation matter. LOCTITE 243, for example, tolerates light corrosion-prevention oils on many as-received fasteners, while Henkel recommends cleaning heavily oiled or contaminated parts before application.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> That statement does not approve a heavy grease film or an extra coating of anti-seize under a threadlocker. Use the exact compound and method required for the joint.</p>
+<h2 id="shock-shafts-and-locking-nuts">Shock shafts and locking nuts</h2>
+<p>A shock shaft is a functional component, not just an ordinary bolt. Its material and surface treatment vary by design; the running surface, threads and bearing features can have different requirements. Damage to a running surface may compromise seals, while damaged or contaminated threads affect assembly. Never infer a tightening value simply from the observation that a shaft is nickel-plated rather than plain steel.</p>
+<p>For a <strong>nickel-plated shaft</strong>, coating method, thickness, thread finish, mating nut and bearing surface all influence the assembly. For a <strong>plain-steel shaft</strong>, oxidation, scratching, previous installation and residual compounds may alter it. Neither description by itself establishes a K factor, a threadlocker grade or a torque correction. Use the exact shock manufacturer’s instructions for that shaft, nut and component revision.</p>
+<p>A <strong>prevailing-torque nut</strong>—for example, one with a polymer insert or deformed threads—develops resistance before the nut bears against the clamped component. Conceptually:</p>
+<p><strong>T at the wrench ≈ thread and bearing friction + preload-producing torque + prevailing torque.</strong></p>
+<p>The run-down resistance is <strong>not</strong> preload. Henkel notes that prevailing-torque devices require additional tightening torque to reach a target clamp load.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> The resistance can change with design, temperature, contamination and reuse. If the manufacturer’s procedure calls for a new nut, replace it. Do not subtract an invented percentage, substitute a polymer nut for a specified adhesive system or stack locking methods without approval.</p>
+<p>Consider a shock procedure that specifies a medium-strength threadlocker on clean, dry shaft threads and a particular shaft nut. The coating, nut, compound, placement, quantity, holding tool and tightening method form one assembly system. Changing to a different shaft finish, applying oil, omitting a washer or reusing a single-use nut creates a different system. A value for one version cannot automatically be transferred to another.</p>
+<p>Installation torque and removal torque also answer different questions. Removal may reflect cured adhesive, prevailing torque, corrosion, fretting or galling. The torque needed to hold or rotate a shock shaft during service is a separate quantity again. Follow the manufacturer’s specified reaction point and holding tool to avoid loading or damaging other components.</p>
+<h2 id="triple-clamp-pinch-bolts-and-anti-seize">Triple-clamp pinch bolts and anti-seize</h2>
+<p>Triple-clamp bolts create clamp force, but resistance to fork-tube movement also depends on clamp geometry, stiffness, contact pressure, condition of the fork-tube and clamp-bore surfaces, and the tightening sequence. If a procedure specifies clean, dry threads, restore the fastener and threaded hole to that condition without damaging them. Keep grease and anti-seize off friction-critical clamp interfaces unless specifically instructed otherwise.</p>
+<p>Check the specified bearing condition beneath each bolt head or washer. Tighten in the stated order and stages, and preserve any specified clamp gap. A final torque figure is not a substitute for the procedure that produces the intended loading. Uneven tightening may alter contact pressure and local distortion.</p>
+<p>If anti-seize has been added to a bolt specified for dry assembly, the original torque-to-preload relationship may no longer apply. The technically defensible choices are to <strong>disassemble and restore the specified condition</strong>, or obtain a validated alternative for the actual bolt, compound and clamp. A generic 20%, 25% or 30% discount is not a safe substitute for either choice.</p>
+<h2 id="a-workshop-verification-routine">A workshop verification routine</h2>
+<ol type="1">
+<li><strong>Find the exact procedure.</strong> Confirm motorcycle model, component revision and fastener location. A generic bolt chart cannot establish a suspension joint’s required preload or clamp behaviour.</li>
+<li><strong>Define the assembly.</strong> Record thread diameter and pitch, grade, coating, nut type, washer orientation, mating material, bearing surfaces, reuse status and any required visible gap.</li>
+<li><strong>Identify the treatment.</strong> Check the named lubricant or threadlocker, the quantity and exact location, cleaning requirements, compatibility and cure instructions.</li>
+<li><strong>Follow the complete method.</strong> Use the stated holding tool, sequence, stages, torque, angle and inspection steps. Replace hardware when instructed.</li>
+<li><strong>Control changes.</strong> If hardware or treatment differs from the procedure, restore the specified condition or obtain a validated alternative before returning a safety-critical joint to service.</li>
+</ol>
+<p>Inspect for pulled threads, galling, corrosion, damaged coatings, distorted washers, abnormal seating, contamination and old threadlocker. Keep compounds off brake friction surfaces, fork tubes, clamp bores and seals unless the exact procedure directs otherwise.</p>
+<h3 id="bench-example">Bench example</h3>
+<p>A triple-clamp instruction specifies <strong>20 N·m on clean, dry threads</strong>. A technician adds anti-seize and tightens to the same 20 N·m. What is known? Only that the wrench reached 20 N·m. The clamp load may have changed; its direction and magnitude cannot be established from the wrench reading alone. A guessed 15 N·m is no more validated than retaining 20 N·m. Restore the specified dry condition or obtain a joint-specific, validated instruction.</p>
+<p>The same reasoning applies to a shock shaft: a nickel-plated shaft, plain-steel shaft, polymer-insert nut and threadlocked standard nut can represent different assemblies. Do not transfer a torque or a correction across them without component-specific evidence.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p><strong>A torque number travels with its assembly condition and tightening method.</strong> Correct engineering aims to achieve the intended preload, clamp performance and locking behaviour—not merely the expected reading on a torque wrench. For safety-critical motorcycle suspension hardware, reproduce the exact specified arrangement or use a validated alternative. There is no universal wet-torque percentage.</p>
+<h2 id="sources-and-scope">Sources and scope</h2>
+<p>This article explains principles and workshop decision-making. It supplies <strong>no motorcycle-specific torque settings</strong>. The worked M8 and triple-clamp figures are illustrations only; the manufacturer’s current service procedure controls the actual joint.</p>
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Henkel, <a href="https://dm.henkel-dam.com/is/content/henkel/LOCTITE-Threadlocker-Manual.pdf"><em>How to Increase Reliability and Prevent Threaded Assembly Failure</em></a>, sections on torque–tension, prevailing torque, threadlocking and ISO 16047 testing.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Fastenal Engineering, <a href="https://crafter.fastenal.com/static-assets/pdfs/Bolted_Joint_Design_rev_2017-02-21.pdf"><em>Bolted Joint Design</em></a>, particularly its torque–tension relationship and K-factor discussion.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Permatex, <a href="https://www.permatex.com/wp-content/uploads/tds/09128.pdf"><em>Copper Anti-Seize Lubricant Technical Data Sheet</em></a>, directions for use.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Henkel, <a href="https://dm.henkel-dam.com/is/content/henkel/LOCTITE-Threadlocker-Manual.pdf"><em>How to Increase Reliability and Prevent Threaded Assembly Failure</em></a>, sections on torque–tension, prevailing torque, threadlocking and ISO 16047 testing.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Henkel, <a href="https://next.henkel-adhesives.com/us/en/products/industrial-adhesives/central-pdp.html/loctite-243/BP000000316211.html">LOCTITE 243 product information</a>, preparation and product characteristics.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Henkel, <a href="https://dm.henkel-dam.com/is/content/henkel/LOCTITE-Threadlocker-Manual.pdf"><em>How to Increase Reliability and Prevent Threaded Assembly Failure</em></a>, sections on torque–tension, prevailing torque, threadlocking and ISO 16047 testing.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</aside>
+
+</article><div class="cta-row" style="margin-top:2rem"><a class="button" href="/knowledge-centre/">More technical articles</a><a class="button button-secondary" href="/booking.html">Book suspension work</a></div></div></section></main>
+<footer class="site-footer"><div class="container footer-wrap"><div><strong>Mountain Race Shop</strong><p>Motorcycle suspension engineering, tuning, education and workshop services since 1995.</p></div><div><p><a href="mailto:craig@mountainraceshop.com.au">craig@mountainraceshop.com.au</a><br><a href="tel:+61420947505">0420 947 505</a><br>2572 Shannons Flat Rd, Shannons Flat NSW 2620</p></div></div></footer>
+</body></html>

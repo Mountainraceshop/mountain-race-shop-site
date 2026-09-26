@@ -772,7 +772,7 @@
 
     const total = computeEstimatedFixedTotal();
     estimatedTotalAmount.textContent =
-      total > 0 ? `A${total}` : suspension ? "Quote to be confirmed" : "— (no fixed-price items selected)";
+      total > 0 ? `A$${total}` : suspension ? "Quote to be confirmed" : "— (no fixed-price items selected)";
   }
 
   function renderSuspensionPricingSchedule() {

@@ -1,6 +1,6 @@
-// Mountain Race Shop™ — France return sales + Rider Setup draft update
-// Draft branch only. Load this script after assets/js/booking-catalog.js and before assets/js/booking.js.
-// Purpose: add low-risk sales entry points for September bookings and redirect draft booking emails to the new Mountain Race Shop mailbox once created.
+// Mountain Race Shop™ — Rider Setup service and booking email routing
+// Load after assets/js/booking-catalog.js and before assets/js/booking.js.
+// Add the Rider Setup option and route booking emails to the Mountain Race Shop mailbox.
 
 (function (global) {
   "use strict";
@@ -17,7 +17,7 @@
     {
       id: "rider_setup_baseline",
       label: "Rider Setup & Baseline Recommendation",
-      priceLabel: "$50 — credited to booked work",
+      priceLabel: "A$50 — credited to booked work",
       price: 50,
       location: "on_bike",
       pickupBikes: 1,
@@ -36,49 +36,8 @@
         "Tyre pressure discussion",
         "Rider weight, riding type and main complaint captured",
         "Practical written recommendation before spending money on springs, revalving or extra work",
-        "$50 fee fully credited toward recommended suspension work booked within 30 days",
+        "A$50 fee fully credited toward recommended suspension work booked within 30 days",
         "Parts, servicing, springs, revalving, repairs and additional labour quoted separately",
-      ],
-    },
-    {
-      id: "spring_ready_suspension_check",
-      label: "Spring Ready Suspension Check — September priority",
-      priceLabel: "Book for September",
-      price: null,
-      location: "unknown",
-      pickupBikes: 0,
-      pickupLoose: 0,
-      requiresRider: true,
-      airFork: false,
-      includesForkSprings: false,
-      includesShockSpring: false,
-      includes: [
-        "Priority booking request for September return work",
-        "Suspension health assessment",
-        "Rider weight and spring-rate suitability check",
-        "Clicker baseline and sag recommendation",
-        "Tyre wear / tyre pressure notes",
-        "Written recommendation before parts, springs, revalving or repairs are approved",
-        "Final job price confirmed before work begins",
-      ],
-    },
-    {
-      id: "september_priority_booking",
-      label: "September priority booking / waitlist",
-      priceLabel: "No payment now",
-      price: null,
-      location: "unknown",
-      pickupBikes: 0,
-      pickupLoose: 0,
-      requiresRider: true,
-      airFork: false,
-      includesForkSprings: false,
-      includesShockSpring: false,
-      includes: [
-        "Use this if you want a slot held for when Craig returns from France",
-        "Best for riders who know they need work but are not sure which package yet",
-        "Include any race, ride or event date in the rider complaint / goal field",
-        "Mountain Race Shop will confirm the correct job, date and price before work begins",
       ],
     },
   ];
@@ -105,12 +64,12 @@
     return bookingCatalog.SUSPENSION_SERVICES.find((service) => service.id === id) || null;
   };
 
-  // Draft email target now that the mailbox has been created.
+  // Booking email target.
   global.MRS_DRAFT_BOOKING_EMAIL = "craig@mountainraceshop.com.au";
 
   // The existing booking.js file still has the original FormSubmit constant.
-  // This draft-only redirect avoids rewriting the large booking.js file through the connector.
-  // It should be browser-tested with one dummy booking before merge.
+  // Route the existing FormSubmit request to the customer mailbox.
+  
   if (typeof global.fetch === "function" && !global.MRS_BOOKING_EMAIL_REDIRECT_INSTALLED) {
     const originalFetch = global.fetch.bind(global);
     global.fetch = function mountainRaceShopBookingFetch(input, init) {

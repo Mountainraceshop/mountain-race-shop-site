@@ -648,7 +648,7 @@
       meta.textContent = isBlocked
         ? BookingStorage.BLOCKED_PICKUP_DATE_MESSAGE
         : cap.available
-          ? `Remaining — bikes: ${Math.max(0, cap.remaining.bikes)}, loose jobs: ${Math.max(0, cap.remaining.loose)}`
+          ? "Requested date — pickup availability confirmed by Craig"
           : cap.message;
 
       text.appendChild(meta);
@@ -772,7 +772,7 @@
 
     const total = computeEstimatedFixedTotal();
     estimatedTotalAmount.textContent =
-      total > 0 ? `A$${total}` : "— (no fixed-price items selected)";
+      total > 0 ? `A${total}` : suspension ? "Quote to be confirmed" : "— (no fixed-price items selected)";
   }
 
   function renderSuspensionPricingSchedule() {

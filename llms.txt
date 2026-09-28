@@ -54,6 +54,7 @@ MTB prices are starting prices. Final price depends on the exact fork or shock, 
 - https://www.mountainraceshop.com.au/knowledge-centre/fork-harsh-on-small-bumps/ — Fork harshness on small bumps
 - https://www.mountainraceshop.com.au/knowledge-centre/shock-packing-down/ — Shock packing down
 - https://www.mountainraceshop.com.au/knowledge-centre/understanding-damping-curves/ — Understanding damping curves
+- https://www.mountainraceshop.com.au/knowledge-centre/critical-damping-motorcycle-suspension/ — Critical damping and the limits of a single damping ratio for motorcycle suspension
 - https://www.mountainraceshop.com.au/knowledge-centre/what-is-spring-preload/ — Spring preload and handling
 - https://www.mountainraceshop.com.au/knowledge-centre/how-shim-stacks-work/ — How shim stacks work
 

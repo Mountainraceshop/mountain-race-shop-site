@@ -1,20 +1,30 @@
 # Mountain Race Shop
 
-> Motorcycle handling diagnosis and suspension engineering workshop serving Canberra, ACT, Snowy Monaro, Bombala, Delegate, Bega Valley and surrounding NSW regions.
+> Motorcycle handling diagnosis and suspension engineering workshop serving Canberra, ACT, Snowy Monaro, Bombala, Delegate, Bega Valley and surrounding NSW regions, with mountain bike suspension servicing for Snowy Mountains riders.
 
-Mountain Race Shop diagnoses motorcycle handling problems before recommending suspension work. Services include fork servicing, shock servicing, spring-rate and sag setup, suspension revalving, race support and engineering analysis. The workshop is at 2572 Shannons Flat Rd, Shannons Flat NSW 2620, Australia. Phone: +61 420 947 505. Email: craig@mountainraceshop.com.au.
+Mountain Race Shop diagnoses motorcycle handling problems before recommending suspension work. Motorcycle services include fork servicing, shock servicing, spring-rate and sag setup, suspension revalving, race support and engineering analysis. Mountain bike services include selected fork and shock servicing, lower-leg and air-can maintenance, full services and setup/diagnosis subject to model and parts availability. The workshop is at 2572 Shannons Flat Rd, Shannons Flat NSW 2620, Australia. Phone: +61 420 947 505. Email: craig@mountainraceshop.com.au.
 
 ## Core pages
 - https://www.mountainraceshop.com.au/ — Mountain Race Shop home
-- https://www.mountainraceshop.com.au/booking.html — Workshop booking
+- https://www.mountainraceshop.com.au/booking.html — Motorcycle workshop booking
 - https://www.mountainraceshop.com.au/setup-saturdays/ — Suspension Setup Saturdays
 - https://www.mountainraceshop.com.au/motorcycle-suspension-canberra.html — Motorcycle suspension for Canberra riders
 - https://www.mountainraceshop.com.au/services/fork-servicing/ — Motorcycle fork servicing
 - https://www.mountainraceshop.com.au/services/shock-servicing/ — Motorcycle shock servicing
 - https://www.mountainraceshop.com.au/services/revalving/ — Motorcycle suspension revalving
 - https://www.mountainraceshop.com.au/services/spring-setup/ — Spring rate, sag and preload setup
+- https://www.mountainraceshop.com.au/services/mtb-suspension/ — Mountain bike fork and shock servicing for Snowy Mountains, Jindabyne, Thredbo, Cooma and Canberra riders
 - https://www.mountainraceshop.com.au/services/suspension-engineering/ — Suspension engineering
 - https://www.mountainraceshop.com.au/services/race-support/ — Race support
+
+## MTB suspension pricing
+- Lower-leg / air-can service: from A$130
+- Full fork service: from A$299
+- Full rear shock service: from A$249
+- Fork + shock full service: from A$520
+- Complete-bike removal/refit and setup/diagnosis: quoted after confirming the exact bike and suspension model
+
+MTB prices are starting prices. Final price depends on the exact fork or shock, service kit, parts availability and condition, with additional costs confirmed before work begins.
 
 ## Engineering and education
 - https://www.mountainraceshop.com.au/knowledge-centre/ — Motorcycle suspension Knowledge Centre
@@ -30,7 +40,7 @@ Mountain Race Shop diagnoses motorcycle handling problems before recommending su
 Mountain Race Shop uses an engineering-backed diagnostic approach: rider complaint, bike, rider weight, terrain and use are considered before recommending springs, servicing, revalving or setup changes. The business is positioned around diagnosis and technical understanding rather than generic motorcycle repair or price competition.
 
 ## Geographic service areas
-Canberra and ACT; Shannons Flat; Cooma and Snowy Monaro; Bombala and Delegate; Bega Valley and the NSW South Coast.
+Canberra and ACT; Shannons Flat; Cooma and Snowy Monaro; Jindabyne and Thredbo; Bombala and Delegate; Bega Valley and the NSW South Coast.
 
 ## Contact
 Craig Dixon

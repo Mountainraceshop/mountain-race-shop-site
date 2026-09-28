@@ -66,12 +66,18 @@
   ];
 
   const BRAKE_PAD_OPTIONS = [
-    { id: "check_front", label: "Check front brake pads" },
-    { id: "check_rear", label: "Check rear brake pads" },
+    { id: "check_front", label: "Check front brake pads — no charge with suspension service" },
+    { id: "check_rear", label: "Check rear brake pads — no charge with suspension service" },
     { id: "check_oil_contamination", label: "Check for oil contamination from leaking fork/shock oil" },
-    { id: "replace_front_quote", label: "Replace front brake pads if needed — quote first" },
-    { id: "replace_rear_quote", label: "Replace rear brake pads if needed — quote first" },
-    { id: "brake_no_thanks", label: "No thanks", exclusive: true },
+    { id: "replace_front_mx_enduro", label: "MX / Enduro — replace front brake pads: A$45 labour + pads", mxEnduroOnly: true },
+    { id: "replace_rear_mx_enduro", label: "MX / Enduro — replace rear brake pads: A$45 labour + pads", mxEnduroOnly: true },
+    { id: "steering_check_adjust_mx_enduro", label: "MX / Enduro — steering-head bearing check & adjustment: A$60 with other workshop work", mxEnduroOnly: true },
+    { id: "steering_regrease_adjust_mx_enduro", label: "MX / Enduro — steering-head bearing clean, regrease & adjust: from A$160", mxEnduroOnly: true },
+    { id: "steering_replace_mx_enduro", label: "MX / Enduro — steering-head bearing replacement: from A$320 incl. standard bearing kit", mxEnduroOnly: true },
+    { id: "replace_front_quote", label: "Other motorcycle — front brake pads: call / quote first" },
+    { id: "replace_rear_quote", label: "Other motorcycle — rear brake pads: call / quote first" },
+    { id: "steering_other_quote", label: "Other motorcycle — steering-head bearing work: call / quote first" },
+    { id: "brake_no_thanks", label: "No brake or steering-head work", exclusive: true },
   ];
 
   const TYRE_FITTING_RATE = 30;
@@ -342,6 +348,58 @@
     return null;
   }
 
+  function installWorkshopAddonGuard() {
+    const form = document.getElementById("bookingForm");
+    const grid = document.getElementById("brakePadGrid");
+    if (!form || !grid) return;
+
+    const section = grid.closest("fieldset");
+    const heading = section?.querySelector("h2");
+    if (heading) heading.textContent = "Brakes & steering-head bearings";
+
+    const lead = section?.querySelector(".upsell-lead");
+    if (lead) {
+      lead.textContent = "Add brake-pad or steering-head bearing work while the motorcycle is already in the workshop.";
+    }
+
+    let note = document.getElementById("mxEnduroAddonNote");
+    if (!note && section) {
+      note = document.createElement("p");
+      note.id = "mxEnduroAddonNote";
+      note.className = "section-hint safety-note";
+      grid.parentNode.insertBefore(note, grid);
+    }
+
+    const fixedIds = new Set(BRAKE_PAD_OPTIONS.filter((o) => o.mxEnduroOnly).map((o) => o.id));
+
+    function updateEligibility() {
+      const type = form.querySelector('input[name="motorcycle_type"]:checked')?.value || "";
+      const eligible = type === "Motocross" || type === "Enduro";
+
+      if (note) {
+        note.innerHTML = eligible
+          ? "<strong>MX / Enduro pricing active.</strong> The fixed add-on prices below apply to motocross and enduro motorcycles. Parts remain subject to model and availability."
+          : "<strong>Fixed add-on pricing is MX / Enduro only.</strong> Adventure, road, trail and other motorcycles are call-and-quote because access, caliper design and steering-head labour can vary substantially.";
+      }
+
+      grid.querySelectorAll('input[name="brake_pad_options"]').forEach((input) => {
+        if (!fixedIds.has(input.value)) return;
+        const card = input.closest(".service-card");
+        input.disabled = !eligible;
+        if (!eligible) input.checked = false;
+        if (card) {
+          card.style.opacity = eligible ? "1" : "0.45";
+          card.title = eligible ? "" : "Fixed price available for MX / Enduro only — call for quote for this motorcycle type.";
+        }
+      });
+    }
+
+    form.addEventListener("change", (e) => {
+      if (e.target.name === "motorcycle_type") updateEligibility();
+    });
+    updateEligibility();
+  }
+
   global.BookingCatalog = {
     TYRE_CATALOG,
     TYRE_CATEGORIES,
@@ -352,4 +410,10 @@
     getSuspensionServiceById,
     getRecommendedPickupType,
   };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installWorkshopAddonGuard);
+  } else {
+    setTimeout(installWorkshopAddonGuard, 0);
+  }
 })(typeof window !== "undefined" ? window : global);

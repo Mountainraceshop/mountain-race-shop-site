@@ -2,12 +2,13 @@
 
 > Motorcycle handling diagnosis and suspension engineering workshop serving Canberra, ACT, Snowy Monaro, Bombala, Delegate, Bega Valley and surrounding NSW regions, with mountain bike suspension servicing for Snowy Mountains riders.
 
-Mountain Race Shop diagnoses motorcycle handling problems before recommending suspension work. Motorcycle services include fork servicing, shock servicing, spring-rate and sag setup, suspension revalving, race support and engineering analysis. Mountain bike services include selected fork and shock servicing, lower-leg and air-can maintenance, full services and setup/diagnosis subject to model and parts availability. The workshop is at 2572 Shannons Flat Rd, Shannons Flat NSW 2620, Australia. Phone: +61 420 947 505. Email: craig@mountainraceshop.com.au.
+Mountain Race Shop diagnoses motorcycle handling problems before recommending suspension work. Motorcycle services include fork servicing, shock servicing, spring-rate and sag setup, suspension revalving, steering-head bearing service, brake pad inspection/replacement, race support and engineering analysis. Mountain bike services include selected fork and shock servicing, lower-leg and air-can maintenance, full services and setup/diagnosis subject to model and parts availability. The workshop is at 2572 Shannons Flat Rd, Shannons Flat NSW 2620, Australia. Phone: +61 420 947 505. Email: craig@mountainraceshop.com.au.
 
 ## Core pages
 - https://www.mountainraceshop.com.au/ — Mountain Race Shop home
 - https://www.mountainraceshop.com.au/booking.html — Motorcycle workshop booking
 - https://www.mountainraceshop.com.au/setup-saturdays/ — Suspension Setup Saturdays
+- https://www.mountainraceshop.com.au/services/workshop-pricing/ — Current motorcycle workshop pricing
 - https://www.mountainraceshop.com.au/motorcycle-suspension-canberra.html — Motorcycle suspension for Canberra riders
 - https://www.mountainraceshop.com.au/services/fork-servicing/ — Motorcycle fork servicing
 - https://www.mountainraceshop.com.au/services/shock-servicing/ — Motorcycle shock servicing
@@ -16,6 +17,26 @@ Mountain Race Shop diagnoses motorcycle handling problems before recommending su
 - https://www.mountainraceshop.com.au/services/mtb-suspension/ — Mountain bike fork and shock servicing for Snowy Mountains, Jindabyne, Thredbo, Cooma and Canberra riders
 - https://www.mountainraceshop.com.au/services/suspension-engineering/ — Suspension engineering
 - https://www.mountainraceshop.com.au/services/race-support/ — Race support
+
+## Motorcycle workshop pricing
+- Fork service off bike: A$320
+- Shock service off bike: A$340
+- Fork + shock service off bike together: A$600
+- Fork service complete bike: A$360
+- Shock service complete bike: A$460
+- Revalve + springs + service, fork and shock off bike: A$1,260
+- Revalve + springs + service, complete bike: A$1,470
+- Air-fork revalve + service off bike: A$1,080
+- Air-fork revalve + shock service off bike: A$1,260
+- Suspension Setup Saturday: A$50, credited toward recommended suspension work booked within 30 days
+- Steering-head bearing check/adjustment with other workshop work: A$60
+- Steering-head bearing clean/regrease: from A$160
+- Steering-head bearing replacement: from A$320 including a standard bearing kit; model-specific costs quoted first
+- Brake pad inspection: included with suspension service
+- Brake pad replacement: A$45 labour per caliper plus pads; pad price confirmed before fitting
+- Tyre fitting: A$30 per tyre plus tube if required
+
+Standard motorcycle suspension prices assume normal serviceable components. Extra wear parts, damage, coatings, shafts, tubes and unexpected repairs are confirmed before work begins.
 
 ## MTB suspension pricing
 - Lower-leg / air-can service: from A$130

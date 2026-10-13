@@ -16,7 +16,7 @@
     watson:
       "Watson / North Canberra: near Watson / Dickson / nearby McDonald's or agreed meeting point.",
     fyshwick:
-      "Fyshwick: exact pickup point to be confirmed. Driver must be out of Fyshwick by 12:00 noon each Monday.",
+      "Fyshwick: exact pickup point to be confirmed. Collection time and return date are confirmed directly with Craig.",
     other: "Other Canberra location — describe in notes below.",
   };
 
@@ -376,19 +376,19 @@
         'input[name="preferred_monday_date"]:checked'
       );
       const slots = getEffectivePickupSlots();
-      if (!monday) {
-        setFieldError("preferred_monday_date", "Select a Monday date");
+      if (mondayOptionsEl && !monday) {
+        setFieldError("preferred_monday_date", "Select a collection date");
         valid = false;
-      } else if (BookingStorage.isPickupDateBlocked(monday.value)) {
+      } else if (monday && BookingStorage.isPickupDateBlocked(monday.value)) {
         setFieldError(
           "preferred_monday_date",
           BookingStorage.BLOCKED_PICKUP_DATE_MESSAGE
         );
         valid = false;
-      } else if (monday.disabled) {
-        setFieldError("preferred_monday_date", "Selected Monday is at capacity");
+      } else if (monday && monday.disabled) {
+        setFieldError("preferred_monday_date", "Selected collection is at capacity");
         valid = false;
-      } else if (slots.bikes > 0 || slots.loose > 0) {
+      } else if (monday && (slots.bikes > 0 || slots.loose > 0)) {
         const cap = BookingStorage.getCapacityForSlots(monday.value, slots);
         if (!cap.available) {
           setFieldError("preferred_monday_date", cap.message);
@@ -547,6 +547,7 @@
         form.querySelector('input[name="riding_type"]:checked')?.value || null,
       rider_complaint_or_goal: $("rider_complaint_or_goal")?.value.trim() || null,
       wants_pickup_dropoff: wantsPickup(),
+      pickup_date_status: wantsPickup() ? "Collection and return dates to be confirmed by Craig" : null,
       pickup_type: pickupType || null,
       pickup_price: pricing ? pricing.price : null,
       preferred_monday_date:
@@ -619,7 +620,7 @@
 
     if (!pickupType && slots.bikes === 0 && slots.loose === 0) {
       mondayOptionsEl.innerHTML =
-        '<p class="section-hint">Select a suspension service or pickup type to see available Mondays.</p>';
+        '<p class="section-hint">Select a suspension service or pickup type to see available collection dates.</p>';
       return;
     }
 
@@ -685,7 +686,7 @@
       return;
     }
     const p = BookingStorage.PICKUP_PRICING[type];
-    el.textContent = "Canberra Monday pickup/drop-off included.";
+    el.textContent = "Canberra pickup/drop-off included with a confirmed workshop booking. Dates confirmed by Craig.";
   }
 
   function updateTyreFittingDisplay() {
@@ -712,7 +713,7 @@
         suspensionOnBikeHint.style.display = "block";
         suspensionOnBikeHint.textContent =
           svc.onBikeNote ||
-          "Complete bike required. Monday pickup/drop-off uses a complete bike slot (max 3 per Monday).";
+          "Complete bike required. Pickup/drop-off uses a complete bike slot (max 3 per confirmed collection run).";
       } else {
         suspensionOnBikeHint.style.display = "none";
       }
@@ -721,7 +722,7 @@
       if (svc?.location === "off_bike" && svc.pickupLoose > 0) {
         suspensionOffBikeHint.style.display = "block";
         suspensionOffBikeHint.textContent =
-          "Off-the-bike service: deliver forks/shock loose. Monday pickup uses loose suspension job capacity (max 10 per Monday).";
+          "Off-the-bike service: deliver forks/shock loose. Pickup uses loose suspension job capacity (max 10 per confirmed collection run).";
       } else {
         suspensionOffBikeHint.style.display = "none";
       }

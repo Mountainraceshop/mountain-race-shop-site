@@ -7,3 +7,7 @@
 .handbook-art img{position:absolute;top:0;left:-50.24%;width:176.89%;max-width:none;height:100%;max-height:none;filter:none;object-fit:fill}
 .shim-art{width:100%;height:auto;box-shadow:0 14px 35px #0007}.book-hero{display:grid;grid-template-columns:1.35fr .65fr;gap:3rem;align-items:center}.hero-book-art{width:100%;max-width:290px;justify-self:center}.book-details{margin-top:1.3rem;font-size:.95rem}.further-book{margin-top:2.5rem}.further-book h2{font-size:1.7rem}.book-product-page .book-covers{width:100%;max-width:350px;justify-self:center}.book-product-page .hero-grid{grid-template-columns:1.35fr .8fr}.books-page .button{text-align:center}
 @media(max-width:700px){.book-listing{grid-template-columns:1fr;padding:1.4rem;gap:1.8rem}.cover-link{max-width:210px}.book-hero,.book-product-page .hero-grid{grid-template-columns:1fr}.hero-book-art{max-width:230px}.books-intro{padding-top:2rem}.books-page .nav-wrap{display:block}.books-page .nav{justify-content:flex-start}.book-product-page .book-covers{max-width:250px}.book-listing .cta-row .button{flex:1 1 150px}}
+
+/* Frame the front of the supplied tuning-guide wrap without changing the artwork. */
+.tuning-art{position:relative;width:100%;aspect-ratio:701/1055;overflow:hidden;background:#f5f5f5;box-shadow:0 14px 35px #0007}
+.tuning-art img{position:absolute;top:0;left:-112.696%;width:212.696%;max-width:none;height:100%;object-fit:fill;filter:none}

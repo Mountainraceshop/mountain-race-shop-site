@@ -13,3 +13,17 @@
 .tuning-art img{position:absolute;top:0;left:-112.696%;width:212.696%;max-width:none;height:100%;object-fit:fill;filter:none}
 
 .book-contents,.book-reading-preview,.book-related-reading{scroll-margin-top:7rem}.book-chapter-list{padding-left:1.6rem}.book-chapter-list li{padding-left:.3rem;margin-bottom:.75rem;line-height:1.55}.book-excerpt{margin:1.5rem 0;padding:0 0 0 1.3rem;border-left:3px solid var(--accent,#f9c54b);font-size:1.05rem;line-height:1.8}.book-excerpt p{margin:0 0 1rem}.book-equation{padding:1rem 1.2rem;margin:1.2rem 0;border:1px solid var(--line);border-radius:12px;overflow-wrap:anywhere}.book-equation p{margin:.6rem 0 0}.book-preview-nav{margin-top:1.5rem;line-height:2}.book-related-reading li{margin:.7rem 0}
+
+/* The existing Shopify three-book set, visible on the homepage and catalogue. */
+.book-bundle-section{padding-top:1.5rem;padding-bottom:1.5rem;scroll-margin-top:8rem}
+.book-bundle-card{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:center;border:1px solid var(--accent,#f9c54b);border-radius:var(--radius,24px);padding:clamp(1.4rem,4vw,3rem);background:linear-gradient(125deg,rgba(249,197,75,.13),rgba(255,255,255,.025))}
+.book-bundle-copy h2{font-size:clamp(1.9rem,3.3vw,3rem);line-height:1.15;text-transform:none;max-width:23ch}
+.book-bundle-copy ul{padding-left:1.2rem;color:var(--muted)}
+.book-bundle-copy li{margin:.7rem 0;line-height:1.6}
+.book-bundle-price{font-size:2rem;font-weight:800;color:var(--accent,#f9c54b);margin:1.3rem 0}
+.book-bundle-price span{display:block;font-size:.95rem;font-weight:500;color:var(--muted)}
+.book-bundle-note{font-size:.9rem;color:var(--muted);margin-top:1rem}
+.book-bundle-covers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(.5rem,1.5vw,1rem);align-items:center;max-width:540px;width:100%;margin:auto}
+.book-bundle-covers>.shim-art{display:block}
+.book-bundle-covers:focus-visible{outline:3px solid var(--accent,#f9c54b);outline-offset:8px}
+@media(max-width:900px){.book-bundle-card{grid-template-columns:1fr}.book-bundle-covers{max-width:480px}.book-bundle-copy .button{white-space:normal;text-align:center}.book-bundle-section{scroll-margin-top:10rem}}

@@ -1,0 +1,38 @@
+# Existing MRS static site: security headers and crawler-file redirects.
+services:
+- type: web
+  runtime: static
+  name: mountain-race-shop-site
+  repo: https://github.com/Mountainraceshop/mountain-race-shop-site
+  branch: main
+  buildCommand: ''
+  staticPublishPath: .
+  autoDeployTrigger: commit
+  renderSubdomainPolicy: enabled
+  headers:
+  - path: /*
+    name: Strict-Transport-Security
+    value: max-age=31536000
+  - path: /*
+    name: X-Frame-Options
+    value: SAMEORIGIN
+  - path: /*
+    name: Content-Security-Policy
+    value: 'default-src ''self''; script-src ''self'' ''unsafe-inline''; style-src
+      ''self'' ''unsafe-inline''; img-src ''self'' data: https:; font-src ''self''
+      data:; connect-src ''self'' https://formsubmit.co; form-action ''self'' https://formsubmit.co;
+      object-src ''none''; base-uri ''self''; upgrade-insecure-requests; frame-ancestors
+      ''self'''
+  - path: /*
+    name: Referrer-Policy
+    value: strict-origin-when-cross-origin
+  routes:
+  - type: redirect
+    source: /books/sitemap.xml
+    destination: /sitemap.xml
+  - type: redirect
+    source: /books/robots.txt
+    destination: /robots.txt
+  - type: redirect
+    source: /books/llms.txt
+    destination: /llms.txt

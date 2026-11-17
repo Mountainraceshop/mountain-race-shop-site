@@ -2,7 +2,7 @@
 
 > Motorcycle handling diagnosis and suspension engineering workshop serving Canberra, ACT, Snowy Monaro, Bombala, Delegate, Bega Valley and surrounding NSW regions, with mountain bike suspension servicing for Snowy Mountains riders.
 
-Mountain Race Shop diagnoses motorcycle handling problems before recommending suspension work. Motorcycle services include fork servicing, shock servicing, spring-rate and sag setup, suspension revalving, steering-head bearing service, brake pad inspection/replacement, race support and engineering analysis. Mountain bike services include selected fork and shock servicing, lower-leg and air-can maintenance, full services and setup/diagnosis subject to model and parts availability. The workshop is at 2572 Shannons Flat Rd, Shannons Flat NSW 2620, Australia. Phone: +61 420 947 505. Email: craig@mountainraceshop.com.au.
+Mountain Race Shop diagnoses motorcycle handling problems before recommending suspension work. Motorcycle services include fork servicing, shock servicing, spring-rate and sag setup, suspension revalving, steering-head bearing service, brake pad inspection/replacement, race support and engineering analysis. Mountain bike services include selected fork and shock servicing, lower-leg and air-can maintenance, full services and setup/diagnosis subject to model and parts availability. The workshop is at 2572 Shannons Flat Rd, Shannons Flat NSW 2630, Australia. Phone: +61 420 947 505. Email: craig@mountainraceshop.com.au.
 
 ## Core pages
 - https://www.mountainraceshop.com.au/ — Mountain Race Shop home
@@ -68,4 +68,12 @@ Canberra and ACT; Shannons Flat; Cooma and Snowy Monaro; Jindabyne and Thredbo; 
 Craig Dixon
 craig@mountainraceshop.com.au
 +61 420 947 505
-2572 Shannons Flat Rd, Shannons Flat NSW 2620, Australia
+2572 Shannons Flat Rd, Shannons Flat NSW 2630, Australia
+
+## Books by Craig Dixon
+- https://www.mountainraceshop.com.au/books/ - Book catalogue and format guide
+- https://www.mountainraceshop.com.au/suspension-tuning-made-simple.html - Practical motorcycle setup guide
+- https://www.mountainraceshop.com.au/shim-stack-engineering/ - Damping and shim-stack engineering textbook
+- https://payhip.com/MountainRaceShop - Digital PDF editions
+
+Printed books are ordered through the linked Shopify store. Digital PDF editions are ordered through Payhip. Confirm price, format, shipping and any discount at checkout.

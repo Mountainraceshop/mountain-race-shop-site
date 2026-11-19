@@ -17,8 +17,7 @@
     {
       id: "rider_setup_baseline",
       label: "Rider Setup & Baseline Recommendation",
-      priceLabel: "A$50 — credited to booked work",
-      price: 50,
+      acknowledgeWearParts: true,
       location: "on_bike",
       pickupBikes: 1,
       pickupLoose: 0,
@@ -36,7 +35,7 @@
         "Tyre pressure discussion",
         "Rider weight, riding type and main complaint captured",
         "Practical written recommendation before spending money on springs, revalving or extra work",
-        "A$50 fee fully credited toward recommended suspension work booked within 30 days",
+        "Assessment fee fully credited toward recommended suspension work booked within 30 days",
         "Parts, servicing, springs, revalving, repairs and additional labour quoted separately",
       ],
     },

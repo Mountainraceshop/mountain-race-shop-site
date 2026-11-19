@@ -69,26 +69,24 @@
     { id: "check_front", label: "Check front brake pads — no charge with suspension service" },
     { id: "check_rear", label: "Check rear brake pads — no charge with suspension service" },
     { id: "check_oil_contamination", label: "Check for oil contamination from leaking fork/shock oil" },
-    { id: "replace_front_mx_enduro", label: "MX / Enduro — replace front brake pads: A$45 labour + pads", mxEnduroOnly: true },
-    { id: "replace_rear_mx_enduro", label: "MX / Enduro — replace rear brake pads: A$45 labour + pads", mxEnduroOnly: true },
-    { id: "steering_check_adjust_mx_enduro", label: "MX / Enduro — steering-head bearing check & adjustment: A$60 with other workshop work", mxEnduroOnly: true },
-    { id: "steering_regrease_adjust_mx_enduro", label: "MX / Enduro — steering-head bearing clean, regrease & adjust: from A$160", mxEnduroOnly: true },
-    { id: "steering_replace_mx_enduro", label: "MX / Enduro — steering-head bearing replacement: from A$320 incl. standard bearing kit", mxEnduroOnly: true },
+    { id: "replace_front_mx_enduro", label: "MX / Enduro — replace front brake pads", mxEnduroOnly: true },
+    { id: "replace_rear_mx_enduro", label: "MX / Enduro — replace rear brake pads", mxEnduroOnly: true },
+    { id: "steering_check_adjust_mx_enduro", label: "MX / Enduro — steering-head bearing check & adjustment", mxEnduroOnly: true },
+    { id: "steering_regrease_adjust_mx_enduro", label: "MX / Enduro — steering-head bearing clean, regrease & adjust", mxEnduroOnly: true },
+    { id: "steering_replace_mx_enduro", label: "MX / Enduro — steering-head bearing replacement", mxEnduroOnly: true },
     { id: "replace_front_quote", label: "Other motorcycle — front brake pads: call / quote first" },
     { id: "replace_rear_quote", label: "Other motorcycle — rear brake pads: call / quote first" },
     { id: "steering_other_quote", label: "Other motorcycle — steering-head bearing work: call / quote first" },
     { id: "brake_no_thanks", label: "No brake or steering-head work", exclusive: true },
   ];
 
-  const TYRE_FITTING_RATE = 30;
 
-  /** Fixed workshop suspension packages — prices in AUD */
+  /** Workshop suspension packages */
   const SUSPENSION_SERVICES = [
     {
       id: "fork_off",
       label: "Fork service — off the bike",
-      priceLabel: "A$320",
-      price: 320,
+      acknowledgeWearParts: true,
       location: "off_bike",
       pickupBikes: 0,
       pickupLoose: 1,
@@ -108,8 +106,7 @@
     {
       id: "shock_off",
       label: "Shock service — off the bike",
-      priceLabel: "A$340",
-      price: 340,
+      acknowledgeWearParts: true,
       location: "off_bike",
       pickupBikes: 0,
       pickupLoose: 1,
@@ -131,8 +128,7 @@
     {
       id: "fork_shock_off",
       label: "Fork and shock service — off the bike, delivered together",
-      priceLabel: "A$600",
-      price: 600,
+      acknowledgeWearParts: true,
       location: "off_bike",
       pickupBikes: 0,
       pickupLoose: 2,
@@ -153,8 +149,7 @@
     {
       id: "fork_on",
       label: "Fork service — on the bike",
-      priceLabel: "A$360",
-      price: 360,
+      acknowledgeWearParts: true,
       location: "on_bike",
       pickupBikes: 1,
       pickupLoose: 0,
@@ -177,8 +172,7 @@
     {
       id: "shock_on",
       label: "Shock service — on the bike",
-      priceLabel: "A$460",
-      price: 460,
+      acknowledgeWearParts: true,
       location: "on_bike",
       pickupBikes: 1,
       pickupLoose: 0,
@@ -203,8 +197,7 @@
     {
       id: "revalve_off",
       label: "Revalve, springs and service — fork and shock, off the bike",
-      priceLabel: "A$1260",
-      price: 1260,
+      acknowledgeWearParts: true,
       location: "off_bike",
       pickupBikes: 0,
       pickupLoose: 2,
@@ -227,8 +220,7 @@
     {
       id: "revalve_on",
       label: "Revalve, springs and service — fork and shock, on the bike",
-      priceLabel: "A$1470",
-      price: 1470,
+      acknowledgeWearParts: true,
       location: "on_bike",
       pickupBikes: 1,
       pickupLoose: 0,
@@ -253,8 +245,7 @@
     {
       id: "air_fork_off",
       label: "Air fork revalve and service — forks off the bike",
-      priceLabel: "A$1080",
-      price: 1080,
+      acknowledgeWearParts: true,
       location: "off_bike",
       pickupBikes: 0,
       pickupLoose: 1,
@@ -274,8 +265,7 @@
     {
       id: "air_fork_shock_off",
       label: "Air fork revalve and shock service — forks and shock off the bike",
-      priceLabel: "A$1260",
-      price: 1260,
+      acknowledgeWearParts: true,
       location: "off_bike",
       pickupBikes: 0,
       pickupLoose: 2,
@@ -296,8 +286,6 @@
     {
       id: "air_fork_on",
       label: "Air fork revalve and shock service — complete bike (quote first)",
-      priceLabel: "Quote first",
-      price: null,
       location: "on_bike",
       pickupBikes: 1,
       pickupLoose: 0,
@@ -320,8 +308,6 @@
     {
       id: "suspension_other",
       label: "Other / not sure — contact me before booking",
-      priceLabel: "Contact us",
-      price: null,
       location: "unknown",
       pickupBikes: 0,
       pickupLoose: 0,
@@ -378,8 +364,8 @@
 
       if (note) {
         note.innerHTML = eligible
-          ? "<strong>MX / Enduro pricing active.</strong> The fixed add-on prices below apply to motocross and enduro motorcycles. Parts remain subject to model and availability."
-          : "<strong>Fixed add-on pricing is MX / Enduro only.</strong> Adventure, road, trail and other motorcycles are call-and-quote because access, caliper design and steering-head labour can vary substantially.";
+          ? "These add-ons apply to motocross and enduro motorcycles. Craig will confirm the work and quote."
+          : "For adventure, road, trail and other motorcycles, call Craig to discuss brake and steering-head work.";
       }
 
       grid.querySelectorAll('input[name="brake_pad_options"]').forEach((input) => {
@@ -389,7 +375,7 @@
         if (!eligible) input.checked = false;
         if (card) {
           card.style.opacity = eligible ? "1" : "0.45";
-          card.title = eligible ? "" : "Fixed price available for MX / Enduro only — call for quote for this motorcycle type.";
+          card.title = eligible ? "" : "Call Craig to discuss this work for your motorcycle.";
         }
       });
     }
@@ -405,7 +391,6 @@
     TYRE_CATEGORIES,
     ENGINE_SERVICES,
     BRAKE_PAD_OPTIONS,
-    TYRE_FITTING_RATE,
     SUSPENSION_SERVICES,
     getSuspensionServiceById,
     getRecommendedPickupType,

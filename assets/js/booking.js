@@ -26,18 +26,14 @@
   const enginePanel = document.getElementById("enginePanel");
   const tyrePanel = document.getElementById("tyrePanel");
   const pickupPanel = document.getElementById("pickupPanel");
-  const cashNote = document.getElementById("cashNote");
   const mondayOptionsEl = document.getElementById("mondayOptions");
   const pickupAreaNotes = document.getElementById("pickupAreaNotes");
   const submitBtn = document.getElementById("submitBooking");
   const suppliedPartsWrap = document.getElementById("suppliedPartsWrap");
   const tyreFittingQtyWrap = document.getElementById("tyreFittingQtyWrap");
-  const tyreFittingCostDisplay = document.getElementById("tyreFittingCostDisplay");
   const suspensionOnBikeHint = document.getElementById("suspensionOnBikeHint");
   const suspensionOffBikeHint = document.getElementById("suspensionOffBikeHint");
   const pickupSuspensionHint = document.getElementById("pickupSuspensionHint");
-  const estimatedTotalBreakdown = document.getElementById("estimatedTotalBreakdown");
-  const estimatedTotalAmount = document.getElementById("estimatedTotalAmount");
 
   if (!form || !window.BookingStorage || !window.BookingCatalog) return;
 
@@ -47,7 +43,6 @@
     TYRE_CATEGORIES,
     TYRE_CATALOG,
     BRAKE_PAD_OPTIONS,
-    TYRE_FITTING_RATE,
     SUSPENSION_SERVICES,
     getSuspensionServiceById,
     getRecommendedPickupType,
@@ -156,22 +151,6 @@
     return { bikes: meta.bikes, loose: meta.loose };
   }
 
-  function getSuspensionPrice() {
-    const svc = getSuspensionService();
-    return svc?.price != null ? svc.price : 0;
-  }
-
-  function computeEstimatedFixedTotal() {
-    let total = getSuspensionPrice();
-    if (wantsPickup()) {
-      const pickupType = getPickupType();
-      const meta = BookingStorage.PICKUP_PRICING[pickupType];
-      if (meta) total += meta.price;
-    }
-    total += getTyreFittingCost();
-    return total;
-  }
-
   function needsEngineDetails() {
     return getSelectedEngineServices().length > 0;
   }
@@ -183,12 +162,6 @@
   function getPickupType() {
     const el = form.querySelector('input[name="pickup_type"]:checked');
     return el ? el.value : "";
-  }
-
-  function getTyreFittingCost() {
-    if (!$("tyreFittingRequired")?.checked) return 0;
-    const qty = Number($("tyre_fitting_quantity")?.value) || 0;
-    return qty * TYRE_FITTING_RATE;
   }
 
   function clearFieldErrors() {
@@ -340,7 +313,7 @@
     }
 
     const suspension = getSuspensionService();
-    if (suspension?.price != null && !$("extra_parts_note_acknowledged")?.checked) {
+    if (suspension?.acknowledgeWearParts && !$("extra_parts_note_acknowledged")?.checked) {
       setFieldError(
         "extra_parts_note_acknowledged",
         "Please acknowledge that wear parts may be extra"
@@ -469,17 +442,17 @@
       selected_services: getSelectedServices(),
       selected_suspension_service: suspension ? suspension.label : null,
       suspension_service_id: suspensionId || null,
-      suspension_service_price: suspension?.price ?? null,
+      suspension_service_price: null,
       suspension_service_location_type: suspension?.location || null,
       air_fork_service: suspension?.airFork === true,
       includes_fork_springs: suspension?.includesForkSprings === true,
       includes_shock_spring: suspension?.includesShockSpring === true,
-      estimated_fixed_total: computeEstimatedFixedTotal(),
+      estimated_fixed_total: null,
       extra_parts_note_acknowledged: extraPartsNoteAcknowledged,
       pickup_capacity_bikes: pickupSlots.bikes,
       pickup_capacity_loose: pickupSlots.loose,
       wear_parts_extra_note:
-        suspension?.price != null && extraPartsNoteAcknowledged
+        suspension?.acknowledgeWearParts && extraPartsNoteAcknowledged
           ? "Wear parts extra if needed. We will contact you before fitting extra parts."
           : null,
       selected_engine_services: getSelectedEngineServices(),
@@ -525,7 +498,7 @@
       tyre_fitting_required:
         includeTyreOrder && $("tyreFittingRequired")?.checked === true,
       tyre_fitting_quantity: fittingQty || null,
-      tyre_fitting_cost: includeTyreOrder ? getTyreFittingCost() || null : null,
+      tyre_fitting_cost: null,
       tube_required: includeTyreOrder && $("tubeRequired")?.checked === true,
       tyre_terrain_type: includeTyreOrder
         ? form.querySelector('input[name="tyre_terrain_type"]:checked')?.value ||
@@ -685,7 +658,6 @@
       el.textContent = "";
       return;
     }
-    const p = BookingStorage.PICKUP_PRICING[type];
     el.textContent = "Canberra pickup/drop-off included with a confirmed workshop booking. Dates confirmed by Craig.";
   }
 
@@ -693,16 +665,6 @@
     const fitting = $("tyreFittingRequired")?.checked;
     if (tyreFittingQtyWrap) {
       tyreFittingQtyWrap.style.display = fitting ? "block" : "none";
-    }
-    if (tyreFittingCostDisplay) {
-      if (fitting) {
-        const cost = getTyreFittingCost();
-        const qty = Number($("tyre_fitting_quantity")?.value) || 0;
-        tyreFittingCostDisplay.style.display = "block";
-        tyreFittingCostDisplay.textContent = `Estimated fitting: A$${cost} (${qty} tyre${qty === 1 ? "" : "s"} × A$${TYRE_FITTING_RATE}). Tube extra if required.`;
-      } else {
-        tyreFittingCostDisplay.style.display = "none";
-      }
     }
   }
 
@@ -741,50 +703,14 @@
     }
   }
 
-  function updateEstimatedTotalDisplay() {
-    if (!estimatedTotalBreakdown || !estimatedTotalAmount) return;
-    const lines = [];
-    const suspension = getSuspensionService();
-    if (suspension?.price != null) {
-      lines.push({ label: suspension.label, amount: suspension.price });
-    } else if (suspension) {
-      lines.push({ label: suspension.label, amount: null });
-    }
-    if (wantsPickup()) {
-      const meta = BookingStorage.PICKUP_PRICING[getPickupType()];
-      if (meta) {
-        lines.push({ label: `${meta.label} — included`, amount: 0 });
-      }
-    }
-    const fitting = getTyreFittingCost();
-    if (fitting > 0) {
-      lines.push({ label: "Tyre fitting", amount: fitting });
-    }
-
-    estimatedTotalBreakdown.innerHTML = lines
-      .map((line) => {
-        const amt =
-          line.amount != null
-            ? `A$${line.amount}`
-            : "<em>Quoted / confirmed later</em>";
-        return `<div class="estimate-line"><span>${line.label}</span><span>${amt}</span></div>`;
-      })
-      .join("");
-
-    const total = computeEstimatedFixedTotal();
-    estimatedTotalAmount.textContent =
-      total > 0 ? `A${total}` : suspension ? "Quote to be confirmed" : "— (no fixed-price items selected)";
-  }
-
   function renderSuspensionPricingSchedule() {
     const el = $("suspensionPricingSchedule");
     if (!el) return;
-    el.innerHTML = SUSPENSION_SERVICES.filter((s) => s.price != null)
+    el.innerHTML = SUSPENSION_SERVICES.filter((s) => s.acknowledgeWearParts)
       .map(
         (s, i) => `
       <article class="pricing-schedule-item">
         <h3>${i + 1}. ${s.label}</h3>
-        <p class="pricing-schedule-price">Price: A$${s.price}</p>
         <p class="section-hint">Includes:</p>
         <ul class="pricing-includes">${s.includes.map((x) => `<li>${x}</li>`).join("")}</ul>
       </article>`
@@ -807,17 +733,13 @@
         </span>
       </label>`;
     grid.innerHTML = noneCard + SUSPENSION_SERVICES.map((s) => {
-      const priceHtml = s.price
-        ? `<span class="service-price-badge">${s.priceLabel}</span>`
-        : `<span class="service-price-badge service-price-badge--muted">${s.priceLabel}</span>`;
       return `
       <label class="service-card service-card--priced">
         <input type="radio" name="suspension_service" value="${s.id}" />
         <span class="service-card-inner">
           <span class="service-card-check" aria-hidden="true"></span>
           <span class="service-card-body">
-            <span class="service-card-title">${s.label}${s.price ? ` — ${s.priceLabel}` : ""}</span>
-            ${priceHtml}
+            <span class="service-card-title">${s.label}</span>
           </span>
         </span>
       </label>`;
@@ -831,7 +753,6 @@
     if (pickupPanel) pickupPanel.classList.toggle("is-visible", wantsPickup());
 
     updateSuspensionHints();
-    updateEstimatedTotalDisplay();
 
     const supplied =
       form.querySelector('input[name="customer_supplied_engine_parts"]:checked')
@@ -842,13 +763,6 @@
 
     updateTyreFittingDisplay();
 
-    const pay = form.querySelector('input[name="payment_preference"]:checked')?.value;
-    if (cashNote) {
-      cashNote.classList.toggle(
-        "is-visible",
-        pay === "cash_pickup" || pay === "cash_workshop"
-      );
-    }
   }
 
   function updatePickupAreaNotes() {
@@ -961,7 +875,6 @@
   renderTyreCatalog();
   renderMondayOptions();
   togglePanels();
-  updateEstimatedTotalDisplay();
 
   form.addEventListener("change", (e) => {
     handleBrakeExclusive(e);
@@ -983,7 +896,6 @@
       e.target.id === "tyre_fitting_quantity"
     ) {
       updateTyreFittingDisplay();
-      updateEstimatedTotalDisplay();
     }
   });
 

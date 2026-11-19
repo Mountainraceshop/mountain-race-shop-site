@@ -46,7 +46,7 @@ Confirmed specialist competition in Hume means generic “we do suspension” ad
 Mountain Race Shop should defend Canberra through:
 
 - Monday Canberra pickup.
-- $50 Setup Saturdays.
+- Setup Saturdays.
 - structured booking and enquiry intake.
 - Post-Race Suspension Report.
 - published technical articles.
@@ -72,7 +72,7 @@ Test grouped collection runs only after demand is proven.
 ## Service architecture
 
 ### Level 1 — Diagnosis
-- $50 Setup Saturday.
+- Setup Saturday.
 - Post-Race Suspension Report.
 - rider setup/baseline measurement.
 - remote symptom assessment.

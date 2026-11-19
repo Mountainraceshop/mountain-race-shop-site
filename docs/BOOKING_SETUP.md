@@ -42,14 +42,11 @@ Limits enforced in code:
 
 ## Booking sections
 
-- **Suspension** — fixed workshop packages (see `booking.html`); wear parts extra
+- **Suspension** — workshop packages quoted by Craig (see `booking.html`); wear parts extra
 - **Engine rebuilds (MX/Enduro)** — quoted after inspection
-- **Tyres** — order only; example A1 catalogue SKUs; fitting $30/tyre
+- **Tyres** — order only; example A1 catalogue SKUs; fitting quoted by Craig
 - **Brake pad upsell** — checks and quote-first replacements only
 
-## Pickup pricing (AUD)
+## Canberra pickup
 
-- Complete bike: $20
-- Loose forks: $10
-- Loose shock: $10
-- Loose forks + shock: $20 total
+Pickup and drop-off are arranged with Craig after a workshop booking is confirmed.

@@ -26,7 +26,7 @@ Booking-page support copy:
 
 New booking option:
 
-**Rider Setup & Baseline Recommendation — $50**
+**Rider Setup & Baseline Recommendation**
 
 Short customer wording:
 
@@ -38,11 +38,11 @@ Full customer wording:
 
 Credit wording:
 
-> The $50 Rider Setup & Baseline Recommendation fee is fully credited toward any recommended suspension work booked within 30 days.
+> The Rider Setup & Baseline Recommendation fee is fully credited toward any recommended suspension work booked within 30 days.
 
 Important: this is not a cash refund. Treat it as a credit against booked workshop labour or suspension work.
 
-## Eligible work for the $50 credit
+## Eligible work for the credit
 
 - Fork service
 - Shock service
@@ -135,7 +135,7 @@ Follow-up improvement: when working locally in Cursor, hard-code the new FormSub
 When Rider Setup is selected, admin output should show:
 
 - Service: Rider Setup & Baseline Recommendation
-- Price: $50
+- Quote to be confirmed by Craig
 - Credit rule: credited toward recommended suspension work booked within 30 days
 - Time allowance: 30–45 minutes
 - Complete bike required

@@ -3,11 +3,13 @@
   --text: #191916;
   --muted: #4f4e48;
   --line: #d7d3c8;
-  --accent: #f5bc52;
+  --accent: #ffdb00;
   --accent-2: #785018;
-  --race-red: #ad2634;
-  --setup-blue: #245d92;
-  --learning-green: #286646;
+  --race-red: #e60012;
+  --setup-blue: #0047ba;
+  --learning-green: #63bd22;
+  --learning-ink: #286514;
+  --ktm-orange: #ff6600;
   --radius: 14px;
   --glow: none;
   background: #f8f6f0;
@@ -77,7 +79,7 @@
   border: 1px solid transparent;
   box-shadow: none;
 }
-.workshop-home .button:hover { background: #ffcf76; }
+.workshop-home .button:hover { background: #f4ca00; }
 .workshop-home .button-secondary,
 .workshop-home .button-ghost {
   background: transparent;
@@ -150,8 +152,8 @@
 .workshop-process .metric::before {
   content: "";
   display: block;
-  width: 1.85rem;
-  height: .22rem;
+  width: 2.4rem;
+  height: .3rem;
   margin-bottom: .55rem;
   border-radius: 2px;
   background: var(--metric-accent);
@@ -159,10 +161,10 @@
 .workshop-process .metric:nth-child(1) { --metric-accent: var(--race-red); }
 .workshop-process .metric:nth-child(2) { --metric-accent: var(--setup-blue); }
 .workshop-process .metric:nth-child(3) { --metric-accent: var(--learning-green); }
-.workshop-process .metric:nth-child(4) { --metric-accent: #c28923; }
+.workshop-process .metric:nth-child(4) { --metric-accent: var(--accent); }
 
-.workshop-home .setup-feature { --accent-2: var(--setup-blue); background: #edf2f6; }
-.workshop-home .knowledge-feature { --accent-2: var(--learning-green); background: #edf2ec; }
+.workshop-home .setup-feature { --accent-2: var(--setup-blue); background: #edf4ff; }
+.workshop-home .knowledge-feature { --accent-2: var(--learning-ink); background: #f1f8e9; }
 
 .workshop-home .supplier-feature,
 .workshop-home .final-cta {
@@ -245,3 +247,13 @@
   .workshop-process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .workshop-home .cta-row .button { min-width: 0; text-align: center; }
 }
+
+.workshop-home .hero-links a:first-child { color: var(--setup-blue); }
+.workshop-home .hero-links a:last-child {
+  color: var(--text);
+  text-decoration: underline var(--accent) .2em;
+}
+.workshop-home .setup-feature { border-top: 4px solid var(--setup-blue); }
+.workshop-home .knowledge-feature { border-top: 4px solid var(--learning-green); }
+.workshop-home .supplier-cta .button { background: var(--ktm-orange); }
+.workshop-home .supplier-cta .button:hover { background: #ff8533; }

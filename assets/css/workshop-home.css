@@ -169,9 +169,10 @@
   aspect-ratio: 16 / 9;
 }
 .film-stage > * { grid-area: 1 / 1; }
-.film-stage img, .film-stage iframe { width: 100%; height: 100%; }
+.film-stage img { width: 100%; height: 100%; }
 .film-stage img { object-fit: cover; opacity: .72; min-height: 0; }
-.film-stage iframe { border: 0; }
+.film-stage:hover { text-decoration: none; }
+.film-stage:focus-visible { outline-offset: -4px !important; }
 .film-play {
   z-index: 1;
   padding: .7rem 1rem;

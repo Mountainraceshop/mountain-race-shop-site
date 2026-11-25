@@ -25,19 +25,3 @@ if (menu && navigation) {
     }
   });
 }
-
-const stage = document.getElementById('supplier-film');
-const play = stage?.querySelector('.film-play');
-
-if (play) {
-  play.hidden = false;
-  play.addEventListener('click', () => {
-    const video = document.createElement('iframe');
-    video.src = 'https://www.youtube-nocookie.com/embed/w0-LYOQbuBA?autoplay=1';
-    video.title = 'K-Tech Suspension ORSS Air2Spring conversion kit overview';
-    video.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-    video.allowFullscreen = true;
-    stage.replaceChildren(video);
-    video.focus();
-  }, { once: true });
-}

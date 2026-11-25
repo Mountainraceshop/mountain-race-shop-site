@@ -257,3 +257,43 @@
 .workshop-home .knowledge-feature { border-top: 4px solid var(--learning-green); }
 .workshop-home .supplier-cta .button { background: var(--ktm-orange); }
 .workshop-home .supplier-cta .button:hover { background: #ff8533; }
+
+/* Workshop service tiles use the race palette across rails and action labels. */
+.workshop-home #services { background: #eeeee8; }
+.workshop-home #services .section-heading .eyebrow { color: var(--setup-blue); }
+.workshop-home #services .section-heading .text-link { color: var(--setup-blue); }
+.workshop-home #services .card {
+  --tile-accent: var(--race-red);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(1rem, 2.7vw, 1.7rem);
+  border: 0;
+  border-inline-start: .45rem solid var(--tile-accent);
+  background: #fff;
+  box-shadow: 0 2px 8px #19191614;
+}
+.workshop-home #services .card:nth-child(5n + 2) { --tile-accent: var(--setup-blue); }
+.workshop-home #services .card:nth-child(5n + 3) { --tile-accent: var(--accent); }
+.workshop-home #services .card:nth-child(5n + 4) { --tile-accent: var(--learning-green); }
+.workshop-home #services .card:nth-child(5n + 5) { --tile-accent: var(--ktm-orange); }
+.workshop-home #services .card .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  min-height: 44px;
+  margin-top: auto;
+  padding: .35rem .75rem;
+  border-radius: .35rem;
+  color: #191916;
+  background: color-mix(in srgb, var(--tile-accent) 21%, white);
+  text-underline-offset: .18em;
+}
+.workshop-home #services .card .text-link::after {
+  content: "";
+  width: .42rem;
+  height: .42rem;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+}
